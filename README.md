@@ -79,7 +79,7 @@ classDiagram
     Library "1" *-- "many" Book : 組合管理 (Composition)
     Main --> Page : 呼叫渲染介面 (Uses)
     Book ..> Page : 傳遞 ASCII 路徑預覽 (Provides Data)
-
+```
 ---
 
 ### 🛠️ 開發工具與環境 (Tech Stack)
