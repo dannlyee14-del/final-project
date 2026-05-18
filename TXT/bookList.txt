@@ -1,0 +1,8 @@
+book1.txt T
+image_book.txt F
+alice.txt F
+cat_story.txt F
+math_magic.txt M
+loading_anime.txt A
+Anime.txt A
+morse_sample.txt C
