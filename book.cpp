@@ -1,24 +1,10 @@
-// ===== 跨平臺系統資源處理 =====
-#if defined(_WIN32) || defined(_WIN64)
-#define WIN32_LEAN_AND_MEAN  // 阻擋 Windows 載入包含 'byte' 衝突的冗餘標頭檔
-#include <windows.h>
-#include <conio.h>
-#define CLEAR_CMD "cls"
-#else
-#include <unistd.h>
-#include <sys/select.h>
-#define CLEAR_CMD "clear"
-#endif
-// ===================================
-
 #include "book.h"
 #include <cmath>
 #include <sstream>
+#include <unistd.h>
+#include <sys/select.h>
 #include <algorithm>
 #include <cstring>
-#include <iostream>
-#include <fstream>
-#include <vector>
 
 Book::Book(string f, string t, string a, string c) : filename(f), title(t), author(a), category(c) {}
 Book::~Book() { for (auto p : page_vec) delete p; }
@@ -45,10 +31,11 @@ char Book::getKey() {
     system("stty cooked echo");
     return (toupper(key) == 'J') ? 'J' : ' ';
 }
+
 void Book::preview() {
     int cur = 0; readContent();
     while (1) {
-        system(CLEAR_CMD);
+        system("clear");
         cout << title << "\n" << string(PAGE_W, '=') << "\n\n";
         if (cur < (int)page_vec.size()) page_vec[cur]->showPageCont();
         cout << "\n" << string(PAGE_W/2-4, ' ') << "Page " << cur << "\n" << string(PAGE_W, '=') << "\n";
@@ -136,31 +123,21 @@ void AniBook::preview() {
     }
     int cur = 0; if (frames.empty()) return;
     while (1) {
-        system(CLEAR_CMD); 
-        cout << title << "\n" << string(PAGE_W, '=') << "\n\n";
+        system("clear"); cout << title << "\n" << string(PAGE_W, '=') << "\n\n";
         for (auto l : frames[cur]) cout << l << endl;
         cout << "\n" << string(PAGE_W, '=') << "\n [End]: Back to Menu\n";
-
-#if defined(_WIN32) || defined(_WIN64)
-        Sleep(200); 
-        if (_kbhit()) {
-            int k = _getch();
-            if (k == 0 || k == 224) {
-                if (_getch() == 79) break; 
-            }
-        }
-#else
         system("stty raw -echo");
         struct timeval tv = {0, 200000}; fd_set fds; FD_ZERO(&fds); FD_SET(0, &fds);
         if (select(1, &fds, NULL, NULL, &tv) > 0) {
             char k = getchar();
             if (k == '\x1b') {
-                if (getchar() == '\x5b' && getchar() == 'F') { system("stty cooked echo"); break; }
+                char next_char = getchar();
+                if (next_char == '\x5b' || next_char == 'O') {
+                    if (getchar() == 'F') { system("stty cooked echo"); break; }
+                }
             }
         }
-        system("stty cooked echo"); 
-#endif
-        cur = (cur+1) % frames.size();
+        system("stty cooked echo"); cur = (cur+1) % frames.size();
     }
 }
 

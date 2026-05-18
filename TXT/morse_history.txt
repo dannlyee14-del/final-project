@@ -35,3 +35,4 @@ Even though modern communication technologies have replaced most practical uses 
 Learning Morse code teaches patience, concentration, and pattern recognition. Some people even use it as a fun challenge to improve memory and listening skills.
 
 Today, Morse code remains an important part of communication history and continues to inspire people interested in technology, radio systems, and cryptography.
+

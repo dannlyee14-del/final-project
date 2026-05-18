@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <iostream>
 #include <iomanip>
+#include <unistd.h>
+
 #define NONE    "\e[0m"
 #define WHITE_B "\e[47m"
 
@@ -80,6 +82,7 @@ char Library::getKey() {
     system("stty cooked echo"); 
     return ' ';
 }
+
 void Library::operation(char op) {
     int total = books.size(); 
     int quit_idx = total + 1;
@@ -96,7 +99,7 @@ void Library::operation(char op) {
         if (idx == 0) searchBook();
         else if (idx == quit_idx) exit = true;
         else { 
-            system(CLEAR_CMD);
+            system("clear");
             cout << "=== " << books[idx-1]->getTitle() << " ===" << endl;
             cout << "1. Preview Book" << endl;
             cout << "2. Borrow Book" << endl;
@@ -141,7 +144,7 @@ void Library::operation(char op) {
 }
 
 void Library::coutMainPage() {
-    system(CLEAR_CMD);
+    system("clear");
     for(int i = 0; i < 100; i++) cout << "=";
     cout << "\n\n" << setw(66) << "Welcome to NYCU library system !!!\n\n";
     
@@ -200,7 +203,7 @@ void Library::coutBookIcon(int b) {
 }
 
 void Library::searchBook() {
-    system(CLEAR_CMD);
+    system("clear");
     cout << "********** Search book **********" << endl;
     cout << "Index by 1.Filename 2.Title 3.Author 4.Category 5.Content 6.Leaderboard" << endl;
     cout << "Choice: ";
@@ -268,7 +271,7 @@ void Library::searchBook() {
 }
 
 void Library::addBook() {
-    system(CLEAR_CMD); 
+    system("clear"); 
     string fn, ts, t, a; 
     cout << "Filename: "; cin >> fn; 
     cout << "Type (T/F/M/A/C): "; cin >> ts;
@@ -289,7 +292,7 @@ void Library::addBook() {
 bool Library::getExit() { return exit; }
 
 void Library::showLeaderboard() {
-    system(CLEAR_CMD);
+    system("clear");
     cout << "********** Popular Books Ranking **********" << endl;
 
     vector<Book*> sortedBooks = books;
@@ -308,7 +311,7 @@ void Library::showLeaderboard() {
 }
 
 void Library::login() {
-    system(CLEAR_CMD);
+    system("clear");
     cout << "===========================================" << endl;
     cout << "               User Login System           " << endl;
     cout << "===========================================" << endl;
@@ -328,7 +331,7 @@ void Library::login() {
 }
 
 void Library::borrowBook(Book* b) {
-    system(CLEAR_CMD);
+    system("clear");
     cout << "========== Borrow Book ==========" << endl;
     
     if (currentUser->isGuest) {
@@ -368,7 +371,7 @@ void Library::borrowBook(Book* b) {
 
 void Library::viewAccount() {
     while (true) {
-        system(CLEAR_CMD);
+        system("clear");
         cout << "========== My Account ==========" << endl;
         cout << "User Name: " << currentUser->name << endl;
         cout << "-------------------------------------------" << endl;
