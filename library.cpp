@@ -9,6 +9,7 @@ Library::Library() {
     idx = 0; 
     exit = false; 
     statusMsg = "";
+    currentUser = nullptr;
     
     ifstream in("./TXT/bookList.txt");
     string fn; char type;
@@ -40,9 +41,13 @@ Library::Library() {
         else if (type == 'A') books.push_back(new AniBook(fn, t, a, c));
         else if (type == 'C') books.push_back(new MorseBook(fn, t, a, c));
     }
+    login();
 }
 
-Library::~Library() { for (auto b : books) delete b; }
+Library::~Library() { 
+    for (auto b : books) delete b; 
+    if (currentUser) delete currentUser;
+}
 
 char Library::getKey() {
     char key; 
@@ -52,17 +57,23 @@ char Library::getKey() {
         if (getchar() == '\x5b') {
             char d = getchar(); 
             system("stty cooked echo");
-            if (d == 'A') return 'U'; // Up
-            if (d == 'B') return 'D'; // Down
-            if (d == 'C') return 'R'; // Right
-            if (d == 'D') return 'L'; // Left
+            if (d == 'A') return 'U';
+            if (d == 'B') return 'D';
+            if (d == 'C') return 'R';
+            if (d == 'D') return 'L';
         }
     } else if (key == '\x0d' || key == '\x0a') { 
         system("stty cooked echo"); 
-        return 'E'; // Enter
+        return 'E';
     } else if (toupper(key) == 'A') { 
         system("stty cooked echo"); 
-        return 'A'; // Add
+        return 'A';
+    } else if (toupper(key) == 'M') { 
+        system("stty cooked echo"); 
+        return 'M';
+    } else if (toupper(key) == 'Q') { 
+        system("stty cooked echo"); 
+        return 'Q';
     }
     system("stty cooked echo"); 
     return ' ';
@@ -73,13 +84,35 @@ void Library::operation(char op) {
     int quit_idx = total + 1;
     statusMsg = ""; 
 
+    if (op == 'Q') {
+        exit = true;
+        return;
+    }
+
     if (op == 'A') addBook();
+    else if (op == 'M') viewAccount();
     else if (op == 'E') {
         if (idx == 0) searchBook();
         else if (idx == quit_idx) exit = true;
         else { 
-            books[idx-1]->preview(); 
-            books[idx-1]->addBorrowCount(); 
+            system("clear");
+            cout << "=== " << books[idx-1]->getTitle() << " ===" << endl;
+            cout << "1. Preview Book" << endl;
+            cout << "2. Borrow Book" << endl;
+            cout << "Choice: ";
+            int choice;
+            if (cin >> choice) {
+                cin.ignore(1000, '\n');
+                if (choice == 1) {
+                    books[idx-1]->preview(); 
+                    books[idx-1]->addBorrowCount(); 
+                } else if (choice == 2) {
+                    borrowBook(books[idx-1]);
+                }
+            } else {
+                cin.clear();
+                cin.ignore(1000, '\n');
+            }
         }
     } else if (op == 'U') {
         if (idx == 0) {
@@ -136,6 +169,8 @@ void Library::coutMainPage() {
     cout << "  > move right : [→]" << endl;
     cout << "  > confirm    : [↲]" << endl;
     cout << "  > add book   : [A]" << endl;
+    cout << "  > my account : [M]" << endl;
+    cout << "  > exit system: [Q]" << endl;
     cout << endl;
     for(int i = 0; i < 100; i++) cout << "=";
     cout << endl;
@@ -166,7 +201,6 @@ void Library::coutBookIcon(int b) {
 void Library::searchBook() {
     system("clear");
     cout << "********** Search book **********" << endl;
-    // 增加第 6 個選項：Leaderboard
     cout << "Index by 1.Filename 2.Title 3.Author 4.Category 5.Content 6.Leaderboard" << endl;
     cout << "Choice: ";
     
@@ -177,7 +211,6 @@ void Library::searchBook() {
         return;
     }
 
-    // 如果使用者選 6，直接顯示排行榜並結束函式
     if (choice == 6) {
         vector<Book*> rankList = books;
         sort(rankList.begin(), rankList.end(), [](Book* a, Book* b) {
@@ -193,11 +226,11 @@ void Library::searchBook() {
                  << rankList[i]->getBorrowCount() << endl;
         }
         cout << "\nPress Enter to return...";
-        cin.ignore(1000, '\n'); getchar();
+        cin.ignore(1000, '\n');
+        getchar();
         return; 
     }
 
-    // 原有的搜尋邏輯
     string query;
     cout << "Keyword: ";
     cin >> query;
@@ -232,6 +265,7 @@ void Library::searchBook() {
     cin.ignore(1000, '\n');
     getchar();
 }
+
 void Library::addBook() {
     system("clear"); 
     string fn, ts, t, a; 
@@ -253,12 +287,10 @@ void Library::addBook() {
 
 bool Library::getExit() { return exit; }
 
-
 void Library::showLeaderboard() {
     system("clear");
     cout << "********** Popular Books Ranking **********" << endl;
 
-    // 複製一份書籍指標進行排序，避免打亂原本書架順序
     vector<Book*> sortedBooks = books;
     sort(sortedBooks.begin(), sortedBooks.end(), [](Book* a, Book* b) {
         return a->getBorrowCount() > b->getBorrowCount();
@@ -272,4 +304,122 @@ void Library::showLeaderboard() {
     cout << "\nPress Enter to return...";
     cin.ignore(1000, '\n');
     getchar();
+}
+
+void Library::login() {
+    system("clear");
+    cout << "===========================================" << endl;
+    cout << "               User Login System           " << endl;
+    cout << "===========================================" << endl;
+    cout << "Enter your name: ";
+    string name;
+    getline(cin, name);
+    if (name.empty()) name = "Guest";
+    
+    currentUser = new User(name); 
+    cout << "\nWelcome, " << currentUser->name << "! Press Enter to enter library...";
+    getchar();
+}
+
+void Library::borrowBook(Book* b) {
+    system("clear");
+    cout << "========== Borrow Book ==========" << endl;
+    
+    for (const string& title : globalBorrowedBooks) {
+        if (title == b->getTitle()) {
+            cout << "Warning: This book is already borrowed!" << endl;
+            cout << "\nPress Enter to return...";
+            getchar();
+            return;
+        }
+    }
+    
+    currentUser->borrowedBooks.push_back(b->getTitle());
+    globalBorrowedBooks.push_back(b->getTitle());
+    
+    time_t dueDate = time(0) + 14 * 24 * 60 * 60;
+    currentUser->dueDates.push_back(dueDate);
+    
+    b->addBorrowCount(); 
+    
+    cout << "Successfully borrowed \"" << b->getTitle() << "\"!" << endl;
+    
+    char buf[80];
+    struct tm* timeinfo = localtime(&dueDate);
+    strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", timeinfo);
+    cout << "Due Date: " << buf << endl;
+    
+    cout << "\nPress Enter to return...";
+    getchar();
+}
+
+void Library::viewAccount() {
+    while (true) {
+        system("clear");
+        cout << "========== My Account ==========" << endl;
+        cout << "User Name: " << currentUser->name << endl;
+        cout << "-------------------------------------------" << endl;
+        cout << "Borrowed Books List:" << endl;
+        
+        if (currentUser->borrowedBooks.empty()) {
+            cout << "No borrowed books." << endl;
+        } else {
+            for (int i = 0; i < (int)currentUser->borrowedBooks.size(); i++) {
+                time_t dueDate = currentUser->dueDates[i];
+                char buf[80];
+                struct tm* timeinfo = localtime(&dueDate);
+                strftime(buf, sizeof(buf), "%Y-%m-%d", timeinfo);
+                cout << i + 1 << ". " << setw(30) << left << currentUser->borrowedBooks[i] 
+                     << " | Due Date: " << buf << endl;
+            }
+        }
+        
+        cout << "-------------------------------------------" << endl;
+        cout << "Options: 1. Return Book  2. Logout  3. Back to Menu" << endl;
+        cout << "Choice: ";
+        int choice;
+        if (cin >> choice) {
+            cin.ignore(1000, '\n');
+            if (choice == 1) {
+                if (currentUser->borrowedBooks.empty()) {
+                    cout << "You have no books to return." << endl;
+                    cout << "\nPress Enter to continue...";
+                    getchar();
+                    continue;
+                }
+                cout << "Enter the number of the book to return: ";
+                int num;
+                if (cin >> num) {
+                    cin.ignore(1000, '\n');
+                    if (num > 0 && num <= (int)currentUser->borrowedBooks.size()) {
+                        string retTitle = currentUser->borrowedBooks[num - 1];
+                        currentUser->borrowedBooks.erase(currentUser->borrowedBooks.begin() + (num - 1));
+                        currentUser->dueDates.erase(currentUser->dueDates.begin() + (num - 1));
+                        
+                        auto it = find(globalBorrowedBooks.begin(), globalBorrowedBooks.end(), retTitle);
+                        if (it != globalBorrowedBooks.end()) {
+                            globalBorrowedBooks.erase(it);
+                        }
+                        
+                        cout << "Successfully returned \"" << retTitle << "\"!" << endl;
+                        cout << "\nPress Enter to continue...";
+                        getchar();
+                    } else {
+                        cout << "Invalid number!" << endl;
+                        cout << "\nPress Enter to continue...";
+                        getchar();
+                    }
+                }
+            } else if (choice == 2) {
+                delete currentUser;
+                login();
+                break;
+            } else if (choice == 3) {
+                break;
+            }
+        } else {
+            cin.clear();
+            cin.ignore(1000, '\n');
+        }
+    }
 }

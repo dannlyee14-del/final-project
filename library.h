@@ -5,7 +5,6 @@
 #include <vector>
 #include <ctime>
 
-// 使用者帳號與借閱紀錄加分功能
 class User {
 public:
     string name;
@@ -28,11 +27,16 @@ public:
     void searchBook();
     void addBook();
     void showLeaderboard();
+    void login();
+    void borrowBook(Book* b);
+    void viewAccount();
 protected:
     int idx;
     bool exit;
     vector<Book*> books;
-    string statusMsg; // 確保有這一行，用來顯示邊界警告
+    string statusMsg;
+    User* currentUser;
+    vector<string> globalBorrowedBooks;
 };
 
 #endif
