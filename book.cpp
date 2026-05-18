@@ -28,33 +28,23 @@ string Book::getCategory() { return category; }
 string Book::getFilename() { return filename; }
 
 char Book::getKey() {
-#if defined(_WIN32) || defined(_WIN64)
-    int ch = _getch();
-    if (ch == 0 || ch == 224) { 
-        int ch2 = _getch();
-        if (ch2 == 77) return 'N'; // [→] Right
-        if (ch2 == 75) return 'P'; // [←] Left
-        if (ch2 == 79) return 'M'; // [End] 
-    }
-    return (toupper(ch) == 'J') ? 'J' : ' ';
-#else
     char key;
     system("stty raw -echo");
     key = getchar();
     if (key == '\x1b') {
-        if (getchar() == '\x5b') {
+        char next_char = getchar();
+        if (next_char == '\x5b' || next_char == 'O') {
             char d = getchar();
             system("stty cooked echo");
             if (d == 'C') return 'N'; // Right
             if (d == 'D') return 'P'; // Left
             if (d == 'F') return 'M'; // End
+            return ' ';
         }
     }
     system("stty cooked echo");
     return (toupper(key) == 'J') ? 'J' : ' ';
-#endif
 }
-
 void Book::preview() {
     int cur = 0; readContent();
     while (1) {

@@ -63,52 +63,19 @@ Library::~Library() {
 }
 
 char Library::getKey() {
-#if defined(_WIN32) || defined(_WIN64)
-    int ch = _getch();
-    if (ch == 0 || ch == 224) { 
-        // 1. 處理傳統 Windows CMD 的方向鍵
-        int ch2 = _getch();
-        if (ch2 == 72) return 'U'; // [↑] Up
-        if (ch2 == 80) return 'D'; // [↓] Down
-        if (ch2 == 77) return 'R'; // [→] Right
-        if (ch2 == 75) return 'L'; // [←] Left
-    } else if (ch == 27) { 
-        // 2. 處理現代終端機 (VS Code, Git Bash) 的 ANSI 方向鍵 (\x1b[A)
-        if (_kbhit()) {
-            int ch2 = _getch();
-            if (ch2 == 91) { // '['
-                if (_kbhit()) {
-                    int ch3 = _getch();
-                    if (ch3 == 'A') return 'U'; // Up
-                    if (ch3 == 'B') return 'D'; // Down
-                    if (ch3 == 'C') return 'R'; // Right
-                    if (ch3 == 'D') return 'L'; // Left
-                }
-            }
-        }
-    } else if (ch == '\r' || ch == '\n') { 
-        return 'E'; // Enter
-    } else if (toupper(ch) == 'A') { 
-        return 'A'; // Add Book
-    } else if (toupper(ch) == 'M') { 
-        return 'M'; // My Account
-    } else if (toupper(ch) == 'Q') { 
-        return 'Q'; // Quit
-    }
-    return ' ';
-#else
-    // Linux/Mac 環境維持不變
     char key; 
     system("stty raw -echo"); 
     key = getchar();
     if (key == '\x1b') {
-        if (getchar() == '\x5b') {
+        char next_char = getchar();
+        if (next_char == '\x5b' || next_char == 'O') {
             char d = getchar(); 
             system("stty cooked echo");
             if (d == 'A') return 'U';
             if (d == 'B') return 'D';
             if (d == 'C') return 'R';
             if (d == 'D') return 'L';
+            return ' ';
         }
     } else if (key == '\x0d' || key == '\x0a') { 
         system("stty cooked echo"); 
@@ -125,9 +92,7 @@ char Library::getKey() {
     }
     system("stty cooked echo"); 
     return ' ';
-#endif
 }
-
 void Library::operation(char op) {
     int total = books.size(); 
     int quit_idx = total + 1;
