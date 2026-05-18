@@ -50,6 +50,25 @@ Library::~Library() {
 }
 
 char Library::getKey() {
+#if defined(_WIN32) || defined(_WIN64)
+    int ch = _getch();
+    if (ch == 0 || ch == 224) {
+        int ch2 = _getch();
+        if (ch2 == 72) return 'U'; // [↑] Up
+        if (ch2 == 80) return 'D'; // [↓] Down
+        if (ch2 == 77) return 'R'; // [→] Right
+        if (ch2 == 75) return 'L'; // [←] Left
+    } else if (ch == '\r' || ch == '\n') { 
+        return 'E'; // Enter
+    } else if (toupper(ch) == 'A') { 
+        return 'A';
+    } else if (toupper(ch) == 'M') { 
+        return 'M';
+    } else if (toupper(ch) == 'Q') { 
+        return 'Q';
+    }
+    return ' ';
+#else
     char key; 
     system("stty raw -echo"); 
     key = getchar();
@@ -77,8 +96,8 @@ char Library::getKey() {
     }
     system("stty cooked echo"); 
     return ' ';
+#endif
 }
-
 void Library::operation(char op) {
     int total = books.size(); 
     int quit_idx = total + 1;
