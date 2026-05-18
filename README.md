@@ -26,8 +26,59 @@ This is an Object-Oriented Library Management System designed for the 2026 Sprin
 * `library.cpp` / `library.h` - 圖書館核心管理邏輯與統計功能
 * `book.cpp` / `book.h` - 書本物件類別定義與屬性操作
 * `page.cpp` / `page.h` - 處理 ASCII 畫面渲染與電子書預覽
-* `Makefile` - 自動化編譯腳本
 * `TXT/` - 存放書籍內容、封面 ASCII Art 以及動畫文字檔的資料夾
+
+---
+
+### 📐 類別架構圖 (Class Architecture)
+
+以下為本系統的核心類別架構與關聯性：
+
+```mermaid
+classDiagram
+    class Main {
+        <<Entry Point>>
+        +main() int
+    }
+
+    class Library {
+        -vector~Book~ books
+        -string bookListFile
+        +Library(string filename)
+        +loadBooks() bool
+        +saveBooks() bool
+        +searchBook(string keyword) void
+        +borrowBook(string isbn) bool
+        +returnBook(string isbn) bool
+        +displayStatistics() void
+    }
+
+    class Book {
+        -string title
+        -string author
+        -string isbn
+        -bool isBorrowed
+        -string contentFile
+        -string coverFile
+        +Book(string t, string a, string i, string content, string cover)
+        +getTitle() string
+        +getAuthor() string
+        +getIsbn() string
+        +getBorrowStatus() bool
+        +setBorrowStatus(bool status) void
+    }
+
+    class Page {
+        <<Utility>>
+        +renderASCII(string filePath) void
+        +playAnimation(string animationPath) void
+        +clearScreen() void
+    }
+
+    Main --> Library : 擁有並操作 (Owns)
+    Library "1" *-- "many" Book : 組合管理 (Composition)
+    Main --> Page : 呼叫渲染介面 (Uses)
+    Book ..> Page : 傳遞 ASCII 路徑預覽 (Provides Data)
 
 ---
 
