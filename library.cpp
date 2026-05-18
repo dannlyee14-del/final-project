@@ -314,9 +314,13 @@ void Library::login() {
     cout << "Enter your name: ";
     string name;
     getline(cin, name);
-    if (name.empty()) name = "Guest";
     
-    currentUser = new User(name); 
+    bool isGuest = false;
+    if (name.empty() || name == "Guest") {
+        name = "Guest";
+        isGuest = true;
+    }
+    currentUser = new User(name, isGuest); 
     cout << "\nWelcome, " << currentUser->name << "! Press Enter to enter library...";
     getchar();
 }
@@ -324,6 +328,14 @@ void Library::login() {
 void Library::borrowBook(Book* b) {
     system("clear");
     cout << "========== Borrow Book ==========" << endl;
+    
+    // 新增：訪客權限檢查
+    if (currentUser->isGuest) {
+        cout << "Warning: Guest accounts cannot borrow books!" << endl;
+        cout << "\nPress Enter to return...";
+        getchar();
+        return;
+    }
     
     for (const string& title : globalBorrowedBooks) {
         if (title == b->getTitle()) {
