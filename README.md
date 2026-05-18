@@ -1,51 +1,306 @@
-# 圖書管理系統 (Library Management System)
+# 📚 圖書管理系統（Library Management System）
 
-###  專案簡介 (Introduction)
-本專案為 **物件導向程式設計 (Object-Oriented Programming)** 的期末專題。
-
-這是一個基於物件導向架構（OOP）設計的圖書管理系統。核心概念將每一本「書本」視為獨立的物件進行操作，旨在模擬真實圖書館中館員與讀者的日常互動。系統提供藏書查找、借閱、歸還與館藏數據統計功能，更結合了**電子書預覽功能**，以及 **ASCII Art (字元畫)** 的形式在終端機中呈現電子書的封面與其文本內容。
-
-This is an Object-Oriented Library Management System designed for the OOP final project. By treating each book as an individual object, the system effectively simulates real-world library operations for both librarians and users—including book searching, borrowing, returning, and collection statistics. Additionally, it features an e-book preview system that renders book covers and contents using creative ASCII Art.
+> 國立陽明交通大學 電機工程學系（National Yang Ming Chiao Tung University, NYCU EE）  
+> 物件導向程式設計（Object-Oriented Programming, OOP）期末專題（Final Project）
 
 ---
 
-### 🛠️ 核心功能 (Core Features)
+# 🧾 專案簡介（Introduction）
 
-* **物件化圖書管理 (Object-Oriented Book Operations)**
-    * 將書本封裝為物件，管理書名、作者、ISBN、借閱狀態等屬性。
-* **館藏統計與查詢 (Search & Statistics)**
-    * 提供關鍵字快速查找，並具備圖書館藏書量與借閱率的統計功能。
-* **電子書 ASCII Art 預覽 (ASCII Art Preview)**
-    * 在終端機介面中，以文字陣列與字元畫（ASCII Art）生動預覽電子書的封面與精選內容。
+本專案為國立陽明交通大學電機工程學系（NYCU EE）物件導向程式設計（OOP）課程之期末專題。
 
----
+本系統是一套以 C++ 開發、基於純物件導向架構（Object-Oriented Architecture）的終端機圖書管理系統（Terminal-based Library Management System）。系統將每一本書籍封裝（Encapsulation）為獨立物件（Object），透過繼承（Inheritance）、多型（Polymorphism）與動態綁定（Dynamic Binding）等 OOP 技術，模擬真實圖書館中的借閱（Borrowing）、搜尋（Searching）、管理（Management）與電子書預覽（E-Book Preview）功能。
 
-### 📂 檔案結構 (File Structure)
+不同於傳統純文字終端機程式（Text-only Terminal Program），本專案進一步整合：
 
-* `main.cpp` - 程式執行入口與主選單控制
-* `library.cpp` / `library.h` - 圖書館核心管理邏輯與統計功能
-* `book.cpp` / `book.h` - 書本物件類別定義與屬性操作
-* `page.cpp` / `page.h` - 處理 ASCII 畫面渲染與電子書預覽
-* `TXT/` - 存放書籍內容、封面 ASCII Art 以及動畫文字檔的資料夾
+- ASCII Art（字元畫）
+- 動態數學公式解析（Dynamic Mathematical Expression Parsing）
+- 視覺暫留動畫（Persistence of Vision Animation）
+- 摩斯密碼翻譯（Morse Code Translation）
+- 終端機頁面渲染系統（Terminal Rendering System）
+
+讓 Linux 終端機（Linux Terminal）不再只是文字輸出，而能呈現具有互動性與視覺效果的電子書閱讀體驗。
 
 ---
 
-### 📐 類別架構圖 (Class Architecture)
+# ✨ 核心功能（Core Features）
 
-以下為本系統的核心類別架構：
+## 1️⃣ 物件導向圖書管理架構（Object-Oriented Book Architecture）
 
+- 將書籍資訊完整封裝於 Book 類別（Class）中
+- 使用虛擬函式（Virtual Function）實現多型（Polymorphism）
+- 利用動態綁定（Dynamic Binding）切換不同書籍型態
+- 支援多型容器（Polymorphic Container）管理 heterogeneous objects
+
+### 📖 支援書籍型態（Supported Book Types）
+
+| 類型（Type） | 說明（Description） |
+|---|---|
+| T | 純文字書籍（TxtBook / Plain Text Book） |
+| F | ASCII 字元畫書籍（FigBook / ASCII Figure Book） |
+| M | 數學公式運算書籍（MthBook / Mathematical Book） |
+| A | ASCII 動畫書籍（AniBook / ASCII Animation Book） |
+| C | 摩斯密碼翻譯書籍（MorseBook / Morse Code Book） |
+
+---
+
+## 2️⃣ 多功能搜尋系統（Multi-Criteria Search System）
+
+支援以下搜尋方式（Search Criteria）：
+
+- 檔案名稱（Filename）
+- 書名（Title）
+- 作者（Author）
+- 類別（Category）
+- 全文關鍵字搜尋（Full-text Content Search）
+
+額外功能（Additional Features）：
+
+- 即時新增書籍（Real-time Book Insertion）
+- 自動建立檔案（Automatic File Creation）
+- 動態更新藏書列表（Dynamic Library Update）
+
+---
+
+## 3️⃣ 進階電子書渲染技術（Advanced E-Book Rendering Technologies）
+
+### 📐 MthBook — 動態數學公式解析（Dynamic Formula Engine）
+
+系統可自動辨識（Parse）：
+
+```txt
+?5+3?
+?sqrt(25)?
 ```
+
+並於渲染（Rendering）時即時計算（Real-time Evaluation）結果後輸出。
+
+---
+
+### 🖼️ FigBook — ASCII 字元畫分頁系統（ASCII Figure Pagination System）
+
+- 自動辨識 `.fig` ~ `.figend`
+- 防止 ASCII Art 被分頁（Pagination）切斷
+- 自動將大型圖片（Large Figure）移動至下一頁（Next Page）
+
+---
+
+### 🎞️ AniBook — 終端機動畫系統（Terminal Animation System）
+
+- 支援多影格 ASCII 動畫（Multi-frame ASCII Animation）
+- 微秒級定時刷新（Microsecond-level Refresh Timing）
+- 流暢播放動畫效果（Smooth Animation Playback）
+
+---
+
+### 🔡 MorseBook — 摩斯密碼翻譯系統（Morse Code Translation System）
+
+系統會自動將摩斯密碼（Morse Code）翻譯為英文與數字。
+
+範例（Example）：
+
+```txt
+.... .
 ```
+
+輸出（Output）：
+
+```txt
+HE
+```
+
 ---
 
-### 🛠️ 開發工具與環境 (Tech Stack)
+## 📊 借閱排行榜系統（Borrowing Statistics System）
 
-* **程式語言 (Language):** C++
-* **開發概念 (Concepts):** 物件導向程式設計 (Encapsulation, Polymorphism, Abstraction)
+- 即時統計 borrowCount（Borrow Count）
+- 熱門書籍排行榜（Popularity Leaderboard）
+- 動態更新借閱次數（Dynamic Statistics Update）
 
 ---
 
-### ✍️ 作者 (Contributors)
+## ⚠️ 終端機邊界安全警示（Terminal Boundary Safety Warnings）
 
-* **張友銘** (NYCU EE) - [GitHub Profile](https://github.com/dannlyee14-del)
-* **陳暘暄** (NYCU EE) - [GitHub Profile](https://github.com/???????)
+系統利用 ANSI Escape Code 顯示：
+
+- 紅字警告（Red Warning Prompt）
+- 邊界超出提示（Boundary Overflow Warning）
+- 非法操作提醒（Invalid Operation Alert）
+
+提升終端機使用者介面（Terminal UI）互動體驗。
+
+---
+
+# 🏗️ 類別架構圖（Class Architecture）
+
+```mermaid
+classDiagram
+    Library "1" o-- "*" Book : 維護藏書（Maintain Books）
+    Book "1" o-- "*" Page : 維護頁面（Maintain Pages）
+
+    class Library {
+        #int idx
+        #bool exit
+        #vector~Book*~ books
+        #string statusMsg
+        +Library()
+        +~Library()
+        +getKey() char
+        +operation(char opCode) void
+        +coutMainPage() void
+        +coutBookIcon(int bookNum) void
+        +getExit() bool
+        +searchBook() void
+        +addBook() void
+        +showLeaderboard() void
+    }
+
+    class User {
+        +string name
+        +bool isGuest
+        +bool isLocked
+        +vector~string~ borrowedBooks
+        +vector~time_t~ dueDates
+        +User(string n, bool guest)
+    }
+
+    class Page {
+        -int page_num
+        -int width
+        -int height
+        -char** page_cont
+        +Page(int num, int w, int h)
+        +~Page()
+        +setPageCont(char** cont) void
+        +getPageCont() char**
+        +showPageCont() void
+    }
+
+    class Book {
+        #string filename
+        #string title
+        #string author
+        #string category
+        #vector~Page*~ page_vec
+        #int borrowCount
+        #static const int PAGE_W = 100
+        #static const int PAGE_H = 40
+        +Book(string f, string t, string a, string c)
+        +~Book()
+        +readContent() virtual void
+        +preview() virtual void
+        +getKey() virtual char
+        +getTitle() string
+        +getAuthor() string
+        +getCategory() string
+        +getFilename() string
+        +searchContent(string query) virtual bool
+        +addBorrowCount() void
+        +getBorrowCount() int
+    }
+
+    class TxtBook {
+        +TxtBook(string f, string t, string a, string c)
+    }
+
+    class FigBook {
+        +FigBook(string f, string t, string a, string c)
+        +readContent() void
+        +get_figure(fstream& fin, int* fig_h) char**
+    }
+
+    class MthBook {
+        +MthBook(string f, string t, string a, string c)
+        +readContent() void
+        -calculateEquation(string eq) string
+    }
+
+    class AniBook {
+        +AniBook(string f, string t, string a, string c)
+        +preview() void
+    }
+
+    class MorseBook {
+        +MorseBook(string f, string t, string a, string c)
+        +readContent() void
+        -translateMorse(string code) char
+    }
+
+    Book <|-- TxtBook : Type T
+    Book <|-- FigBook : Type F
+    Book <|-- MthBook : Type M
+    Book <|-- AniBook : Type A
+    Book <|-- MorseBook : Type C
+```
+
+---
+
+# 📂 專案檔案結構（Project Structure）
+
+```tree
+├── main.cpp
+├── library.cpp/.h
+├── book.cpp/.h
+├── page.cpp/.h
+├── Makefile
+└── TXT/
+    ├── bookList.txt
+    ├── book1.txt
+    ├── image_book.txt
+    ├── math_magic.txt
+    ├── Anime.txt
+    └── morse_sample.txt
+```
+
+---
+
+# 🛠️ 開發技術（Tech Stack）
+
+- 程式語言（Programming Language）：C++
+- 開發環境（Development Environment）：Linux Terminal
+
+### 核心 OOP 概念（Core OOP Concepts）
+
+- Encapsulation（封裝）
+- Polymorphism（多型）
+- Abstraction（抽象化）
+- Inheritance（繼承）
+- Dynamic Binding（動態綁定）
+
+---
+
+# 🚀 編譯與執行（Build & Run）
+
+## 編譯（Compile）
+
+```bash
+make
+```
+
+## 執行（Execute）
+
+```bash
+./final_project
+```
+
+---
+
+# 🌟 專案特色（Project Highlights）
+
+- 純物件導向架構設計（Pure Object-Oriented Architecture）
+- 多型電子書渲染系統（Polymorphic E-Book Rendering System）
+- 動態 ASCII Art 引擎（Dynamic ASCII Rendering Engine）
+- 終端機動畫播放器（Terminal Animation Player）
+- 智慧分頁演算法（Smart Pagination Algorithm）
+- 數學公式解析器（Mathematical Expression Parser）
+- 摩斯密碼翻譯系統（Morse Code Translation System）
+- Linux Terminal UI 互動設計（Interactive Terminal UI Design）
+
+---
+
+# 👨‍💻 開發者（Contributors）
+
+- 張友銘（NYCU EE）— :contentReference[oaicite:0]{index=0}
+- 陳暘暄（NYCU EE）
+
+---
