@@ -9,7 +9,7 @@
 
 本專案為國立陽明交通大學電機工程學系（NYCU EE）物件導向程式設計（OOP）課程之期末專題。
 
-本系統是一套以 C++ 開發、基於純物件導向架構（Object-Oriented Architecture）的終端機圖書管理系統（Terminal-based Library Management System）。系統將每一本書籍封裝（Encapsulation）為獨立物件（Object），透過繼承（Inheritance）、多型（Polymorphism）與動態綁定（Dynamic Binding）等 OOP 技術，模擬真實圖書館中的借閱（Borrowing）、搜尋（Searching）、管理（Management）與電子書預覽（E-Book Preview）功能。
+本系統是一套以 C++ 開發、基於純物件導向架構（Object-Oriented Architecture）的終端機圖書管理系統（Terminal-based Library Management System）。系統將每一本書籍封裝（Encapsulation）為獨立物件（Object），透過繼承（Inheritance）、多型（Polymorphism) 等 OOP 技術，模擬真實圖書館中的搜尋（Searching）、管理（Management）與 預覽（Preview）功能。
 
 不同於傳統純文字終端機程式（Text-only Terminal Program），本專案進一步整合：
 
@@ -19,7 +19,7 @@
 - 摩斯密碼翻譯（Morse Code Translation）
 - 終端機頁面渲染系統（Terminal Rendering System）
 
-讓 Linux 終端機（Linux Terminal）不再只是文字輸出，而能呈現具有互動性與視覺效果的電子書閱讀體驗。
+讓 Linux 終端機（Linux Terminal）不再只是文字輸出，而能呈現具有互動性與視覺效果的體驗。
 
 ---
 
@@ -79,7 +79,7 @@
 
 ### 🖼️ FigBook — ASCII 字元畫分頁系統（ASCII Figure Pagination System）
 
-- 自動辨識 `.fig` ~ `.figend`
+- 自動辨識圖片
 - 防止 ASCII Art 被分頁（Pagination）切斷
 - 自動將大型圖片（Large Figure）移動至下一頁（Next Page）
 
@@ -87,8 +87,7 @@
 
 ### 🎞️ AniBook — 終端機動畫系統（Terminal Animation System）
 
-- 支援多影格 ASCII 動畫（Multi-frame ASCII Animation）
-- 微秒級定時刷新（Microsecond-level Refresh Timing）
+- 支援 ASCII 動畫（Multi-frame ASCII Animation）
 - 流暢播放動畫效果（Smooth Animation Playback）
 
 ---
@@ -131,110 +130,6 @@ HE
 
 ---
 
-# 🏗️ 類別架構圖（Class Architecture）
-
-```mermaid
-classDiagram
-    Library "1" o-- "*" Book : 維護藏書（Maintain Books）
-    Book "1" o-- "*" Page : 維護頁面（Maintain Pages）
-
-    class Library {
-        #int idx
-        #bool exit
-        #vector~Book*~ books
-        #string statusMsg
-        +Library()
-        +~Library()
-        +getKey() char
-        +operation(char opCode) void
-        +coutMainPage() void
-        +coutBookIcon(int bookNum) void
-        +getExit() bool
-        +searchBook() void
-        +addBook() void
-        +showLeaderboard() void
-    }
-
-    class User {
-        +string name
-        +bool isGuest
-        +bool isLocked
-        +vector~string~ borrowedBooks
-        +vector~time_t~ dueDates
-        +User(string n, bool guest)
-    }
-
-    class Page {
-        -int page_num
-        -int width
-        -int height
-        -char** page_cont
-        +Page(int num, int w, int h)
-        +~Page()
-        +setPageCont(char** cont) void
-        +getPageCont() char**
-        +showPageCont() void
-    }
-
-    class Book {
-        #string filename
-        #string title
-        #string author
-        #string category
-        #vector~Page*~ page_vec
-        #int borrowCount
-        #static const int PAGE_W = 100
-        #static const int PAGE_H = 40
-        +Book(string f, string t, string a, string c)
-        +~Book()
-        +readContent() virtual void
-        +preview() virtual void
-        +getKey() virtual char
-        +getTitle() string
-        +getAuthor() string
-        +getCategory() string
-        +getFilename() string
-        +searchContent(string query) virtual bool
-        +addBorrowCount() void
-        +getBorrowCount() int
-    }
-
-    class TxtBook {
-        +TxtBook(string f, string t, string a, string c)
-    }
-
-    class FigBook {
-        +FigBook(string f, string t, string a, string c)
-        +readContent() void
-        +get_figure(fstream& fin, int* fig_h) char**
-    }
-
-    class MthBook {
-        +MthBook(string f, string t, string a, string c)
-        +readContent() void
-        -calculateEquation(string eq) string
-    }
-
-    class AniBook {
-        +AniBook(string f, string t, string a, string c)
-        +preview() void
-    }
-
-    class MorseBook {
-        +MorseBook(string f, string t, string a, string c)
-        +readContent() void
-        -translateMorse(string code) char
-    }
-
-    Book <|-- TxtBook : Type T
-    Book <|-- FigBook : Type F
-    Book <|-- MthBook : Type M
-    Book <|-- AniBook : Type A
-    Book <|-- MorseBook : Type C
-```
-
----
-
 # 📂 專案檔案結構（Project Structure）
 
 ```tree
@@ -257,31 +152,13 @@ classDiagram
 # 🛠️ 開發技術（Tech Stack）
 
 - 程式語言（Programming Language）：C++
-- 開發環境（Development Environment）：Linux Terminal
+- 開發環境（Development Environment）：Linux Terminal (wsl)
 
 ### 核心 OOP 概念（Core OOP Concepts）
 
 - Encapsulation（封裝）
 - Polymorphism（多型）
-- Abstraction（抽象化）
 - Inheritance（繼承）
-- Dynamic Binding（動態綁定）
-
----
-
-# 🚀 編譯與執行（Build & Run）
-
-## 編譯（Compile）
-
-```bash
-make
-```
-
-## 執行（Execute）
-
-```bash
-./final_project
-```
 
 ---
 
@@ -300,7 +177,7 @@ make
 
 # 👨‍💻 開發者（Contributors）
 
-- 張友銘（NYCU EE）— :contentReference[oaicite:0]{index=0}
+- 張友銘（NYCU EE） - [GitHub Profile](https://github.com/dannlyee14-del)
 - 陳暘暄（NYCU EE）
 
 ---
