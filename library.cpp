@@ -334,7 +334,7 @@ void Library::borrowBook(Book* b) {
     
     // 訪客權限檢查
     if (currentUser->isGuest) {
-        cout << "Warning: Guest accounts cannot borrow books!" << endl;
+        cout << "\e[1;31mWarning: Guest accounts cannot borrow books!" << endl;
         cout << "\nPress Enter to return...";
         getchar();
         return;
@@ -342,7 +342,7 @@ void Library::borrowBook(Book* b) {
     
     for (const string& title : globalBorrowedBooks) {
         if (title == b->getTitle()) {
-            cout << "Warning: This book is already borrowed!" << endl;
+            cout << "\e[1;31mWarning: This book is already borrowed!" << endl;
             cout << "\nPress Enter to return...";
             getchar();
             return;
