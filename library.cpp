@@ -2,6 +2,19 @@
 #include <algorithm>
 #include <iostream>
 #include <iomanip>
+
+// ===== 跨平臺系統資源處理 =====
+#if defined(_WIN32) || defined(_WIN64)
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <conio.h>
+#define CLEAR_CMD "cls"
+#else
+#include <unistd.h>
+#define CLEAR_CMD "clear"
+#endif
+// =============================
+
 #define NONE    "\e[0m"
 #define WHITE_B "\e[47m"
 
@@ -98,6 +111,7 @@ char Library::getKey() {
     return ' ';
 #endif
 }
+
 void Library::operation(char op) {
     int total = books.size(); 
     int quit_idx = total + 1;
@@ -114,7 +128,7 @@ void Library::operation(char op) {
         if (idx == 0) searchBook();
         else if (idx == quit_idx) exit = true;
         else { 
-            system("clear");
+            system(CLEAR_CMD);
             cout << "=== " << books[idx-1]->getTitle() << " ===" << endl;
             cout << "1. Preview Book" << endl;
             cout << "2. Borrow Book" << endl;
@@ -159,7 +173,7 @@ void Library::operation(char op) {
 }
 
 void Library::coutMainPage() {
-    system("clear");
+    system(CLEAR_CMD);
     for(int i = 0; i < 100; i++) cout << "=";
     cout << "\n\n" << setw(66) << "Welcome to NYCU library system !!!\n\n";
     
@@ -218,7 +232,7 @@ void Library::coutBookIcon(int b) {
 }
 
 void Library::searchBook() {
-    system("clear");
+    system(CLEAR_CMD);
     cout << "********** Search book **********" << endl;
     cout << "Index by 1.Filename 2.Title 3.Author 4.Category 5.Content 6.Leaderboard" << endl;
     cout << "Choice: ";
@@ -286,7 +300,7 @@ void Library::searchBook() {
 }
 
 void Library::addBook() {
-    system("clear"); 
+    system(CLEAR_CMD); 
     string fn, ts, t, a; 
     cout << "Filename: "; cin >> fn; 
     cout << "Type (T/F/M/A/C): "; cin >> ts;
@@ -307,7 +321,7 @@ void Library::addBook() {
 bool Library::getExit() { return exit; }
 
 void Library::showLeaderboard() {
-    system("clear");
+    system(CLEAR_CMD);
     cout << "********** Popular Books Ranking **********" << endl;
 
     vector<Book*> sortedBooks = books;
@@ -326,7 +340,7 @@ void Library::showLeaderboard() {
 }
 
 void Library::login() {
-    system("clear");
+    system(CLEAR_CMD);
     cout << "===========================================" << endl;
     cout << "               User Login System           " << endl;
     cout << "===========================================" << endl;
@@ -334,26 +348,23 @@ void Library::login() {
     string name;
     getline(cin, name);
     
-    // 檢查是否為訪客並設定 isGuest 旗標
     bool isGuest = false;
     if (name.empty() || name == "Guest") {
         name = "Guest";
         isGuest = true;
     }
     
-    // 將 isGuest 傳入建構子
     currentUser = new User(name, isGuest); 
     cout << "\nWelcome, " << currentUser->name << "! Press Enter to enter library...";
     getchar();
 }
 
 void Library::borrowBook(Book* b) {
-    system("clear");
+    system(CLEAR_CMD);
     cout << "========== Borrow Book ==========" << endl;
     
-    // 訪客權限檢查
     if (currentUser->isGuest) {
-        cout << "\e[1;31mWarning: Guest accounts cannot borrow books!" << endl;
+        cout << "\e[1;31mWarning: Guest accounts cannot borrow books!\e[0m" << endl;
         cout << "\nPress Enter to return...";
         getchar();
         return;
@@ -361,7 +372,7 @@ void Library::borrowBook(Book* b) {
     
     for (const string& title : globalBorrowedBooks) {
         if (title == b->getTitle()) {
-            cout << "\e[1;31mWarning: This book is already borrowed!" << endl;
+            cout << "\e[1;31mWarning: This book is already borrowed!\e[0m" << endl;
             cout << "\nPress Enter to return...";
             getchar();
             return;
@@ -389,7 +400,7 @@ void Library::borrowBook(Book* b) {
 
 void Library::viewAccount() {
     while (true) {
-        system("clear");
+        system(CLEAR_CMD);
         cout << "========== My Account ==========" << endl;
         cout << "User Name: " << currentUser->name << endl;
         cout << "-------------------------------------------" << endl;
