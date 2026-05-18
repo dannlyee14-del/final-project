@@ -3,6 +3,11 @@ image_book.txt F
 alice.txt F
 cat_story.txt F
 math_magic.txt M
+math_magic2.txt M
 loading_anime.txt A
 Anime.txt A
 morse_sample.txt C
+forest_story.txt T
+castle_art.txt F
+space_animation.txt A
+morse_history.txt C
