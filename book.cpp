@@ -1,10 +1,23 @@
 #include "book.h"
 #include <cmath>
 #include <sstream>
-#include <unistd.h>
-#include <sys/select.h>
 #include <algorithm>
 #include <cstring>
+#include <iostream>
+#include <fstream>
+#include <vector>
+
+// ===== 跨平臺系統資源處理 =====
+#if defined(_WIN32) || defined(_WIN64)
+#include <windows.h>
+#include <conio.h>
+#define CLEAR_CMD "cls"
+#else
+#include <unistd.h>
+#include <sys/select.h>
+#define CLEAR_CMD "clear"
+#endif
+// =============================
 
 Book::Book(string f, string t, string a, string c) : filename(f), title(t), author(a), category(c) {}
 Book::~Book() { for (auto p : page_vec) delete p; }
@@ -14,6 +27,16 @@ string Book::getCategory() { return category; }
 string Book::getFilename() { return filename; }
 
 char Book::getKey() {
+#if defined(_WIN32) || defined(_WIN64)
+    int ch = _getch();
+    if (ch == 0 || ch == 224) { // 方向鍵或特殊鍵在 Windows 的開頭碼
+        int ch2 = _getch();
+        if (ch2 == 77) return 'N'; // [→] Right
+        if (ch2 == 75) return 'P'; // [←] Left
+        if (ch2 == 79) return 'M'; // [End] 
+    }
+    return (toupper(ch) == 'J') ? 'J' : ' ';
+#else
     char key;
     system("stty raw -echo");
     key = getchar();
@@ -28,12 +51,13 @@ char Book::getKey() {
     }
     system("stty cooked echo");
     return (toupper(key) == 'J') ? 'J' : ' ';
+#endif
 }
 
 void Book::preview() {
     int cur = 0; readContent();
     while (1) {
-        system("clear");
+        system(CLEAR_CMD);
         cout << title << "\n" << string(PAGE_W, '=') << "\n\n";
         if (cur < (int)page_vec.size()) page_vec[cur]->showPageCont();
         cout << "\n" << string(PAGE_W/2-4, ' ') << "Page " << cur << "\n" << string(PAGE_W, '=') << "\n";
@@ -121,9 +145,20 @@ void AniBook::preview() {
     }
     int cur = 0; if (frames.empty()) return;
     while (1) {
-        system("clear"); cout << title << "\n" << string(PAGE_W, '=') << "\n\n";
+        system(CLEAR_CMD); 
+        cout << title << "\n" << string(PAGE_W, '=') << "\n\n";
         for (auto l : frames[cur]) cout << l << endl;
         cout << "\n" << string(PAGE_W, '=') << "\n [End]: Back to Menu\n";
+
+#if defined(_WIN32) || defined(_WIN64)
+        Sleep(200); // 延遲 200 毫秒
+        if (_kbhit()) {
+            int k = _getch();
+            if (k == 0 || k == 224) {
+                if (_getch() == 79) break; // 按下 End 鍵離開
+            }
+        }
+#else
         system("stty raw -echo");
         struct timeval tv = {0, 200000}; fd_set fds; FD_ZERO(&fds); FD_SET(0, &fds);
         if (select(1, &fds, NULL, NULL, &tv) > 0) {
@@ -132,7 +167,9 @@ void AniBook::preview() {
                 if (getchar() == '\x5b' && getchar() == 'F') { system("stty cooked echo"); break; }
             }
         }
-        system("stty cooked echo"); cur = (cur+1) % frames.size();
+        system("stty cooked echo"); 
+#endif
+        cur = (cur+1) % frames.size();
     }
 }
 
@@ -142,50 +179,15 @@ void MorseBook::readContent() {
     int lc = 0;
     while (getline(fin, s)) {
         if (!s.empty() && s.back() == '\r') s.pop_back();
-        
-        string trans = ""; 
-        stringstream ss(s); 
-        string tok;
-        
-        while (ss >> tok) {
-            bool isMorse = true;
-            for (char c : tok) {
-                if (c != '.' && c != '-') {
-                    isMorse = false;
-                    break;
-                }
-            }
-            
-            if (isMorse) {
-                trans += translateMorse(tok);
-            } else {
-                if (!trans.empty() && trans.back() != ' ') {
-                    trans += " "; 
-                }
-                trans += tok + " ";
-            }
+        string trans = ""; stringstream ss(s); string tok;
+        while (ss >> tok) trans += translateMorse(tok);
+        if (lc == 0 || lc >= PAGE_H) {
+            Page* p = new Page(page_vec.size(), PAGE_W, PAGE_H);
+            char** c = new char*[PAGE_H];
+            for (int i=0; i<PAGE_H; i++) { c[i]=new char[PAGE_W]; c[i][0]='\0'; }
+            p->setPageCont(c); page_vec.push_back(p); lc = 0;
         }
-        
-        int start = 0;
-
-        while (start < (int)trans.length() || trans.empty()) {
-            if (lc == 0 || lc >= PAGE_H) {
-                Page* p = new Page(page_vec.size(), PAGE_W, PAGE_H);
-                char** c = new char*[PAGE_H];
-                for (int i = 0; i < PAGE_H; i++) { 
-                    c[i] = new char[PAGE_W]; 
-                    memset(c[i], 0, PAGE_W);
-                }
-                p->setPageCont(c); page_vec.push_back(p); lc = 0;
-            }
-            string sub = trans.substr(start, PAGE_W - 1);
-            strncpy(page_vec.back()->getPageCont()[lc], sub.c_str(), PAGE_W - 1);
-            page_vec.back()->getPageCont()[lc][PAGE_W - 1] = '\0';
-            lc++;
-            start += PAGE_W - 1;
-            
-            if (trans.empty()) break;
-        }
+        strncpy(page_vec.back()->getPageCont()[lc++], trans.c_str(), PAGE_W-1);
     }
 }
 
