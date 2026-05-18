@@ -65,23 +65,39 @@ Library::~Library() {
 char Library::getKey() {
 #if defined(_WIN32) || defined(_WIN64)
     int ch = _getch();
-    if (ch == 0 || ch == 224) {
+    if (ch == 0 || ch == 224) { 
+        // 1. 處理傳統 Windows CMD 的方向鍵
         int ch2 = _getch();
         if (ch2 == 72) return 'U'; // [↑] Up
         if (ch2 == 80) return 'D'; // [↓] Down
         if (ch2 == 77) return 'R'; // [→] Right
         if (ch2 == 75) return 'L'; // [←] Left
+    } else if (ch == 27) { 
+        // 2. 處理現代終端機 (VS Code, Git Bash) 的 ANSI 方向鍵 (\x1b[A)
+        if (_kbhit()) {
+            int ch2 = _getch();
+            if (ch2 == 91) { // '['
+                if (_kbhit()) {
+                    int ch3 = _getch();
+                    if (ch3 == 'A') return 'U'; // Up
+                    if (ch3 == 'B') return 'D'; // Down
+                    if (ch3 == 'C') return 'R'; // Right
+                    if (ch3 == 'D') return 'L'; // Left
+                }
+            }
+        }
     } else if (ch == '\r' || ch == '\n') { 
         return 'E'; // Enter
     } else if (toupper(ch) == 'A') { 
-        return 'A';
+        return 'A'; // Add Book
     } else if (toupper(ch) == 'M') { 
-        return 'M';
+        return 'M'; // My Account
     } else if (toupper(ch) == 'Q') { 
-        return 'Q';
+        return 'Q'; // Quit
     }
     return ' ';
 #else
+    // Linux/Mac 環境維持不變
     char key; 
     system("stty raw -echo"); 
     key = getchar();
