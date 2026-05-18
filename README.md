@@ -3,9 +3,9 @@
 ###  專案簡介 (Introduction)
 本專案為 **物件導向程式設計 (Object-Oriented Programming)** 的期末專題。
 
-這是一個基於物件導向架構（OOP）設計的圖書管理系統。核心概念將每一本「書本」視為獨立的物件進行操作，旨在模擬真實圖書館中館員與讀者的日常互動。系統不僅提供高效率的藏書查找、借閱、歸還與館藏數據統計功能，更結合了趣味的**電子書預覽功能**，能以 **ASCII Art (字元畫)** 的形式在終端機中呈現電子書的封面與其文本內容。
+這是一個基於物件導向架構（OOP）設計的圖書管理系統。核心概念將每一本「書本」視為獨立的物件進行操作，旨在模擬真實圖書館中館員與讀者的日常互動。系統提供藏書查找、借閱、歸還與館藏數據統計功能，更結合了**電子書預覽功能**，以及 **ASCII Art (字元畫)** 的形式在終端機中呈現電子書的封面與其文本內容。
 
-This is an Object-Oriented Library Management System designed for the 2026 Spring OOP final project. By treating each book as an individual object, the system effectively simulates real-world library operations for both librarians and users—including book searching, borrowing, returning, and collection statistics. Additionally, it features an e-book preview system that renders book covers and contents using creative ASCII Art.
+This is an Object-Oriented Library Management System designed for the OOP final project. By treating each book as an individual object, the system effectively simulates real-world library operations for both librarians and users—including book searching, borrowing, returning, and collection statistics. Additionally, it features an e-book preview system that renders book covers and contents using creative ASCII Art.
 
 ---
 
@@ -45,7 +45,7 @@ This is an Object-Oriented Library Management System designed for the 2026 Sprin
 
 ---
 
-### ✍️  作者 (Contributors)
+### ✍️ 作者 (Contributors)
 
 * **張友銘** (NYCU EE) - [GitHub Profile](https://github.com/dannlyee14-del)
 * **陳暘暄** (NYCU EE) - [GitHub Profile](https://github.com/???????)
