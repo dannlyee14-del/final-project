@@ -315,11 +315,14 @@ void Library::login() {
     string name;
     getline(cin, name);
     
+    // 檢查是否為訪客並設定 isGuest 旗標
     bool isGuest = false;
     if (name.empty() || name == "Guest") {
         name = "Guest";
         isGuest = true;
     }
+    
+    // 將 isGuest 傳入建構子
     currentUser = new User(name, isGuest); 
     cout << "\nWelcome, " << currentUser->name << "! Press Enter to enter library...";
     getchar();
@@ -329,7 +332,7 @@ void Library::borrowBook(Book* b) {
     system("clear");
     cout << "========== Borrow Book ==========" << endl;
     
-    // 新增：訪客權限檢查
+    // 訪客權限檢查
     if (currentUser->isGuest) {
         cout << "Warning: Guest accounts cannot borrow books!" << endl;
         cout << "\nPress Enter to return...";
