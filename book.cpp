@@ -142,15 +142,50 @@ void MorseBook::readContent() {
     int lc = 0;
     while (getline(fin, s)) {
         if (!s.empty() && s.back() == '\r') s.pop_back();
-        string trans = ""; stringstream ss(s); string tok;
-        while (ss >> tok) trans += translateMorse(tok);
-        if (lc == 0 || lc >= PAGE_H) {
-            Page* p = new Page(page_vec.size(), PAGE_W, PAGE_H);
-            char** c = new char*[PAGE_H];
-            for (int i=0; i<PAGE_H; i++) { c[i]=new char[PAGE_W]; c[i][0]='\0'; }
-            p->setPageCont(c); page_vec.push_back(p); lc = 0;
+        
+        string trans = ""; 
+        stringstream ss(s); 
+        string tok;
+        
+        while (ss >> tok) {
+            bool isMorse = true;
+            for (char c : tok) {
+                if (c != '.' && c != '-') {
+                    isMorse = false;
+                    break;
+                }
+            }
+            
+            if (isMorse) {
+                trans += translateMorse(tok);
+            } else {
+                if (!trans.empty() && trans.back() != ' ') {
+                    trans += " "; 
+                }
+                trans += tok + " ";
+            }
         }
-        strncpy(page_vec.back()->getPageCont()[lc++], trans.c_str(), PAGE_W-1);
+        
+        int start = 0;
+
+        while (start < (int)trans.length() || trans.empty()) {
+            if (lc == 0 || lc >= PAGE_H) {
+                Page* p = new Page(page_vec.size(), PAGE_W, PAGE_H);
+                char** c = new char*[PAGE_H];
+                for (int i = 0; i < PAGE_H; i++) { 
+                    c[i] = new char[PAGE_W]; 
+                    memset(c[i], 0, PAGE_W);
+                }
+                p->setPageCont(c); page_vec.push_back(p); lc = 0;
+            }
+            string sub = trans.substr(start, PAGE_W - 1);
+            strncpy(page_vec.back()->getPageCont()[lc], sub.c_str(), PAGE_W - 1);
+            page_vec.back()->getPageCont()[lc][PAGE_W - 1] = '\0';
+            lc++;
+            start += PAGE_W - 1;
+            
+            if (trans.empty()) break;
+        }
     }
 }
 
