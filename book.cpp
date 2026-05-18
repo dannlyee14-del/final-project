@@ -1,5 +1,6 @@
-// ===== 跨平臺系統資源處理 (必須放在最上方，避免 byte 衝突) =====
+// ===== 跨平臺系統資源處理 =====
 #if defined(_WIN32) || defined(_WIN64)
+#define WIN32_LEAN_AND_MEAN  // 阻擋 Windows 載入包含 'byte' 衝突的冗餘標頭檔
 #include <windows.h>
 #include <conio.h>
 #define CLEAR_CMD "cls"
@@ -8,7 +9,7 @@
 #include <sys/select.h>
 #define CLEAR_CMD "clear"
 #endif
-// ==========================================================
+// ===================================
 
 #include "book.h"
 #include <cmath>
@@ -21,7 +22,6 @@
 
 Book::Book(string f, string t, string a, string c) : filename(f), title(t), author(a), category(c) {}
 Book::~Book() { for (auto p : page_vec) delete p; }
-
 string Book::getTitle() { return title; }
 string Book::getAuthor() { return author; }
 string Book::getCategory() { return category; }
@@ -30,7 +30,7 @@ string Book::getFilename() { return filename; }
 char Book::getKey() {
 #if defined(_WIN32) || defined(_WIN64)
     int ch = _getch();
-    if (ch == 0 || ch == 224) { // 方向鍵或特殊鍵在 Windows 的開頭碼
+    if (ch == 0 || ch == 224) { 
         int ch2 = _getch();
         if (ch2 == 77) return 'N'; // [→] Right
         if (ch2 == 75) return 'P'; // [←] Left
@@ -152,11 +152,11 @@ void AniBook::preview() {
         cout << "\n" << string(PAGE_W, '=') << "\n [End]: Back to Menu\n";
 
 #if defined(_WIN32) || defined(_WIN64)
-        Sleep(200); // 延遲 200 毫秒
+        Sleep(200); 
         if (_kbhit()) {
             int k = _getch();
             if (k == 0 || k == 224) {
-                if (_getch() == 79) break; // 按下 End 鍵離開
+                if (_getch() == 79) break; 
             }
         }
 #else
@@ -181,14 +181,36 @@ void MorseBook::readContent() {
     while (getline(fin, s)) {
         if (!s.empty() && s.back() == '\r') s.pop_back();
         string trans = ""; stringstream ss(s); string tok;
-        while (ss >> tok) trans += translateMorse(tok);
-        if (lc == 0 || lc >= PAGE_H) {
-            Page* p = new Page(page_vec.size(), PAGE_W, PAGE_H);
-            char** c = new char*[PAGE_H];
-            for (int i=0; i<PAGE_H; i++) { c[i]=new char[PAGE_W]; c[i][0]='\0'; }
-            p->setPageCont(c); page_vec.push_back(p); lc = 0;
+        while (ss >> tok) {
+            bool isMorse = true;
+            for (char c : tok) {
+                if (c != '.' && c != '-') { isMorse = false; break; }
+            }
+            if (isMorse) trans += translateMorse(tok);
+            else {
+                if (!trans.empty() && trans.back() != ' ') trans += " "; 
+                trans += tok + " ";
+            }
         }
-        strncpy(page_vec.back()->getPageCont()[lc++], trans.c_str(), PAGE_W-1);
+        
+        int start = 0;
+        while (start < (int)trans.length() || trans.empty()) {
+            if (lc == 0 || lc >= PAGE_H) {
+                Page* p = new Page(page_vec.size(), PAGE_W, PAGE_H);
+                char** c = new char*[PAGE_H];
+                for (int i = 0; i < PAGE_H; i++) { 
+                    c[i] = new char[PAGE_W]; 
+                    memset(c[i], 0, PAGE_W); 
+                }
+                p->setPageCont(c); page_vec.push_back(p); lc = 0;
+            }
+            string sub = trans.substr(start, PAGE_W - 1);
+            strncpy(page_vec.back()->getPageCont()[lc], sub.c_str(), PAGE_W - 1);
+            page_vec.back()->getPageCont()[lc][PAGE_W - 1] = '\0';
+            lc++;
+            start += PAGE_W - 1;
+            if (trans.empty()) break; 
+        }
     }
 }
 
