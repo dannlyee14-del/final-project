@@ -32,53 +32,9 @@ This is an Object-Oriented Library Management System designed for the 2026 Sprin
 
 ### 📐 類別架構圖 (Class Architecture)
 
-以下為本系統的核心類別架構與關聯性：
+以下為本系統的核心類別架構：
 
-```mermaid
-classDiagram
-    class Main {
-        <<Entry Point>>
-        +main() int
-    }
-
-    class Library {
-        -vector~Book~ books
-        -string bookListFile
-        +Library(string filename)
-        +loadBooks() bool
-        +saveBooks() bool
-        +searchBook(string keyword) void
-        +borrowBook(string isbn) bool
-        +returnBook(string isbn) bool
-        +displayStatistics() void
-    }
-
-    class Book {
-        -string title
-        -string author
-        -string isbn
-        -bool isBorrowed
-        -string contentFile
-        -string coverFile
-        +Book(string t, string a, string i, string content, string cover)
-        +getTitle() string
-        +getAuthor() string
-        +getIsbn() string
-        +getBorrowStatus() bool
-        +setBorrowStatus(bool status) void
-    }
-
-    class Page {
-        <<Utility>>
-        +renderASCII(string filePath) void
-        +playAnimation(string animationPath) void
-        +clearScreen() void
-    }
-
-    Main --> Library : 擁有並操作 (Owns)
-    Library "1" *-- "many" Book : 組合管理 (Composition)
-    Main --> Page : 呼叫渲染介面 (Uses)
-    Book ..> Page : 傳遞 ASCII 路徑預覽 (Provides Data)
+```
 ```
 ---
 
