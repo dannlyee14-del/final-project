@@ -1,4 +1,4 @@
-Type: T
+type: story
 Title: The Whispering Forest
 Author: NYCU Library Team
 

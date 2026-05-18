@@ -1,4 +1,4 @@
-Type: F
+type: story
 Title: Kingdom of ASCII
 Author: NYCU Art Group
 

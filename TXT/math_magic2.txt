@@ -1,4 +1,4 @@
-Type: M
+type: science
 Title: Mathematical Secrets
 Author: Euler Academy
 

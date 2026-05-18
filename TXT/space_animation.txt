@@ -1,8 +1,8 @@
-Type: A
+type: story
 Title: Journey Through Space
 Author: Terminal Animation Studio
 
-.frame
+.fig
         *
 
       .
@@ -13,9 +13,9 @@ Author: Terminal Animation Studio
            ||
            ||
           /||\\
-.frameend
+.figend
 
-.frame
+.fig
 
            *
 
@@ -27,9 +27,9 @@ Author: Terminal Animation Studio
            ||
            ||
           /||\\
-.frameend
+.figend
 
-.frame
+.fig
 
 
               *
@@ -42,7 +42,7 @@ Author: Terminal Animation Studio
            ||
            ||
           /||\\
-.frameend
+.figend
 
 In the year 2150, humanity finally developed spacecraft capable of traveling beyond the solar system. The mission known as “Starlight One” was the first attempt to explore distant galaxies.
 
