@@ -138,8 +138,8 @@ HE
 ├── book.cpp/.h
 ├── page.cpp/.h
 ├── Makefile
-└── TXT/
-    ├── bookList.txt
+└── TXT/ (書籍)
+    ├── bookList.txt (書單)
     ├── book1.txt
     ├── image_book.txt
     ├── math_magic.txt
