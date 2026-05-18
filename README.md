@@ -130,25 +130,6 @@ HE
 
 ---
 
-# 📂 專案檔案結構（Project Structure）
-
-```tree
-├── main.cpp
-├── library.cpp/.h
-├── book.cpp/.h
-├── page.cpp/.h
-├── Makefile
-└── TXT/ (書籍)
-    ├── bookList.txt (書單)
-    ├── book1.txt
-    ├── image_book.txt
-    ├── math_magic.txt
-    ├── Anime.txt
-    └── morse_sample.txt
-```
-
----
-
 # 🛠️ 開發技術（Tech Stack）
 
 - 程式語言（Programming Language）：C++
