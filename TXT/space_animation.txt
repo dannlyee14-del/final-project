@@ -1,0 +1,59 @@
+type: story
+Title: Journey Through Space
+Author: Terminal Animation Studio
+
+.fig
+        *
+
+      .
+                .
+           /\
+          /  \\
+         /____\\
+           ||
+           ||
+          /||\\
+.figend
+
+.fig
+
+           *
+
+      .
+                .
+           /\
+          /  \\
+         /____\\
+           ||
+           ||
+          /||\\
+.figend
+
+.fig
+
+
+              *
+
+      .
+                .
+           /\
+          /  \\
+         /____\\
+           ||
+           ||
+          /||\\
+.figend
+
+In the year 2150, humanity finally developed spacecraft capable of traveling beyond the solar system. The mission known as “Starlight One” was the first attempt to explore distant galaxies.
+
+Captain Elena Morris led a team of scientists and engineers aboard the spacecraft. Their mission was not military or political. Instead, they hoped to discover new worlds that could expand humanity’s understanding of the universe.
+
+During the journey, the crew witnessed countless stars, colorful nebulae, and enormous planets larger than anything previously discovered.
+
+One evening, the ship’s radar detected an unknown object drifting silently through space. As the spacecraft moved closer, the crew realized it was an ancient abandoned station from an unknown civilization.
+
+Inside the station, they found advanced technology far beyond human understanding. Strange symbols covered the walls, and holographic maps displayed star systems located millions of light years away.
+
+The discovery changed humanity forever.
+
+When Starlight One finally returned to Earth, the crew shared everything they had learned. Their discoveries inspired a new generation of explorers who dreamed of traveling even deeper into the endless universe.

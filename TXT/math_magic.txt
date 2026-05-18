@@ -1,0 +1,14 @@
+type: science
+Title: Math Magic
+Author: Danny
+Welcome to the Math Magic book!
+Let's test the calculator function.
+
+Addition:
+The answer to 5 + 3 is ?5+3?
+
+Multiplication:
+The answer to 4 * 6 is ?4*6?
+
+Square Root:
+The square root of 25 is ?sqrt(25)?

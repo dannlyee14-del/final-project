@@ -1,0 +1,37 @@
+type: morse
+Title: Signals Across Time
+Author: Morse Communication Center
+
+.... . .-.. .-.. ---
+
+.-- . .-.. -.-. --- -- .
+
+- ---
+
+- .... .
+
+.-- --- .-. .-.. -..
+
+--- ..-.
+
+-- --- .-. ... .
+
+-.-. --- -.. .
+
+Morse code was once one of the most important communication systems in the world. Before modern internet technology existed, people used electrical signals to send messages across extremely long distances.
+
+During the nineteenth century, telegraph operators worked day and night to transmit information between cities and countries. Messages were encoded using combinations of dots and dashes.
+
+For example:
+
+... --- ...
+
+became one of the most famous emergency signals in history.
+
+Sailors at sea often depended on Morse code to communicate with nearby ships during storms or dangerous situations. Military organizations also relied heavily on coded radio communication during wartime.
+
+Even though modern communication technologies have replaced most practical uses of Morse code, many radio enthusiasts and historians still study it today.
+
+Learning Morse code teaches patience, concentration, and pattern recognition. Some people even use it as a fun challenge to improve memory and listening skills.
+
+Today, Morse code remains an important part of communication history and continues to inspire people interested in technology, radio systems, and cryptography.
