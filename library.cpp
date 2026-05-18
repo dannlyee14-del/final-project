@@ -2,19 +2,6 @@
 #include <algorithm>
 #include <iostream>
 #include <iomanip>
-
-// ===== 跨平臺系統資源處理 =====
-#if defined(_WIN32) || defined(_WIN64)
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <conio.h>
-#define CLEAR_CMD "cls"
-#else
-#include <unistd.h>
-#define CLEAR_CMD "clear"
-#endif
-// =============================
-
 #define NONE    "\e[0m"
 #define WHITE_B "\e[47m"
 
