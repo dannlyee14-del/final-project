@@ -1,13 +1,4 @@
-#include "book.h"
-#include <cmath>
-#include <sstream>
-#include <algorithm>
-#include <cstring>
-#include <iostream>
-#include <fstream>
-#include <vector>
-
-// ===== 跨平臺系統資源處理 =====
+// ===== 跨平臺系統資源處理 (必須放在最上方，避免 byte 衝突) =====
 #if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
 #include <conio.h>
@@ -17,10 +8,20 @@
 #include <sys/select.h>
 #define CLEAR_CMD "clear"
 #endif
-// =============================
+// ==========================================================
+
+#include "book.h"
+#include <cmath>
+#include <sstream>
+#include <algorithm>
+#include <cstring>
+#include <iostream>
+#include <fstream>
+#include <vector>
 
 Book::Book(string f, string t, string a, string c) : filename(f), title(t), author(a), category(c) {}
 Book::~Book() { for (auto p : page_vec) delete p; }
+
 string Book::getTitle() { return title; }
 string Book::getAuthor() { return author; }
 string Book::getCategory() { return category; }
