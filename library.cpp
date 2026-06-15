@@ -710,44 +710,60 @@ void Library::login() {
     cout << "===========================================" << endl;
     cout << (chineseInterface ? "請輸入姓名（空白為訪客）：" :
                                 "Enter your name (blank for Guest): ");
+
     string name;
     getline(cin, name);
-    
+
     bool isGuest = false;
     if (name.empty() || name == "Guest" || name == "訪客") {
         name = "Guest";
         isGuest = true;
     }
-    
+
     auto it = users.find(name);
-    if (it != users.end()) {
+
+    if (isGuest) {
+        currentUser = new User("Guest", 0, true);
+    }
+    else if (it != users.end()) {
         currentUser = it->second;
-        currentUser->isGuest = isGuest;
+        currentUser->isGuest = false;
+
         cout << (chineseInterface ? "已有帳號，歡迎 " :
                                     "Existing account, welcome ")
              << displayUserName(currentUser, chineseInterface) << "!" << endl;
-    } else {
+    }
+    else {
         int age = 0;
+
         cout << (chineseInterface ? "新用戶您好，請輸入您的年齡：" :
                                     "New user, please enter your age: ");
+
         string ageInput;
         getline(cin, ageInput);
+
         try {
             age = stoi(ageInput);
         } catch (...) {
             age = 0;
         }
-        currentUser = new User(name, age, isGuest);
+
+        currentUser = new User(name, age, false);
         users[name] = currentUser;
     }
+
     if (currentUser->isGuest) {
         currentUser->readingPoints = 0;
         currentUser->banUntil = 0;
     }
+
     saveUserState(currentUser);
-    cout << (chineseInterface ? "\n歡迎，" : "\nWelcome, ") << displayUserName(currentUser, chineseInterface)
+
+    cout << (chineseInterface ? "\n歡迎，" : "\nWelcome, ")
+         << displayUserName(currentUser, chineseInterface)
          << (chineseInterface ? "！按 Enter 進入圖書館..." :
                                 "! Press Enter to enter the library...");
+
     getchar();
 }
 

@@ -158,3 +158,10 @@ Anime.txt	F	aa
 Anime.txt	R	aa|1
 morse_history.txt	V	aa
 space_colony.txt	F	aa
+book1.txt	H	aa
+book1.txt	F	aa
+book1.txt	B	1
+image_book.txt	B	1
+morse_sample.txt	H	aa
+adult_noir.txt	H	aa
+wrap_demo.txt	H	aa
