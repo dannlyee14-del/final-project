@@ -1,0 +1,256 @@
+type: story
+Title: Alice in Wonderland
+Author: Lewis
+.fig
+      (\(\ 
+      ( -.-)
+      o_(")(")
+      ~ ~ ~ ~
+.figend
+Alice was beginning to get very tired of sitting by her sister on the bank, 
+and of having nothing to do: once or twice she had peeped into the book 
+her sister was reading, but it had no pictures or conversations in it, 
+“and what is the use of a book,” thought Alice “without pictures or 
+conversations?”
+
+So she was considering in her own mind (as well as she could, for the hot 
+day made her feel very sleepy and stupid), whether the pleasure of 
+making a daisy-chain would be worth the trouble of getting up and 
+picking the daisies, when suddenly a White Rabbit with pink eyes 
+ran close by her.
+
+.fig
+      / \__
+     (    @\___
+     /         O
+    /   (_____/
+   /_____/   U
+.figend
+There was nothing so VERY remarkable in that; nor did Alice think it so 
+VERY much out of the way to hear the Rabbit say to itself, “Oh dear! 
+Oh dear! I shall be late!” 
+
+(When she thought it over afterwards, it occurred to her that she ought 
+to have wondered at this, but at the time it all seemed quite natural); 
+but when the Rabbit actually TOOK A WATCH OUT OF ITS WAISTCOAT-POCKET, 
+and looked at it, and then hurried on, Alice started to her feet.
+
+Alice calculated the time: ?power(2,3)? o'clock. 
+
+Suddenly, she heard a faint sound in the distance:
+... --- ... 
+
+Burning with curiosity, she ran across the field after it, and fortunately 
+was just in time to see it pop down a large rabbit-hole under the hedge.
+
+.fig
+        /\_/\\
+       ( o.o )
+        > ^ <
+.figend
+
+Alice followed the White Rabbit deeper into the tunnel.
+
+The passage twisted and turned beneath the earth.
+
+Soon she arrived at a strange hallway filled with tiny doors.
+
+Each door had a number written above it.
+
+Alice tried opening the first door.
+
+Locked.
+
+The second door.
+
+Locked.
+
+Then she noticed a golden plaque.
+
+.fig
+     ___________________
+    | SOLVE TO ENTER    |
+    | ?12*12?           |
+    |___________________|
+.figend
+
+"A puzzle?" Alice wondered.
+
+The numbers shimmered.
+
+Moments later, the answer appeared.
+
+The smallest door slowly opened.
+
+Beyond it lay a garden unlike anything she had ever seen.
+
+Flowers sang songs.
+
+Butterflies glowed in rainbow colors.
+
+Even the clouds seemed alive.
+
+.fig
+         .-.
+      .-(   )-.
+     (___.__)__)
+.figend
+
+As Alice explored, she discovered a stone table.
+
+A silver key rested on top.
+
+Beside the key was another challenge.
+
+?sqrt(144)?
+
+The table began glowing.
+
+The key floated into the air.
+
+"You may proceed," said a mysterious voice.
+
+Alice looked around.
+
+No one was there.
+
+.fig
+        ___________
+       /          /|
+      /__________/ |
+      | MAGIC    | |
+      | KEY      | /
+      |__________|/
+.figend
+
+The path eventually led her to a forest.
+
+The trees whispered to one another.
+
+Suddenly she heard a familiar sound.
+
+... --- ...
+
+Alice stopped walking.
+
+The sound repeated again.
+
+... --- ...
+
+The Cheshire Cat appeared on a nearby branch.
+
+.fig
+          /\___/\
+         (  o o  )
+          \  ^  /
+           |||||
+.figend
+
+"Do you know what that means?" asked the cat.
+
+Alice thought carefully.
+
+"It sounds like a signal."
+
+The cat smiled.
+
+"Very good."
+
+"It is a message from someone trapped inside Wonderland."
+
+The sound echoed again.
+
+... --- ...
+
+Alice followed it through the forest.
+
+Eventually she reached an ancient tower.
+
+.fig
+              /\
+             /  \
+            /____\
+            | [] |
+            | [] |
+            |____|
+.figend
+
+At the top of the tower sat a mechanical rabbit.
+
+Unlike the White Rabbit, this one was made entirely of brass and gears.
+
+Its eyes glowed blue.
+
+A screen on its chest displayed another puzzle.
+
+?100/4?
+
+The machine remained motionless.
+
+Alice solved it immediately.
+
+The gears began turning.
+
+CLICK.
+
+CLACK.
+
+WHIRRR.
+
+The rabbit sprang to life.
+
+.fig
+          (\_/)
+          (o.o)
+          /|_|\
+.figend
+
+"Thank you," said the machine.
+
+"I have been asleep for many years."
+
+The rabbit handed Alice a crystal compass.
+
+"This will guide you to the Queen's maze."
+
+Alice accepted the gift.
+
+Soon she arrived at a giant hedge maze.
+
+The entrance contained one final challenge.
+
+.fig
+     ____________________
+    | FINAL CHALLENGE    |
+    | ?50*2+100/5?       |
+    |____________________|
+.figend
+
+Alice solved the equation.
+
+The maze opened.
+
+Inside she discovered a hidden library containing every story ever written in Wonderland.
+
+Books stretched endlessly in every direction.
+
+Some told stories of the past.
+
+Others described the future.
+
+And one book contained her own adventure.
+
+Alice carefully opened it.
+
+The final page was blank.
+
+As she watched, words slowly appeared.
+
+"The adventure is only beginning."
+
+.fig
+      __________________
+     | THE END ?        |
+     | OR A NEW START? |
+     |__________________|
+.figend

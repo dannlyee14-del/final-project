@@ -5,8 +5,177 @@
 #include <sys/select.h>
 #include <algorithm>
 #include <cstring>
+#include <cctype>
+#include <functional>
 
 bool Book::chineseInterface = false;
+
+namespace {
+string trimLine(string s) {
+    while (!s.empty() && isspace(static_cast<unsigned char>(s.front()))) s.erase(s.begin());
+    while (!s.empty() && isspace(static_cast<unsigned char>(s.back()))) s.pop_back();
+    return s;
+}
+
+bool isFigStart(const string& s) {
+    return trimLine(s) == ".fig";
+}
+
+bool isFigEnd(const string& s) {
+    return trimLine(s) == ".figend";
+}
+
+void writeRowSegment(char* row, int rowWidth, int prefix, const string& text, int maxWidth) {
+    int len = min(maxWidth, static_cast<int>(text.size()));
+    if (prefix < 0 || prefix >= rowWidth - 1) return;
+    len = min(len, rowWidth - 1 - prefix);
+    if (len > 0) memcpy(row + prefix, text.c_str(), len);
+    row[rowWidth - 1] = '\0';
+}
+
+string calculateInlineEquation(string eq) {
+    string c = "";
+    for (char ch : eq) if (ch != ' ') c += ch;
+    try {
+        if (c.find("sqrt") != string::npos) {
+            size_t left = c.find('('), right = c.find(')', left + 1);
+            return to_string((int)sqrt(stod(c.substr(left + 1, right - left - 1))));
+        }
+        if (c.find("power") != string::npos) {
+            size_t left = c.find('('), comma = c.find(',', left + 1), right = c.find(')', comma + 1);
+            double base = stod(c.substr(left + 1, comma - left - 1));
+            double exp = stod(c.substr(comma + 1, right - comma - 1));
+            return to_string((int)pow(base, exp));
+        }
+        size_t caret = c.find('^');
+        if (caret != string::npos) return to_string((int)pow(stod(c.substr(0, caret)), stod(c.substr(caret + 1))));
+        size_t p = c.find('+'); if (p != string::npos) return to_string((int)(stod(c.substr(0, p)) + stod(c.substr(p + 1))));
+        p = c.find('-'); if (p != string::npos) return to_string((int)(stod(c.substr(0, p)) - stod(c.substr(p + 1))));
+        p = c.find('*'); if (p != string::npos) return to_string((int)(stod(c.substr(0, p)) * stod(c.substr(p + 1))));
+        p = c.find('/'); if (p != string::npos) return to_string((int)(stod(c.substr(0, p)) / stod(c.substr(p + 1))));
+    } catch (...) {
+        return "err";
+    }
+    return "0";
+}
+
+string resolveInlineEquations(string s) {
+    size_t q1 = s.find('?');
+    while (q1 != string::npos) {
+        size_t q2 = s.find('?', q1 + 1);
+        if (q2 == string::npos) break;
+        string ans = calculateInlineEquation(s.substr(q1 + 1, q2 - q1 - 1));
+        s.replace(q1, q2 - q1 + 1, ans);
+        q1 = s.find('?', q1 + ans.length());
+    }
+    return s;
+}
+
+void layoutContentWithFigures(const string& filename,
+                              vector<Page*>& pages,
+                              int pageWidth,
+                              int pageHeight,
+                              const function<string(const string&)>& transformLine) {
+    fstream fin("./Bookshelf/" + filename, ios::in);
+    if (!fin.is_open()) return;
+    string s;
+    while (getline(fin, s)) {
+        if (s.find("Author:") != string::npos) break;
+    }
+
+    int lc = 0;
+    int figTop = -1, figHeight = 0, figWidth = 0;
+
+    auto newPage = [&]() {
+        Page* p = new Page(pages.size(), pageWidth, pageHeight);
+        char** c = new char*[pageHeight];
+        for (int i = 0; i < pageHeight; i++) {
+            c[i] = new char[pageWidth];
+            memset(c[i], ' ', pageWidth - 1);
+            c[i][pageWidth - 1] = '\0';
+        }
+        p->setPageCont(c);
+        pages.push_back(p);
+        lc = 0;
+        figTop = -1;
+        figHeight = 0;
+        figWidth = 0;
+    };
+
+    auto ensurePage = [&]() {
+        if (pages.empty() || lc >= pageHeight) newPage();
+    };
+
+    auto putText = [&](const string& text) {
+        stringstream ss(text);
+        string word, line;
+        if (text.empty()) {
+            ensurePage();
+            lc++;
+            return;
+        }
+        while (ss >> word) {
+            ensurePage();
+            bool besideFigure = figTop >= 0 && lc >= figTop && lc < figTop + figHeight;
+            int prefix = besideFigure ? min(pageWidth - 2, figWidth + 2) : 0;
+            int maxWidth = max(1, pageWidth - prefix - 1);
+
+            if (line.empty()) {
+                line = word;
+            } else if ((int)line.size() + 1 + (int)word.size() <= maxWidth) {
+                line += " " + word;
+            } else {
+                writeRowSegment(pages.back()->getPageCont()[lc], pageWidth, prefix, line, maxWidth);
+                lc++;
+                line = word;
+            }
+
+            if ((int)line.size() >= maxWidth) {
+                writeRowSegment(pages.back()->getPageCont()[lc], pageWidth, prefix, line, maxWidth);
+                lc++;
+                line.clear();
+            }
+        }
+        if (!line.empty()) {
+            ensurePage();
+            bool besideFigure = figTop >= 0 && lc >= figTop && lc < figTop + figHeight;
+            int prefix = besideFigure ? min(pageWidth - 2, figWidth + 2) : 0;
+            int maxWidth = max(1, pageWidth - prefix - 1);
+            writeRowSegment(pages.back()->getPageCont()[lc], pageWidth, prefix, line, maxWidth);
+            lc++;
+        }
+    };
+
+    while (getline(fin, s)) {
+        if (!s.empty() && s.back() == '\r') s.pop_back();
+        if (isFigStart(s)) {
+            vector<string> figLines;
+            while (getline(fin, s)) {
+                if (!s.empty() && s.back() == '\r') s.pop_back();
+                if (isFigEnd(s)) break;
+                figLines.push_back(s);
+            }
+            if (figLines.empty()) continue;
+            ensurePage();
+            if (figTop >= 0 && lc < figTop + figHeight) lc = figTop + figHeight;
+            ensurePage();
+            if ((int)figLines.size() > pageHeight) figLines.resize(pageHeight);
+            if (lc + (int)figLines.size() > pageHeight) newPage();
+
+            figTop = lc;
+            figHeight = figLines.size();
+            figWidth = 0;
+            for (int i = 0; i < figHeight; i++) {
+                int len = min((int)figLines[i].size(), pageWidth - 1);
+                figWidth = max(figWidth, len);
+                memcpy(pages.back()->getPageCont()[lc + i], figLines[i].c_str(), len);
+            }
+        } else if (!isFigEnd(s)) {
+            putText(transformLine(s));
+        }
+    }
+}
+}
 
 Book::Book(string f, string t, string a, string c)
     : filename(f), title(t), author(a), category(c), adultOnly(false) {}
@@ -115,22 +284,10 @@ void Book::preview() {
 
 void Book::readContent() {
     if (!page_vec.empty()) return;
-    fstream fin("./TXT/" + filename, ios::in);
-    if (!fin.is_open()) return;
-    string s; while (getline(fin, s)) if (s.find("Author:") != string::npos) break;
-    int lc = 0;
-    while (getline(fin, s)) {
-        if (!s.empty() && s.back() == '\r') s.pop_back();
-        if (lc == 0 || lc >= PAGE_H) {
-            Page* p = new Page(page_vec.size(), PAGE_W, PAGE_H);
-            char** c = new char*[PAGE_H];
-            for (int i=0; i<PAGE_H; i++) { c[i] = new char[PAGE_W]; c[i][0]='\0'; }
-            p->setPageCont(c); page_vec.push_back(p); lc = 0;
-        }
-        strncpy(page_vec.back()->getPageCont()[lc], s.c_str(), PAGE_W - 1);
-        page_vec.back()->getPageCont()[lc][PAGE_W - 1] = '\0';
-        lc++;
-    }
+    layoutContentWithFigures(filename, page_vec, PAGE_W, PAGE_H,
+                             [](const string& line) {
+                                 return resolveInlineEquations(line);
+                             });
 }
 
 bool Book::searchContent(string q) {
@@ -143,30 +300,10 @@ bool Book::searchContent(string q) {
 
 void MthBook::readContent() {
     if (!page_vec.empty()) return;
-    fstream fin("./TXT/" + filename, ios::in);
-    string s; while (getline(fin, s)) if (s.find("Author:") != string::npos) break;
-    int lc = 0;
-    while (getline(fin, s)) {
-        if (!s.empty() && s.back() == '\r') s.pop_back();
-        size_t q1 = s.find('?');
-        while (q1 != string::npos) {
-            size_t q2 = s.find('?', q1+1);
-            if (q2 != string::npos) {
-                string ans = calculateEquation(s.substr(q1+1, q2-q1-1));
-                s.replace(q1, q2-q1+1, ans);
-                q1 = s.find('?', q1+ans.length());
-            } else break;
-        }
-        if (lc == 0 || lc >= PAGE_H) {
-            Page* p = new Page(page_vec.size(), PAGE_W, PAGE_H);
-            char** c = new char*[PAGE_H];
-            for (int i=0; i<PAGE_H; i++) { c[i]=new char[PAGE_W]; c[i][0]='\0'; }
-            p->setPageCont(c); page_vec.push_back(p); lc = 0;
-        }
-        strncpy(page_vec.back()->getPageCont()[lc], s.c_str(), PAGE_W - 1);
-        page_vec.back()->getPageCont()[lc][PAGE_W - 1] = '\0';
-        lc++;
-    }
+    layoutContentWithFigures(filename, page_vec, PAGE_W, PAGE_H,
+                             [](const string& line) {
+                                 return resolveInlineEquations(line);
+                             });
 }
 
 string MthBook::calculateEquation(string eq) {
@@ -193,13 +330,13 @@ string MthBook::calculateEquation(string eq) {
 }
 
 void AniBook::preview() {
-    fstream fin("./TXT/" + filename, ios::in); string s;
+    fstream fin("./Bookshelf/" + filename, ios::in); string s;
     vector<vector<string>> frames; vector<string> cf; bool in = false;
     while (getline(fin, s)) {
         if (!s.empty() && s.back() == '\r') s.pop_back();
-        if (s.find(".figend") != string::npos) { in=false; frames.push_back(cf); cf.clear(); }
-        else if (s.find(".fig") != string::npos) in=true;
-        else if (in) cf.push_back(s);
+        if (isFigEnd(s)) { in=false; frames.push_back(cf); cf.clear(); }
+        else if (isFigStart(s)) in=true;
+        else if (in) cf.push_back(resolveInlineEquations(s));
     }
     int cur = 0; if (frames.empty()) return;
     while (1) {
@@ -238,11 +375,9 @@ void AniBook::preview() {
 
 void MorseBook::readContent() {
     if (!page_vec.empty()) return;
-    fstream fin("./TXT/" + filename, ios::in); string s;
-    while (getline(fin, s)) if (s.find("Author:") != string::npos) break;
-    int lc = 0;
-    while (getline(fin, s)) {
-        if (!s.empty() && s.back() == '\r') s.pop_back();
+    layoutContentWithFigures(filename, page_vec, PAGE_W, PAGE_H,
+                             [this](const string& line) {
+        string s = resolveInlineEquations(line);
         string trans = ""; stringstream ss(s); string tok;
         while (ss >> tok) {
             bool isMorse = true;
@@ -252,29 +387,11 @@ void MorseBook::readContent() {
             if (isMorse) trans += translateMorse(tok);
             else {
                 if (!trans.empty() && trans.back() != ' ') trans += " "; 
-                trans += tok + " ";
+                trans += resolveInlineEquations(tok) + " ";
             }
         }
-        
-        int start = 0;
-        while (start < (int)trans.length() || trans.empty()) {
-            if (lc == 0 || lc >= PAGE_H) {
-                Page* p = new Page(page_vec.size(), PAGE_W, PAGE_H);
-                char** c = new char*[PAGE_H];
-                for (int i = 0; i < PAGE_H; i++) { 
-                    c[i] = new char[PAGE_W]; 
-                    memset(c[i], 0, PAGE_W); 
-                }
-                p->setPageCont(c); page_vec.push_back(p); lc = 0;
-            }
-            string sub = trans.substr(start, PAGE_W - 1);
-            strncpy(page_vec.back()->getPageCont()[lc], sub.c_str(), PAGE_W - 1);
-            page_vec.back()->getPageCont()[lc][PAGE_W - 1] = '\0';
-            lc++;
-            start += PAGE_W - 1;
-            if (trans.empty()) break; 
-        }
-    }
+        return trans;
+    });
 }
 
 char MorseBook::translateMorse(string code) {
@@ -295,107 +412,15 @@ char MorseBook::translateMorse(string code) {
 
 void FigBook::readContent() {
     if (!page_vec.empty()) return;
-    fstream fin("./TXT/" + filename, ios::in); string s;
-    while (getline(fin, s)) if (s.find("Author:") != string::npos) break;
-
-    int lc = 0;
-    int figTop = -1, figHeight = 0, figWidth = 0;
-
-    auto newPage = [&]() {
-        Page* p = new Page(page_vec.size(), PAGE_W, PAGE_H);
-        char** c = new char*[PAGE_H];
-        for (int i = 0; i < PAGE_H; i++) {
-            c[i] = new char[PAGE_W];
-            memset(c[i], ' ', PAGE_W - 1);
-            c[i][PAGE_W - 1] = '\0';
-        }
-        p->setPageCont(c);
-        page_vec.push_back(p);
-        lc = 0;
-        figTop = -1;
-        figHeight = 0;
-        figWidth = 0;
-    };
-
-    auto ensurePage = [&]() {
-        if (page_vec.empty() || lc >= PAGE_H) newPage();
-    };
-
-    auto putText = [&](const string& text) {
-        stringstream ss(text);
-        string word, line;
-        if (text.empty()) {
-            ensurePage();
-            lc++;
-            return;
-        }
-        while (ss >> word) {
-            ensurePage();
-            bool besideFigure = figTop >= 0 && lc >= figTop && lc < figTop + figHeight;
-            int prefix = besideFigure ? min(PAGE_W - 2, figWidth + 2) : 0;
-            int maxWidth = max(1, PAGE_W - prefix - 1);
-
-            if (line.empty()) {
-                line = word;
-            } else if ((int)line.size() + 1 + (int)word.size() <= maxWidth) {
-                line += " " + word;
-            } else {
-                char* row = page_vec.back()->getPageCont()[lc];
-                strncpy(row + prefix, line.c_str(), maxWidth);
-                row[prefix + min(maxWidth, (int)line.size())] = '\0';
-                lc++;
-                line = word;
-            }
-
-            if ((int)line.size() >= maxWidth) {
-                char* row = page_vec.back()->getPageCont()[lc];
-                strncpy(row + prefix, line.c_str(), maxWidth);
-                row[prefix + min(maxWidth, (int)line.size())] = '\0';
-                lc++;
-                line.clear();
-            }
-        }
-        if (!line.empty()) {
-            ensurePage();
-            bool besideFigure = figTop >= 0 && lc >= figTop && lc < figTop + figHeight;
-            int prefix = besideFigure ? min(PAGE_W - 2, figWidth + 2) : 0;
-            int maxWidth = max(1, PAGE_W - prefix - 1);
-            char* row = page_vec.back()->getPageCont()[lc];
-            strncpy(row + prefix, line.c_str(), maxWidth);
-            row[prefix + min(maxWidth, (int)line.size())] = '\0';
-            lc++;
-        }
-    };
-
-    while (getline(fin, s)) {
-        if (!s.empty() && s.back() == '\r') s.pop_back();
-        if (s.find(".fig") != string::npos) {
-            int fh = 0; char** fig = get_figure(fin, &fh);
-            if (fh <= 0) {
-                delete[] fig;
-                continue;
-            }
-            ensurePage();
-            if (lc + fh > PAGE_H) newPage();
-            figTop = lc;
-            figHeight = fh;
-            figWidth = 0;
-            for (int i = 0; i < fh; i++) {
-                int len = min((int)strlen(fig[i]), PAGE_W - 1);
-                figWidth = max(figWidth, len);
-                memcpy(page_vec.back()->getPageCont()[lc + i], fig[i], len);
-            }
-            for (int i = 0; i < fh; i++) delete[] fig[i];
-            delete[] fig;
-        } else {
-            putText(s);
-        }
-    }
+    layoutContentWithFigures(filename, page_vec, PAGE_W, PAGE_H,
+                             [](const string& line) {
+                                 return resolveInlineEquations(line);
+                             });
 }
 
 char** FigBook::get_figure(fstream& fin, int* h) {
     char** f = new char*[PAGE_H]; string s; int c=0;
-    while (getline(fin, s) && s.find(".figend")==string::npos) {
+    while (getline(fin, s) && !isFigEnd(s)) {
         if (!s.empty() && s.back() == '\r') s.pop_back();
         if (c < PAGE_H) {
             f[c] = new char[PAGE_W];
@@ -455,18 +480,29 @@ int Book::getBorrowCount() {
 }
 
 void Book::addRating(int rating) {
-    if (rating >= 1 && rating <= 5) ratings.push_back(rating);
+    if (rating >= 1 && rating <= 5) {
+        string user = "SeedUser" + to_string(ratings.size() + 1);
+        ratings[user] = rating;
+    }
+}
+
+void Book::setRating(const string& user, int rating) {
+    if (rating >= 1 && rating <= 5) ratings[user] = rating;
 }
 
 double Book::getAverageRating() const {
     if (ratings.empty()) return 0.0;
     int total = 0;
-    for (int rating : ratings) total += rating;
+    for (const auto& item : ratings) total += item.second;
     return static_cast<double>(total) / ratings.size();
 }
 
 int Book::getRatingCount() const {
     return ratings.size();
+}
+
+const map<string, int>& Book::getRatings() const {
+    return ratings;
 }
 
 void Book::addComment(const string& user, const string& comment) {

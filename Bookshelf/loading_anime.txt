@@ -1,0 +1,15 @@
+type: animation
+Title: Loading Ani
+Author: Danny
+.fig
+ [ / ] Loading...
+.figend
+.fig
+ [ - ] Loading...
+.figend
+.fig
+ [ \ ] Loading...
+.figend
+.fig
+ [ | ] Loading...
+.figend

@@ -1,0 +1,194 @@
+type: picture
+Title: Wrap Demo Adventure
+Age: all
+Author: Codex
+
+.fig
++------------------+
+|   WRAP TEST      |
+|      /\_/\       |
+|     ( o.o )      |
+|      > ^ <       |
+|  ASCII FIGURE    |
++------------------+
+.figend
+
+Welcome to the Wrap Demo Laboratory.
+
+This special laboratory was built to test the interaction between pictures, stories, and puzzles.
+
+Researchers from around the world visited the lab to see how text could flow around images while still remaining easy to read.
+
+One day, a young engineer named Maya arrived at the laboratory.
+
+She had heard rumors about a hidden room somewhere inside the building.
+
+According to legend, the room could only be opened by solving a series of challenges.
+
+.fig
+ _____________________
+|                     |
+|   RESEARCH LAB      |
+|_____________________|
+.figend
+
+Maya entered the first hallway.
+
+At the end of the corridor she found a digital panel.
+
+A message appeared:
+
+?15+27?
+
+The answer illuminated the hallway lights.
+
+The first door opened.
+
+Maya smiled.
+
+"Looks like this place likes puzzles."
+
+.fig
+      __________
+     | PUZZLE 1 |
+     |__________|
+.figend
+
+Behind the first door was a communication room.
+
+Old radios, telegraphs, and computer terminals filled the space.
+
+Suddenly one terminal began printing strange symbols.
+
+.... . .-.. .-.. ---
+
+Maya immediately recognized the message.
+
+HELLO.
+
+The machine beeped happily.
+
+.fig
+      ____________
+     | TERMINAL   |
+     |____________|
+.figend
+
+A second message followed.
+
+... --- ...
+
+An emergency signal.
+
+SOS.
+
+The wall beside the terminal slowly moved aside.
+
+A hidden passage appeared.
+
+.fig
+####################
+#  SECRET PASSAGE  #
+####################
+.figend
+
+The passage led to the Puzzle Chamber.
+
+Three stone tablets stood in the center.
+
+The first displayed:
+
+?12*12?
+
+The second displayed:
+
+?sqrt(81)?
+
+The third displayed:
+
+?power(2,6)?
+
+Each solved puzzle activated another mechanism.
+
+Gears turned.
+
+Lights flashed.
+
+Ancient machines awakened.
+
+.fig
+        O
+      OOOO
+    OOOOOOOO
+      OOOO
+        O
+.figend
+
+The final room contained a giant archive.
+
+Thousands of ASCII artworks covered the walls.
+
+Cats.
+
+Castles.
+
+Spaceships.
+
+Dragons.
+
+Every image had been preserved for future generations.
+
+In the center stood a golden plaque.
+
+It contained one final challenge.
+
+?50*2+100/5?
+
+The moment the answer appeared, the archive doors opened completely.
+
+.fig
++----------------------+
+|   ASCII ARCHIVE      |
+|                      |
+|  /\_/\\              |
+| ( o.o )              |
+|  > ^ <               |
++----------------------+
+.figend
+
+Inside the archive Maya discovered the laboratory's true purpose.
+
+It had never been built merely to store pictures.
+
+It existed to preserve creativity.
+
+Every drawing.
+
+Every equation.
+
+Every message.
+
+Every story.
+
+All were forms of communication.
+
+.fig
+     __________________
+    | KNOWLEDGE LIVES  |
+    | IN EVERY SYMBOL  |
+    |__________________|
+.figend
+
+Before leaving, Maya wrote a message in the visitor log:
+
+"Pictures inspire imagination."
+
+"Numbers inspire understanding."
+
+"Messages connect people."
+
+As she stepped outside, the laboratory lights slowly dimmed.
+
+The Wrap Demo Laboratory would continue waiting for the next curious visitor.
+
+THE END

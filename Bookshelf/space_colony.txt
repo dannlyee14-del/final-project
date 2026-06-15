@@ -1,0 +1,258 @@
+type: story
+Title: The Space Colony
+Author: Danny
+
+.fig
+            *
+       *         *
+             *
+          /\
+         /  \
+        /____\
+          ||
+          ||
+         /||\
+.figend
+
+In the year 2235, humanity had expanded beyond Earth.
+
+Large colonies existed on Mars, the Moon, and several orbital stations.
+
+The most advanced settlement was known as Nova Colony.
+
+Located on a distant planet orbiting the star Kepler-186, Nova Colony was home to over fifty thousand people.
+
+Scientists, engineers, farmers, and explorers worked together to build a new future among the stars.
+
+.fig
+      ______________________
+     /                     /|
+    /_____________________/ |
+    |                     | |
+    |    NOVA COLONY      | |
+    |_____________________|/
+.figend
+
+Among the residents lived a sixteen-year-old student named Ethan.
+
+Unlike most teenagers, Ethan dreamed of becoming a deep-space explorer.
+
+Every evening he visited the colony's observation dome.
+
+From there he could see distant stars shining across the darkness.
+
+.fig
+          .       .
+      *       *       *
+            _____
+         .-'     '-.
+        /  DOME     \
+        \           /
+         '-._____.-'
+.figend
+
+One night, the colony received a strange transmission.
+
+.... . .-.. .--.
+
+The communication center immediately became active.
+
+Engineers rushed to their stations.
+
+Computers began analyzing the signal.
+
+Ethan recognized the pattern.
+
+It was Morse code.
+
+The message translated to:
+
+HELP
+
+.fig
+     ___________________
+    | SIGNAL DETECTED  |
+    |__________________|
+.figend
+
+Nobody knew where the transmission originated.
+
+The colony council formed an investigation team.
+
+Because Ethan had extensive knowledge of communication systems, he was invited to assist.
+
+The signal appeared to originate from an abandoned mining station several hundred kilometers away.
+
+.fig
+          _________
+         / MINING  \
+        / STATION   \
+        -------------
+.figend
+
+The next morning, a rover team departed.
+
+The journey took several hours.
+
+As they crossed the rocky landscape, they encountered massive cliffs, frozen lakes, and unusual crystal formations.
+
+Eventually they reached the abandoned station.
+
+The facility appeared deserted.
+
+Yet the signal continued.
+
+.... . .-.. .--.
+
+.fig
+      _______________
+     | ABANDONED     |
+     | STATION       |
+     |_______________|
+.figend
+
+Inside the station, dust covered every surface.
+
+Old machinery stood silent.
+
+Broken monitors lined the walls.
+
+But one terminal remained active.
+
+A message appeared on the screen.
+
+?12*12?
+
+Ethan solved it immediately.
+
+The terminal unlocked.
+
+A hidden door opened.
+
+.fig
+      ____________
+     | TERMINAL   |
+     |____________|
+.figend
+
+Beyond the door was a secret research laboratory.
+
+The room contained advanced technology unlike anything currently used in the colony.
+
+At the center stood an artificial intelligence core.
+
+The AI had been operating alone for decades.
+
+Its power supply was nearly exhausted.
+
+The HELP signal had been an automated distress call.
+
+.fig
+          _______
+         /  AI   \
+        /  CORE   \
+        ----------
+.figend
+
+The AI explained that it had been created by the colony's original founders.
+
+Its purpose was to preserve historical records and scientific discoveries.
+
+If the system failed, valuable knowledge would be lost forever.
+
+To restore the AI, Ethan needed to solve several security challenges.
+
+The first challenge appeared.
+
+?sqrt(225)?
+
+The second challenge followed.
+
+?power(2,7)?
+
+The final challenge appeared moments later.
+
+?1000/25?
+
+.fig
+        [RESTORING]
+        ████░░░░░░
+.figend
+
+As each answer was processed, the AI's systems gradually recovered.
+
+Lights throughout the laboratory illuminated.
+
+Old servers restarted.
+
+Historical archives became accessible once more.
+
+Finally, the restoration reached one hundred percent.
+
+.fig
+        [RESTORING]
+        ██████████
+.figend
+
+The AI thanked Ethan and his team.
+
+It then revealed a hidden archive containing the earliest records of Nova Colony.
+
+The files described the struggles faced by the first settlers.
+
+Limited resources.
+
+Harsh weather.
+
+Equipment failures.
+
+Despite these challenges, they never gave up.
+
+Their determination allowed future generations to thrive.
+
+.fig
+      ___________________
+     | COLONY ARCHIVES   |
+     |___________________|
+.figend
+
+Upon returning home, Ethan shared the discoveries with the colony council.
+
+The historical records were added to the public library.
+
+Citizens gained a deeper appreciation for the sacrifices made by the colony's founders.
+
+Ethan became known throughout Nova Colony as the student who saved its history.
+
+.fig
+           \o/
+            |
+           / \
+.figend
+
+Years later, Ethan achieved his dream of becoming a deep-space explorer.
+
+Before departing on his first mission, he visited the observation dome one final time.
+
+Looking toward the stars, he remembered the mysterious signal that started everything.
+
+.... . .-.. .--.
+
+HELP.
+
+A simple message.
+
+A message that saved an entire chapter of human history.
+
+.fig
+      ____________________
+     |   THE SPACE        |
+     |     COLONY         |
+     |____________________|
+.figend
+
+As humanity continued spreading across the galaxy, Nova Colony remained a symbol of curiosity, courage, and cooperation.
+
+And among the stars, new adventures were always waiting.
+
+THE END

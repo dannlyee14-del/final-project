@@ -1,0 +1,292 @@
+type: story
+Title: Signals Across Time
+Author: Morse Communication Center
+
+.fig
+      .----.
+     /      \
+    | TELEGRAPH |
+     \______/
+        ||
+        ||
+.figend
+
+Long before smartphones, satellites, and the Internet, people faced a difficult problem.
+
+How could messages travel across great distances?
+
+For thousands of years, communication depended on horses, ships, and messengers.
+
+Sending information from one city to another could take days or even weeks.
+
+Everything changed in the nineteenth century.
+
+A new invention appeared.
+
+The telegraph.
+
+.fig
+     --------------------
+           |
+           |
+           |
+     --------------------
+.figend
+
+Young Thomas Carter was fascinated by machines.
+
+He spent countless hours helping his father maintain the local telegraph office.
+
+Every day he listened to operators tapping mysterious sounds.
+
+Click.
+
+Click-click.
+
+Click.
+
+To most people, the sounds were meaningless.
+
+To trained operators, they were words.
+
+They were messages traveling across the country.
+
+.fig
+      . . .   - - -
+      . . .
+       SOS
+.figend
+
+One afternoon, Thomas asked his father a question.
+
+"How can dots and dashes become words?"
+
+His father smiled.
+
+"That is Morse code."
+
+He handed Thomas a small notebook.
+
+Inside were hundreds of symbols.
+
+Each letter had its own pattern.
+
+A = .-
+
+B = -...
+
+C = -.-.
+
+And so on.
+
+Thomas became determined to learn them all.
+
+.fig
+   ___________________
+  | A  .-            |
+  | B  -...          |
+  | C  -.-.          |
+  |__________________|
+.figend
+
+Weeks passed.
+
+Thomas practiced every day.
+
+Soon he could recognize common messages without looking at the codebook.
+
+One evening, while helping at the station, he received his first real transmission.
+
+.... . .-.. .-.. ---
+
+HELLO
+
+The message came from a neighboring city.
+
+Thomas successfully decoded it.
+
+The operator congratulated him.
+
+He felt proud.
+
+.fig
+      ___________________
+     | HELLO RECEIVED!   |
+     |___________________|
+.figend
+
+Years later, Thomas became a telegraph operator.
+
+His work was challenging.
+
+Messages arrived day and night.
+
+Business reports.
+
+Weather updates.
+
+Family news.
+
+Emergency warnings.
+
+Every message mattered.
+
+One stormy evening, something unusual happened.
+
+A ship traveling near the coast began transmitting distress signals.
+
+The storm had damaged its engines.
+
+Large waves threatened to sink the vessel.
+
+Then the signal arrived.
+
+... --- ...
+
+SOS
+
+.fig
+        ~~~~~~~~
+     ~~~  SHIP  ~~~
+   ~~~~~~~~^~~~~~~~~
+          / \
+         /___\
+.figend
+
+The telegraph station immediately became active.
+
+Operators worked together to relay information.
+
+The message traveled from station to station.
+
+Soon rescue crews were notified.
+
+Lifeboats launched into the storm.
+
+Hours later, the stranded sailors were rescued.
+
+Thomas never forgot that night.
+
+For the first time, he truly understood the importance of communication.
+
+A simple signal had saved dozens of lives.
+
+.fig
+          \o/
+           |
+          / \
+.figend
+
+As technology advanced, telephones became common.
+
+Then radio communication appeared.
+
+Later came computers and the Internet.
+
+Many people assumed Morse code would disappear forever.
+
+But that never happened.
+
+Amateur radio operators continued using it.
+
+Historians studied it.
+
+Students learned it for fun.
+
+Its legacy remained alive.
+
+.fig
+      _____________
+     | RADIO CLUB |
+     |____________|
+.figend
+
+One day, decades after retiring, Thomas visited a science museum.
+
+There he discovered an exhibit dedicated to communication history.
+
+The exhibit included telegraphs, radios, satellites, and computers.
+
+In the center stood an old telegraph key.
+
+The same type of machine he had used throughout his career.
+
+A young visitor approached him.
+
+"What is this machine?" the child asked.
+
+Thomas smiled.
+
+"It helped connect the world."
+
+.fig
+      _____________
+     | MUSEUM OF  |
+     |COMMUNICATION|
+     |____________|
+.figend
+
+The child pressed the telegraph key.
+
+Click.
+
+Click-click.
+
+Click.
+
+Thomas laughed.
+
+"That's how messages once crossed entire countries."
+
+The child looked amazed.
+
+It seemed impossible.
+
+Yet it was true.
+
+Before modern technology, tiny electrical signals carried human thoughts across vast distances.
+
+.fig
+     .... . .-.. .-.. ---
+.figend
+
+As Thomas left the museum, he reflected on everything he had witnessed.
+
+Technology had changed dramatically.
+
+Machines had become faster.
+
+Networks had become larger.
+
+But the goal remained the same.
+
+Connecting people.
+
+Sharing information.
+
+Helping others.
+
+.fig
+   ______________________
+  | COMMUNICATION        |
+  | CONNECTS THE WORLD   |
+  |______________________|
+.figend
+
+Today, Morse code is no longer used as widely as it once was.
+
+Yet its influence remains everywhere.
+
+Every text message.
+
+Every email.
+
+Every online conversation.
+
+They all continue the same mission that began with dots and dashes.
+
+The mission of connecting humanity.
+
+And so the story of Morse code continues across time.
+
+THE END

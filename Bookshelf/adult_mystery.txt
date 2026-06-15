@@ -1,0 +1,282 @@
+type: mature mystery
+Title: Locked Room After Dark
+Age: 18+
+Author: Demo Shelf
+
+.fig
+_____________
+| LOCKED ROOM|
+|____________|
+.figend
+
+The Hawthorne Mansion stood alone on a hill overlooking the sea.
+
+For more than a century, wealthy families, politicians, and celebrities had gathered there for exclusive events.
+
+On a cold autumn evening, twelve guests attended a private dinner hosted by billionaire Arthur Hawthorne.
+
+By midnight, one of them would be dead.
+
+The evening began peacefully.
+
+Guests enjoyed fine food and expensive wine while a storm raged outside.
+
+Thunder shook the windows.
+
+Rain battered the roof.
+
+The old mansion seemed completely isolated from the world.
+
+No one could leave.
+
+No one could enter.
+
+.fig
+_____________
+| HAWTHORNE  |
+|  MANSION   |
+|____________|
+.figend
+
+At 11:45 p.m., Arthur excused himself and entered his private library.
+
+He told the guests he needed to review several business documents.
+
+The room contained thousands of books, antique furniture, and a large stone fireplace.
+
+Most importantly, it had only one entrance.
+
+The guests remained in the dining hall.
+
+Fifteen minutes later, a scream echoed through the mansion.
+
+Everyone rushed toward the library.
+
+The door was locked.
+
+Arthur did not respond.
+
+The butler used a spare key.
+
+When the door finally opened, the guests froze.
+
+Arthur Hawthorne was dead.
+
+.fig
+___________
+| LIBRARY  |
+|__________|
+.figend
+
+The room presented an impossible mystery.
+
+All windows were locked from the inside.
+
+The fireplace had not been used.
+
+No secret passages were visible.
+
+The victim sat motionless behind his desk.
+
+There was no weapon.
+
+No footprints.
+
+No signs of struggle.
+
+Only one clue remained.
+
+Scratched into the wooden surface of the desk were three groups of symbols.
+
+... --- ...
+
+Several guests assumed they were random marks.
+
+Detective Amelia Frost disagreed.
+
+She had been invited to the dinner because of her reputation for solving difficult cases.
+
+She immediately recognized the pattern.
+
+SOS.
+
+A distress signal.
+
+Why would a dying man leave a distress signal moments before his death?
+
+.fig
+_______________
+| FIRST CLUE   |
+|______________|
+.figend
+
+Amelia began interviewing the guests.
+
+Each person claimed to have remained in the dining hall throughout the evening.
+
+Their stories matched.
+
+No one appeared suspicious.
+
+Yet everyone possessed a possible motive.
+
+Arthur Hawthorne had made many enemies.
+
+His business rival hated him.
+
+His nephew expected an inheritance.
+
+A former employee blamed him for financial ruin.
+
+Even some close friends held grudges.
+
+The list of suspects continued growing.
+
+.fig
+_______________
+| SUSPECT LIST |
+|______________|
+.figend
+
+While examining the library, Amelia discovered another clue.
+
+A sheet of paper hidden beneath a book.
+
+Written on the page was a strange equation.
+
+?50*2+100/5?
+
+Most people would have ignored it.
+
+Amelia did not.
+
+Arthur loved puzzles.
+
+He often hid information inside mathematical challenges.
+
+She solved the equation.
+
+The result pointed to a page number in a nearby journal.
+
+Inside the journal she found a coded message.
+
+Someone at the dinner had been blackmailing Arthur.
+
+.fig
+____________
+| JOURNAL   |
+|___________|
+.figend
+
+The investigation continued through the night.
+
+Amelia carefully reconstructed every movement inside the mansion.
+
+Hours later she noticed something unusual.
+
+One guest repeatedly avoided discussing the mansion's renovation history.
+
+That guest was Victor Lang.
+
+An architect.
+
+Several years earlier, Victor had supervised repairs throughout the property.
+
+Including the library.
+
+Amelia requested the renovation blueprints.
+
+Victor hesitated.
+
+That hesitation revealed everything.
+
+.fig
+__________________
+| HIDDEN PLANS    |
+|_________________|
+.figend
+
+The blueprints contained a secret.
+
+A narrow maintenance shaft connected the library fireplace to an unused storage room below.
+
+The opening was nearly invisible.
+
+Most people would never notice it.
+
+A skilled architect, however, knew exactly where it was located.
+
+Victor finally confessed.
+
+Years earlier Arthur had destroyed his career through fraud and deception.
+
+Victor wanted revenge.
+
+During the dinner, he entered the hidden passage before Arthur arrived in the library.
+
+He confronted him.
+
+An argument followed.
+
+The confrontation became deadly.
+
+Afterward Victor escaped through the same passage.
+
+The locked room illusion remained intact.
+
+.fig
+_________
+| SECRET |
+|PASSAGE |
+|________|
+.figend
+
+The mystery seemed solved.
+
+Then Amelia discovered one final surprise.
+
+Arthur's SOS message had not referred to himself.
+
+Before his death, Arthur had learned that another guest planned to commit a separate crime involving company funds.
+
+The distress signal was a warning.
+
+Not a plea for help.
+
+Even while dying, Arthur attempted to expose the truth.
+
+.fig
+________________
+| FINAL CLUE    |
+|_______________|
+.figend
+
+By sunrise, police arrested Victor Lang.
+
+Investigators later uncovered the financial crimes Arthur had attempted to reveal.
+
+The Hawthorne Mansion returned to silence.
+
+Guests departed.
+
+The storm passed.
+
+The locked room mystery became one of the most famous cases in the city's history.
+
+Years later, visitors still discussed the impossible murder.
+
+Many believed the case demonstrated the brilliance of Detective Amelia Frost.
+
+Others believed it showed how dangerous secrets could become.
+
+Amelia preferred a simpler explanation.
+
+"No mystery is impossible," she often said.
+
+"People only fail to notice the truth."
+
+.fig
+_____________
+| THE END    |
+|____________|
+.figend

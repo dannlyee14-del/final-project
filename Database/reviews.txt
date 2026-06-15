@@ -1,0 +1,160 @@
+book1.txt	R	3
+book1.txt	R	2
+book1.txt	R	5
+book1.txt	C	DemoReader|內容很適合展示系統功能。
+book1.txt	C	USER00001|還行。
+book1.txt	C	FamilyReader|全年齡讀者都可以安心閱讀。
+book1.txt	C	BookExplorer|故事內容簡單易懂，適合作為系統展示範例。
+book1.txt	C	CasualReader|篇幅適中，閱讀起來輕鬆沒有負擔。
+image_book.txt	R	4
+image_book.txt	R	5
+image_book.txt	R	4
+image_book.txt	C	DemoReader|這是展示圖片與文字排版功能的絕佳範本 。
+image_book.txt	C	NYCU_User|經典童話故事，即使以 ASCII 形式呈現也很有魅力 。
+image_book.txt	C	FamilyReader|適合在睡前講給孩子聽的經典寓言故事 。
+image_book.txt	C	USER00001|書中的 ASCII 插圖將角色特徵捕捉得恰到好處 。
+image_book.txt	C	ClassicFan|完整收錄了白雪公主的經典情節，令人回味無窮 。
+alice.txt	R	5
+alice.txt	R	5
+alice.txt	R	4
+alice.txt	C	DemoReader|內容很適合展示系統功能。
+alice.txt	C	NYCU_User|分類清楚，閱讀體驗不錯。
+alice.txt	C	FamilyReader|全年齡讀者都可以安心閱讀。
+alice.txt	C	ClassicReader|充滿想像力的奇幻世界，讓人沉浸其中。
+alice.txt	C	StoryLover|角色與情節都十分經典，值得反覆閱讀。
+math_magic.txt	R	3
+math_magic.txt	R	4
+math_magic.txt	R	4
+math_magic.txt	C	DemoReader|內容很適合展示系統對於數學運算函數的處理能力 。
+math_magic.txt	C	NYCU_User|簡單的小練習冊，適合快速測試計算器功能 。
+math_magic.txt	C	FamilyReader|全年齡讀者都可以安心閱讀。
+math_magic.txt	C	MathTutor|精簡扼要，直接展示了加減乘除與平方根運算的邏輯 。
+math_magic.txt	C	TechStudent|透過實際運算來輔助教學，是一個很好的互動概念
+math_magic2.txt	R	4
+math_magic2.txt	R	5
+math_magic2.txt	R	4
+math_magic2.txt	C	DemoReader|內容豐富，展示了在科學與工程領域中數學的應用 。
+math_magic2.txt	C	NYCU_User|不僅僅是計算，還有關於數學精神的哲學探討 。
+math_magic2.txt	C	FamilyReader|這本書能激發孩子對數學邏輯模式的興趣 。
+math_magic2.txt	C	StudentGroup|書中的題目具備挑戰性，非常適合學生間的競賽練習 。
+math_magic2.txt	C	ScienceFan|提到數學是宇宙語言的觀點令人印象深刻 。
+loading_anime.txt	R	5
+loading_anime.txt	R	5
+loading_anime.txt	R	4
+loading_anime.txt	C	DemoReader|這是一套非常簡潔且實用的 loading 動畫展示 。
+loading_anime.txt	C	NYCU_User|在終端機介面中運作的動態效果很酷 。
+loading_anime.txt	C	FamilyReader|簡單明瞭的呈現方式，對於初學者來說很好理解 。
+loading_anime.txt	C	DeveloperFan|對於需要製作 CLI 介面的人來說是很好的參考素材 。
+loading_anime.txt	C	UIDesigner|即使只有字元也能創造出視覺動態，簡約美學的極致 。
+Anime.txt	R	3
+Anime.txt	R	4
+Anime.txt	R	4
+Anime.txt	C	DemoReader|內容很適合展示系統功能。
+Anime.txt	C	NYCU_User|分類清楚，閱讀體驗不錯。
+Anime.txt	C	FamilyReader|全年齡讀者都可以安心閱讀。
+morse_sample.txt	R	4
+morse_sample.txt	R	5
+morse_sample.txt	R	4
+morse_sample.txt	C	DemoReader|非常直觀的對照範本，展示了符號與意義的對應。
+morse_sample.txt	C	NYCU_User|簡單實用，對於學習基礎編碼很有幫助。
+morse_sample.txt	C	TechStudent|透過實際案例展示了文字轉碼的過程，相當直觀。
+morse_sample.txt	C	RadioBeginner|適合作為摩斯電碼入門學習教材。
+morse_sample.txt	C	CodeExplorer|表格整理清楚，查閱起來非常方便。
+forest_story.txt	R	5
+forest_story.txt	R	5
+forest_story.txt	R	4
+forest_story.txt	C	DemoReader|描述森林氣氛的文字很有渲染力，讀起來很有畫面感 。。
+forest_story.txt	C	NYCU_User|懸疑感鋪陳得不錯，是會讓人想一口氣看完的小說 。
+forest_story.txt	C	FamilyReader|對於喜愛冒險故事的青少年讀者來說，這是一個很好的選擇 。
+forest_story.txt	C	MysteryFanr|故事中「空白頁面自行浮現文字」的轉折非常精彩 。
+forest_story.txt	C	NatureLover|雖然故事帶點詭異，但對森林環境的描寫相當生動 。
+castle_art.txt	R	3
+castle_art.txt	R	4
+castle_art.txt	R	4
+castle_art.txt	C	DemoReader|城堡的 ASCII 藝術細節令人驚嘆，非常展現文字繪圖的潛力 。
+castle_art.txt	C	NYCU_User|故事內容很有趣，尤其是關於地下圖書館的設定 。
+castle_art.txt	C	FamilyReader|這本書傳達了知識比權力更重要的價值觀，很適合親子共讀 。
+castle_art.txt	C	HistoryLover|將 ASCII 藝術與架空歷史故事結合的創意非常獨特 。
+castle_art.txt	C	EngineerFan|書中提到工程師設計水力機械的橋段很有巧思 。
+space_animation.txt	R	4
+space_animation.txt	R	5
+space_animation.txt	R	4
+space_animation.txt	C	DemoReader|透過連續的 ASCII 圖片展示了太空動畫的敘事效果 。
+space_animation.txt	C	NYCU_User|故事內容很像科幻電影，很有太空探險的氛圍 。
+space_animation.txt	C	FamilyReader|激勵人心的一段冒險故事，適合講給想探索宇宙的孩子聽 。
+space_animation.txt	C	SciFiFan|對於未知文明與遺棄太空站的描寫很有吸引力 。
+morse_history.txt	R	5
+morse_history.txt	R	5
+morse_history.txt	R	4
+morse_history.txt	C	DemoReader|格式清晰，很適合展示特殊符號與通訊歷史的結合 。
+morse_history.txt	C	NYCU_User|對摩斯電碼的歷史演進有很詳細的敘述 。
+morse_history.txt	C	FamilyReader|這本書能讓孩子認識現代網路發明前的通訊方式 。
+morse_history.txt	C	HistoryLover|對於軍事通訊與歷史轉捩點的描述相當精準 。
+morse_history.txt	C	RadioHobbyist|對於摩斯電碼愛好者來說，這是非常珍貴的入門讀物 。
+adult_noir.txt	R	3
+adult_noir.txt	R	4
+adult_noir.txt	R	4
+adult_noir.txt	C	NightReader|黑色電影風格濃厚，案件鋪陳相當吸引人。
+adult_noir.txt	C	CrimeFan|主角的推理過程合理且具有說服力。
+adult_noir.txt	C	MysteryCollector|劇情節奏緊湊，讓人想一口氣讀完。
+adult_noir.txt	C	DetectiveClub|對城市黑暗面的描寫十分有特色。
+adult_noir.txt	C	LateNightBooker|非常適合喜歡懸疑犯罪題材的讀者。
+adult_mystery.txt	R	4
+adult_mystery.txt	R	5
+adult_mystery.txt	R	4
+adult_mystery.txt	C	LockedRoomFan|密室案件的設計巧妙，充滿推理樂趣。
+adult_mystery.txt	C	CaseHunter|線索安排完整，真相揭曉時令人驚喜。
+adult_mystery.txt	C	MidnightReader|故事氣氛營造成功，閱讀時相當投入。
+adult_mystery.txt	C	PuzzleSolver|每個細節都可能是關鍵，值得反覆推敲。
+adult_mystery.txt	C	ThrillerLover|結局反轉精彩，留下深刻印象。
+adult_psychology.txt	R	5
+adult_psychology.txt	R	5
+adult_psychology.txt	R	4
+adult_psychology.txt	C	MindExplorer|對人類心理行為的分析相當深入。
+adult_psychology.txt	C	BehaviorFan|內容引人思考，能從不同角度理解人性。
+adult_psychology.txt	C	PsychologyLearner|案例設計生動，閱讀起來不會枯燥。
+adult_psychology.txt	C	CognitiveThinker|對決策與思維模式的探討很有啟發性。
+adult_psychology.txt	C	InsightReader|適合對心理學有興趣的進階讀者。
+wrap_demo.txt	R	3
+wrap_demo.txt	R	4
+wrap_demo.txt	R	4
+wrap_demo.txt	C	DemoReader|完美展示了文字如何繞過圖形進行排版的系統功能 。
+wrap_demo.txt	C	NYCU_User|版面配置非常清楚，對於年長讀者來說閱讀體驗很好 。
+wrap_demo.txt	C	FamilyReader|對於追求版面整潔與圖文並茂的人來說，這是必看的範例 。
+wrap_demo.txt	C	LayoutDesigne|版面配置非常清楚，對於年長讀者來說閱讀體驗很好 。
+adult_noir.txt	B	1
+adult_psychology.txt	B	1
+adult_mystery.txt	B	1
+wrap_demo.txt	R	5
+space_colony.txt	R	5
+space_colony.txt	R	4
+space_colony.txt	R	5
+space_colony.txt	R	4
+space_colony.txt	C	StarTraveler|精彩的太空冒險故事，摩斯密碼與數學謎題的設計令人印象深刻。
+space_colony.txt	C	CosmicReader|Nova Colony 的世界觀十分完整，讓人彷彿置身未來殖民地。
+space_colony.txt	C	SciFiFan|ASCII 圖片與劇情搭配得很好，是書庫中最有科幻感的作品之一。
+space_colony.txt	C	GalaxyExplorer|AI 核心與失落研究站的設定非常吸引人，希望能看到續集。book1.txt	H	aa
+space_animation.txt	H	aa
+space_colony.txt	H	aa
+morse_history.txt	F	aa
+space_animation.txt	H	aa
+morse_history.txt	H	aa
+adult_noir.txt	H	aa
+adult_mystery.txt	H	aa
+book1.txt	H	aa
+image_book.txt	H	aa
+alice.txt	H	aa
+math_magic.txt	H	aa
+math_magic2.txt	H	aa
+castle_art.txt	H	aa
+forest_story.txt	H	aa
+Anime.txt	H	aa
+loading_anime.txt	H	aa
+morse_history.txt	H	aa
+wrap_demo.txt	H	aa
+book1.txt	B	1
+morse_sample.txt	B	1
+Anime.txt	F	aa
+Anime.txt	R	aa|1
+morse_history.txt	V	aa
+space_colony.txt	F	aa

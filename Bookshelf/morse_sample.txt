@@ -1,0 +1,232 @@
+type: morse
+Title: The Morse Agent
+Author: Danny
+
+.fig
+      __________________
+     | SECRET AGENCY   |
+     |_________________|
+.figend
+
+In the year 2026, Agent Ryan joined the International Signal Agency.
+
+His mission was simple.
+
+Decode messages.
+
+Protect information.
+
+Save lives.
+
+Most people communicated using modern networks.
+
+However, some secret transmissions still relied on Morse code.
+
+.fig
+        .----.
+       /      \
+      | RADIO |
+       \______/
+.figend
+
+On his first day, Ryan received a message.
+
+.... . .-.. .-.. ---
+
+The transmission was weak.
+
+But Ryan recognized it immediately.
+
+The message said hello.
+
+The sender was testing the communication channel.
+
+.fig
+      ________________
+     | MESSAGE #001  |
+     |________________|
+.figend
+
+Several hours later, another message arrived.
+
+-. -.-- -.-. ..-
+
+The agency computer began searching its database.
+
+The decoded result identified a university.
+
+The sender was located nearby.
+
+Ryan logged the message and continued monitoring.
+
+.fig
+      _____________
+     | DECODING... |
+     |_____________|
+.figend
+
+Days passed quietly.
+
+Then a priority signal arrived.
+
+... --- ...
+
+Everyone in the control room froze.
+
+SOS.
+
+A distress signal.
+
+Somewhere, someone needed help.
+
+Ryan immediately traced the source.
+
+The signal originated from a research vessel in the Pacific Ocean.
+
+.fig
+          ~~~~~~~
+       ~~~ SHIP ~~~
+      ~~~~~~~~~~~~~
+.figend
+
+The ship had lost power during a storm.
+
+Its communication systems were damaged.
+
+Only a simple Morse transmitter remained operational.
+
+Ryan relayed the coordinates to rescue teams.
+
+Hours later, the crew was rescued.
+
+The captain later sent a thank-you message.
+
+.... . .-.. .-.. ---
+
+HELLO
+
+The same signal that began Ryan's first day.
+
+.fig
+       \o/
+        |
+       / \
+.figend
+
+Months later, Ryan discovered a strange encrypted transmission.
+
+--- --- .--.
+
+The message repeated every night.
+
+Nobody knew who was sending it.
+
+Nobody knew why.
+
+The agency assigned Ryan to investigate.
+
+.fig
+     ___________________
+    | UNKNOWN SIGNAL   |
+    |__________________|
+.figend
+
+The trail led him to an abandoned observatory.
+
+Inside he found an old radio station still operating.
+
+A computer terminal displayed a challenge.
+
+?20+26?
+
+Ryan solved it instantly.
+
+The screen unlocked.
+
+A hidden file appeared.
+
+.fig
+      ____________
+     | TERMINAL  |
+     |___________|
+.figend
+
+Inside the file was a collection of historical Morse transmissions.
+
+Messages from explorers.
+
+Scientists.
+
+Astronauts.
+
+Emergency crews.
+
+The archive preserved decades of communication history.
+
+One message caught Ryan's attention.
+
+.... . .-.. .--.
+
+HELP
+
+The message dated back more than fifty years.
+
+Nobody knew who sent it.
+
+.fig
+    ____________________
+   | HISTORICAL ARCHIVE |
+   |____________________|
+.figend
+
+As Ryan continued exploring, he encountered additional security puzzles.
+
+?12*12?
+
+?sqrt(144)?
+
+?power(2,7)?
+
+Each correct answer unlocked another section of the archive.
+
+The deeper he went, the more history he uncovered.
+
+.fig
+      [ ACCESS ]
+      ███░░░░░░
+.figend
+
+Finally, he reached the last record.
+
+It contained a message from the founder of the agency.
+
+"Technology changes."
+
+"Communication evolves."
+
+"But understanding one another remains humanity's greatest achievement."
+
+Ryan smiled.
+
+The founder was right.
+
+Whether through telegraphs, radios, satellites, or computers, the goal was always the same.
+
+Connecting people.
+
+.fig
+      __________________
+     | CONNECTION IS   |
+     | OUR STRENGTH    |
+     |_________________|
+.figend
+
+Before leaving, Ryan sent one final transmission.
+
+.... . .-.. .-.. ---
+
+The signal traveled across the world.
+
+And somewhere, another operator received it.
+
+THE END

@@ -5,6 +5,7 @@
 #include <cctype>
 #include <cstdlib>
 #include <unistd.h>
+#include <sys/stat.h>
 
 #define NONE        "\033[0m"
 #define WHITE_B     "\033[47m"
@@ -105,10 +106,10 @@ Library::Library() {
     currentUser = nullptr;
     chineseInterface = true;
     
-    ifstream in("./TXT/bookList.txt");
+    ifstream in("./Database/bookList.txt");
     string fn; char type;
     while (in >> fn >> type) {
-        ifstream b("./TXT/" + fn); 
+        ifstream b("./Bookshelf/" + fn); 
         if (!b.is_open()) continue;
         string s, t, a, c;
         bool adultOnly = false;
@@ -150,6 +151,8 @@ Library::Library() {
     }
     for (Book* book : books) book->setChinese(chineseInterface);
     loadReviews();
+    loadUserStates();
+    loadBorrowRecords();
     login();
 }
 
@@ -209,6 +212,19 @@ bool Library::waitForHome() {
                                "\n[End] Back to Home, or press Enter to continue") << flush;
     string ignored;
     return readLineOrHome(ignored);
+}
+
+string normalizeTxtFilename(string filename) {
+    const string extension = ".txt";
+    if (filename.size() >= extension.size() &&
+        filename.substr(filename.size() - extension.size()) == extension) {
+        return filename;
+    }
+    return filename + extension;
+}
+
+void ensureUserDataDirectory() {
+    mkdir("./UserData", 0755);
 }
 
 int Library::chooseMenu(const string& title, const vector<string>& options) {
@@ -284,6 +300,9 @@ char Library::getKey() {
     } else if (toupper(key) == 'Q') { 
         system("stty cooked echo"); 
         return 'Q';
+    } else if (key == '~') {
+        system("stty cooked echo");
+        return '~';
     }
     system("stty cooked echo"); 
     return ' ';
@@ -297,6 +316,14 @@ void Library::operation(char op) {
 
     if (op == 'Q') {
         exit = true;
+        return;
+    }
+    if (op == '~') {
+        if (currentUser != nullptr && !currentUser->isGuest) {
+            currentUser->banUntil = 0;
+            saveUserState(currentUser);
+            statusMsg = chineseInterface ? "停權已解除。" : "Ban cleared.";
+        }
         return;
     }
 
@@ -445,7 +472,8 @@ void Library::coutMainPage() {
          << "    " << CYAN << (chineseInterface ? "年齡" : "AGE") << NONE << "  " << currentUser->age
          << "    " << YELLOW << (chineseInterface ? "積分" : "POINTS") << NONE << "  " << currentUser->readingPoints
          << "    " << RED << (chineseInterface ? "停權" : "BAN") << NONE << "  "
-         << (isUserBanned() ? formatDate(currentUser->banUntil) : (chineseInterface ? "無" : "None"))
+         << (isUserBanned() ? (chineseInterface ? "封禁到 " : "Until ") + formatClock(currentUser->banUntil)
+                            : (chineseInterface ? "無" : "None"))
          << "    " << MAGENTA << (chineseInterface ? "稱號" : "LEVEL") << NONE << "  " << getReaderTitle() << endl;
     printThemeLine('-');
 
@@ -605,11 +633,20 @@ void Library::addBook() {
     system("clear");
     cout << DIM << (chineseInterface ? "[End] 返回主頁" : "[End] Back to Home")
          << NONE << "\n\n";
+    if (currentUser->isGuest) {
+        cout << (chineseInterface ?
+            "\e[1;31m提醒：訪客帳號無法新增書籍！\e[0m" :
+            "\e[1;31mWarning: Guest accounts cannot add books!\e[0m") << endl;
+        waitForHome();
+        return;
+    }
+
     string fn, ts, t, a;
     int ageChoice = 1;
     cout << (chineseInterface ? "檔案名稱（End 返回主頁）：" :
                                "Filename ([End] Home): ");
     if (!readLineOrHome(fn)) return;
+    fn = normalizeTxtFilename(fn);
     vector<string> typeOptions = chineseInterface ?
         vector<string>{"一般文字書", "ASCII 圖像書", "數學互動書", "動畫書", "摩斯密碼書"} :
         vector<string>{"Text Book", "ASCII Art Book", "Math Interactive Book",
@@ -624,18 +661,18 @@ void Library::addBook() {
     ageChoice = chooseMenu(chineseInterface ? "書籍分級" : "Age Rating", ageOptions);
     if (ageChoice == 0) return;
     bool adultOnly = ageChoice == 2;
-    ifstream f("./TXT/" + fn);
+    ifstream f("./Bookshelf/" + fn);
     if (!f.is_open()) {
         cout << (chineseInterface ? "自動建立檔案...\n書名：" :
                                    "Auto-creating...\nTitle: ");
         if (!readLineOrHome(t)) return;
         cout << (chineseInterface ? "作者：" : "Author: ");
         if (!readLineOrHome(a)) return;
-        ofstream o("./TXT/" + fn); 
+        ofstream o("./Bookshelf/" + fn); 
         o << "type: new\nTitle: " << t << "\nAge: "
           << (adultOnly ? "18+" : "all") << "\nAuthor: " << a << "\nContent here.\n";
     }
-    ofstream l("./TXT/bookList.txt", ios::app); 
+    ofstream l("./Database/bookList.txt", ios::app); 
     l << "\n" << fn << " " << (char)toupper(ts[0]);
     cout << (chineseInterface ? "完成，重新啟動後套用。" :
                                "Done. Restart to apply.");
@@ -675,16 +712,6 @@ void Library::login() {
                                 "Enter your name (blank for Guest): ");
     string name;
     getline(cin, name);
-
-    int age = 0;
-    cout << (chineseInterface ? "請輸入年齡：" : "Enter your age: ");
-    string ageInput;
-    getline(cin, ageInput);
-    try {
-        age = stoi(ageInput);
-    } catch (...) {
-        age = 0;
-    }
     
     bool isGuest = false;
     if (name.empty() || name == "Guest" || name == "訪客") {
@@ -695,12 +722,29 @@ void Library::login() {
     auto it = users.find(name);
     if (it != users.end()) {
         currentUser = it->second;
-        currentUser->age = age;
         currentUser->isGuest = isGuest;
+        cout << (chineseInterface ? "已有帳號，歡迎 " :
+                                    "Existing account, welcome ")
+             << displayUserName(currentUser, chineseInterface) << "!" << endl;
     } else {
+        int age = 0;
+        cout << (chineseInterface ? "新用戶您好，請輸入您的年齡：" :
+                                    "New user, please enter your age: ");
+        string ageInput;
+        getline(cin, ageInput);
+        try {
+            age = stoi(ageInput);
+        } catch (...) {
+            age = 0;
+        }
         currentUser = new User(name, age, isGuest);
         users[name] = currentUser;
     }
+    if (currentUser->isGuest) {
+        currentUser->readingPoints = 0;
+        currentUser->banUntil = 0;
+    }
+    saveUserState(currentUser);
     cout << (chineseInterface ? "\n歡迎，" : "\nWelcome, ") << displayUserName(currentUser, chineseInterface)
          << (chineseInterface ? "！按 Enter 進入圖書館..." :
                                 "! Press Enter to enter the library...");
@@ -725,7 +769,7 @@ void Library::borrowBook(Book* b) {
     if (isUserBanned()) {
         cout << RED << (chineseInterface ? "你的帳號目前被停權，解除時間：" :
                                            "Your account is banned until: ")
-             << formatDate(currentUser->banUntil) << NONE << endl;
+             << formatClock(currentUser->banUntil) << NONE << endl;
         waitForHome();
         return;
     }
@@ -750,25 +794,37 @@ void Library::borrowBook(Book* b) {
     }
     
     vector<string> periodOptions = chineseInterface ?
-        vector<string>{"1 分鐘", "3 分鐘", "5 分鐘"} :
-        vector<string>{"1 minute", "3 minutes", "5 minutes"};
+        vector<string>{"1 分鐘", "3 分鐘", "5 分鐘", "其他（輸入 N 分鐘）"} :
+        vector<string>{"1 minute", "3 minutes", "5 minutes", "Other (enter N minutes)"};
     int periodChoice = chooseMenu(chineseInterface ? "請選擇借閱期限" :
                                                      "Choose Borrow Period", periodOptions);
     if (periodChoice == 0) return;
     int borrowMinutes = 3;
     if (periodChoice == 1) borrowMinutes = 1;
     else if (periodChoice == 3) borrowMinutes = 5;
+    else if (periodChoice == 4) {
+        cout << (chineseInterface ? "請輸入借閱分鐘數：" : "Enter borrow minutes: ");
+        if (!readNumberOrHome(borrowMinutes)) return;
+        if (borrowMinutes <= 0) {
+            cout << (chineseInterface ? "分鐘數必須大於 0。" :
+                                        "Minutes must be greater than 0.") << endl;
+            waitForHome();
+            return;
+        }
+    }
 
     currentUser->borrowedBooks.push_back(b->getTitle());
     globalBorrowedBooks.push_back(b->getTitle());
     borrowedByUser[b->getTitle()] = currentUser->name;
     currentUser->readingPoints += 10;
+    saveUserState(currentUser);
     
     time_t dueDate = time(0) + borrowMinutes * 60;
     currentUser->dueDates.push_back(dueDate);
     
     b->addBorrowCount();
     saveReviewRecord(b->getFilename(), 'B', "1");
+    saveBorrowRecords();
     
     if (chineseInterface) cout << "成功借閱《" << b->getTitle() << "》！" << endl;
     else cout << "Successfully borrowed \"" << b->getTitle() << "\"!" << endl;
@@ -799,7 +855,7 @@ void Library::viewAccount() {
         cout << (chineseInterface ? "停權狀態：" : "Ban Status: ");
         if (isUserBanned()) {
             cout << RED << (chineseInterface ? "停權中，解除時間：" : "Banned until: ")
-                 << formatDate(currentUser->banUntil) << NONE << endl;
+                 << formatClock(currentUser->banUntil) << NONE << endl;
         } else {
             cout << (chineseInterface ? "正常" : "Normal") << endl;
         }
@@ -824,9 +880,13 @@ void Library::viewAccount() {
                 cout << i + 1 << ". " << setw(30) << left << currentUser->borrowedBooks[i]
                      << (chineseInterface ? " | 到期日：" : " | Due Date: ") << buf;
                 if (overdueMinutes > 0) {
-                    cout << RED << (chineseInterface ? " | 已逾期，將停權分鐘：" :
-                                                      " | Overdue, ban minutes: ")
-                         << overdueMinutes << NONE;
+                    int banMinutes = overdueMinutes * 10;
+                    cout << RED << (chineseInterface ? " | 逾期 " : " | Overdue ")
+                         << overdueMinutes
+                         << (chineseInterface ? " 分鐘沒還，將封禁 " :
+                                                " minutes late, ban ")
+                         << banMinutes
+                         << (chineseInterface ? " 分鐘" : " minutes") << NONE;
                 }
                 cout << endl;
             }
@@ -882,32 +942,50 @@ void Library::viewAccount() {
                 if (num != 0) {
                     if (num > 0 && num <= (int)currentUser->borrowedBooks.size()) {
                         string retTitle = currentUser->borrowedBooks[num - 1];
-                        int overdueMinutes = calculateOverdueMinutes(currentUser->dueDates[num - 1]);
+                        time_t dueDate = currentUser->dueDates[num - 1];
+                        int overdueMinutes = calculateOverdueMinutes(dueDate);
+                        int banMinutes = overdueMinutes > 0 ? overdueMinutes * 10 : 0;
                         currentUser->borrowedBooks.erase(currentUser->borrowedBooks.begin() + (num - 1));
                         currentUser->dueDates.erase(currentUser->dueDates.begin() + (num - 1));
                         currentUser->returnedBooks.push_back(retTitle);
                         currentUser->readingPoints += 15;
                         if (overdueMinutes > 0) {
-                            time_t newBanUntil = time(0) + overdueMinutes * 60;
+                            time_t newBanUntil = time(0) + banMinutes * 60;
                             if (newBanUntil > currentUser->banUntil) {
                                 currentUser->banUntil = newBanUntil;
                             }
                         }
+                        saveUserState(currentUser);
                         
                         auto it = find(globalBorrowedBooks.begin(), globalBorrowedBooks.end(), retTitle);
                         if (it != globalBorrowedBooks.end()) {
                             globalBorrowedBooks.erase(it);
                         }
                         borrowedByUser.erase(retTitle);
+                        Book* returnedBook = nullptr;
+                        for (Book* book : books) {
+                            if (book->getTitle() == retTitle) {
+                                returnedBook = book;
+                                break;
+                            }
+                        }
+                        if (returnedBook != nullptr) {
+                            saveReturnRecord(returnedBook->getFilename(), currentUser->name,
+                                             dueDate, overdueMinutes, banMinutes);
+                        }
+                        saveBorrowRecords();
                         
                         if (chineseInterface) cout << "成功歸還《" << retTitle << "》！" << endl;
                         else cout << "Successfully returned \"" << retTitle << "\"!" << endl;
                         if (overdueMinutes > 0) {
-                            cout << RED << (chineseInterface ? "逾期已停權分鐘：" :
-                                                              "Overdue ban minutes: ")
-                                 << overdueMinutes << endl
-                                 << (chineseInterface ? "解除時間：" : "Ban ends at: ")
-                                 << formatDate(currentUser->banUntil) << NONE << endl;
+                            cout << RED << (chineseInterface ? "逾期 " : "Overdue ")
+                                 << overdueMinutes
+                                 << (chineseInterface ? " 分鐘沒還，已被封禁 " :
+                                                        " minutes late, banned for ")
+                                 << banMinutes
+                                 << (chineseInterface ? " 分鐘" : " minutes") << endl
+                                 << (chineseInterface ? "封禁到：" : "Ban ends at: ")
+                                 << formatClock(currentUser->banUntil) << NONE << endl;
                         }
                         if (!waitForHome()) return;
                     } else {
@@ -960,6 +1038,7 @@ void Library::recommendBooks() {
     };
 
     vector<Recommendation> results;
+    vector<string> recommendedTitles;
     const vector<string> calmWords = {
         "story", "history", "forest", "alice", "literature"
     };
@@ -971,6 +1050,12 @@ void Library::recommendBooks() {
     };
 
     for (Book* book : getVisibleBooks()) {
+        if (find(recommendedTitles.begin(), recommendedTitles.end(), book->getTitle()) !=
+            recommendedTitles.end()) {
+            continue;
+        }
+        recommendedTitles.push_back(book->getTitle());
+
         string profile = book->getTitle() + " " + book->getCategory() + " " +
                          book->getAuthor() + " " + book->getFilename();
         transform(profile.begin(), profile.end(), profile.begin(),
@@ -1073,6 +1158,17 @@ void Library::recommendBooks() {
 }
 
 void Library::toggleFavorite(Book* b) {
+    if (currentUser->isGuest) {
+        system("clear");
+        cout << DIM << (chineseInterface ? "[End] 返回主頁" : "[End] Back to Home")
+             << NONE << "\n\n";
+        cout << (chineseInterface ?
+            "\e[1;31m提醒：訪客帳號無法收藏書籍！\e[0m" :
+            "\e[1;31mWarning: Guest accounts cannot favorite books!\e[0m") << endl;
+        waitForHome();
+        return;
+    }
+
     vector<string>& favorites = currentUser->favoriteBooks;
     auto it = find(favorites.begin(), favorites.end(), b->getTitle());
 
@@ -1083,11 +1179,14 @@ void Library::toggleFavorite(Book* b) {
                                "========== Favorite Books ==========\n");
     if (it == favorites.end()) {
         favorites.push_back(b->getTitle());
+        saveReviewRecord(b->getFilename(), 'F', currentUser->name);
         currentUser->readingPoints += 2;
+        saveUserState(currentUser);
         if (chineseInterface) cout << "已將《" << b->getTitle() << "》加入收藏。" << endl;
         else cout << "\"" << b->getTitle() << "\" was added to your favorites." << endl;
     } else {
         favorites.erase(it);
+        saveReviewRecord(b->getFilename(), 'V', currentUser->name);
         if (chineseInterface) cout << "已將《" << b->getTitle() << "》移除收藏。" << endl;
         else cout << "\"" << b->getTitle() << "\" was removed from your favorites." << endl;
     }
@@ -1095,6 +1194,17 @@ void Library::toggleFavorite(Book* b) {
 }
 
 void Library::rateBook(Book* b) {
+    if (currentUser->isGuest) {
+        system("clear");
+        cout << DIM << (chineseInterface ? "[End] 返回主頁" : "[End] Back to Home")
+             << NONE << "\n\n";
+        cout << (chineseInterface ?
+            "\e[1;31m提醒：訪客帳號無法評分書籍！\e[0m" :
+            "\e[1;31mWarning: Guest accounts cannot rate books!\e[0m") << endl;
+        waitForHome();
+        return;
+    }
+
     string title = chineseInterface ?
         "書籍評分：《" + b->getTitle() + "》  目前平均：" +
             to_string(b->getAverageRating()).substr(0, 3) + " / 5" :
@@ -1109,9 +1219,10 @@ void Library::rateBook(Book* b) {
         cout << (chineseInterface ? "評分無效，請輸入 1 到 5。" :
                                     "Invalid rating. Please choose 1 to 5.") << endl;
     } else {
-        b->addRating(rating);
-        saveReviewRecord(b->getFilename(), 'R', to_string(rating));
+        b->setRating(currentUser->name, rating);
+        saveReviewRecord(b->getFilename(), 'R', currentUser->name + "|" + to_string(rating));
         currentUser->readingPoints += 3;
+        saveUserState(currentUser);
         cout << (chineseInterface ? "評分完成，謝謝你的回饋！" :
                                     "Rating saved. Thanks for your feedback!") << endl;
     }
@@ -1122,6 +1233,14 @@ void Library::commentBook(Book* b) {
     system("clear");
     cout << DIM << (chineseInterface ? "[End] 返回主頁" : "[End] Back to Home")
          << NONE << "\n\n";
+    if (currentUser->isGuest) {
+        cout << (chineseInterface ?
+            "\e[1;31m提醒：訪客帳號無法撰寫評論！\e[0m" :
+            "\e[1;31mWarning: Guest accounts cannot write comments!\e[0m") << endl;
+        waitForHome();
+        return;
+    }
+
     cout << (chineseInterface ? "========== 撰寫評論 ==========" :
                                 "========== Write Comment ==========") << endl;
     cout << (chineseInterface ? "書名：《" : "Book: \"") << b->getTitle()
@@ -1136,6 +1255,7 @@ void Library::commentBook(Book* b) {
         b->addComment(currentUser->name, comment);
         saveReviewRecord(b->getFilename(), 'C', currentUser->name + "|" + comment);
         currentUser->readingPoints += 4;
+        saveUserState(currentUser);
         cout << (chineseInterface ? "評論已新增。" : "Comment added.") << endl;
     }
     waitForHome();
@@ -1155,19 +1275,43 @@ void Library::showBookReviews(Book* b) {
          << (chineseInterface ? " 筆）" : " ratings)") << endl;
     cout << "-------------------------------------------" << endl;
 
+    const map<string, int>& ratings = b->getRatings();
+    cout << (chineseInterface ? "評分：" : "Ratings:") << endl;
+    if (ratings.empty()) {
+        cout << (chineseInterface ? "目前沒有評分。" : "No ratings yet.") << endl;
+    } else {
+        for (const auto& item : ratings) {
+            cout << "[" << item.first << "] : ";
+            for (int i = 1; i <= 5; i++) {
+                cout << (i <= item.second ? "★" : "☆");
+            }
+            cout << endl;
+        }
+    }
+    cout << "-------------------------------------------" << endl;
+
     const vector<string>& comments = b->getComments();
+    cout << (chineseInterface ? "評論：" : "Comments:") << endl;
     if (comments.empty()) {
         cout << (chineseInterface ? "目前沒有評論。" : "No comments yet.") << endl;
     } else {
         for (int i = 0; i < (int)comments.size(); i++) {
-            cout << i + 1 << ". " << comments[i] << endl;
+            string user = chineseInterface ? "使用者" : "User";
+            string comment = comments[i];
+            size_t sep = comments[i].find(':');
+            if (sep != string::npos) {
+                user = comments[i].substr(0, sep);
+                comment = comments[i].substr(sep + 1);
+                while (!comment.empty() && comment.front() == ' ') comment.erase(comment.begin());
+            }
+            cout << "[" << user << "] : " << comment << endl;
         }
     }
     waitForHome();
 }
 
 void Library::loadReviews() {
-    ifstream in("./TXT/reviews.txt");
+    ifstream in("./Database/reviews.txt");
     if (!in.is_open()) return;
 
     string line;
@@ -1192,7 +1336,14 @@ void Library::loadReviews() {
 
         if (kind == 'R') {
             try {
-                target->addRating(stoi(value));
+                size_t sep = value.find('|');
+                if (sep == string::npos) {
+                    target->addRating(stoi(value));
+                } else {
+                    string user = value.substr(0, sep);
+                    int rating = stoi(value.substr(sep + 1));
+                    target->setRating(user, rating);
+                }
             } catch (...) {
             }
         } else if (kind == 'B') {
@@ -1207,14 +1358,255 @@ void Library::loadReviews() {
             string user = value.substr(0, sep);
             string comment = value.substr(sep + 1);
             target->addComment(user, comment);
+        } else if (false && kind == 'L') {
+            size_t sep1 = value.find('|');
+            size_t sep2 = value.find('|', sep1 == string::npos ? 0 : sep1 + 1);
+            if (sep1 == string::npos || sep2 == string::npos) continue;
+            string userName = value.substr(0, sep1);
+            int age = 0;
+            time_t dueDate = 0;
+            try {
+                age = stoi(value.substr(sep1 + 1, sep2 - sep1 - 1));
+                dueDate = static_cast<time_t>(stoll(value.substr(sep2 + 1)));
+            } catch (...) {
+                continue;
+            }
+
+            User* borrower = nullptr;
+            auto userIt = users.find(userName);
+            if (userIt == users.end()) {
+                borrower = new User(userName, age, userName == "Guest");
+                users[userName] = borrower;
+            } else {
+                borrower = userIt->second;
+                borrower->age = age;
+            }
+
+            if (borrowedByUser.find(target->getTitle()) == borrowedByUser.end()) {
+                borrower->borrowedBooks.push_back(target->getTitle());
+                borrower->dueDates.push_back(dueDate);
+                globalBorrowedBooks.push_back(target->getTitle());
+                borrowedByUser[target->getTitle()] = userName;
+            }
+        } else if (false && kind == 'U') {
+            string userName = value;
+            auto userIt = users.find(userName);
+            if (userIt != users.end()) {
+                User* borrower = userIt->second;
+                for (int i = 0; i < (int)borrower->borrowedBooks.size(); i++) {
+                    if (borrower->borrowedBooks[i] == target->getTitle()) {
+                        borrower->borrowedBooks.erase(borrower->borrowedBooks.begin() + i);
+                        if (i < (int)borrower->dueDates.size()) {
+                            borrower->dueDates.erase(borrower->dueDates.begin() + i);
+                        }
+                        break;
+                    }
+                }
+                borrower->returnedBooks.push_back(target->getTitle());
+            }
+
+            auto globalIt = find(globalBorrowedBooks.begin(), globalBorrowedBooks.end(), target->getTitle());
+            if (globalIt != globalBorrowedBooks.end()) globalBorrowedBooks.erase(globalIt);
+            borrowedByUser.erase(target->getTitle());
+        } else if (kind == 'F') {
+            string userName = value;
+            auto userIt = users.find(userName);
+            User* user = nullptr;
+            if (userIt == users.end()) {
+                user = new User(userName, 0, userName == "Guest");
+                users[userName] = user;
+            } else {
+                user = userIt->second;
+            }
+            if (find(user->favoriteBooks.begin(), user->favoriteBooks.end(), target->getTitle()) ==
+                user->favoriteBooks.end()) {
+                user->favoriteBooks.push_back(target->getTitle());
+            }
+        } else if (kind == 'V') {
+            string userName = value;
+            auto userIt = users.find(userName);
+            if (userIt != users.end()) {
+                vector<string>& favorites = userIt->second->favoriteBooks;
+                auto favIt = find(favorites.begin(), favorites.end(), target->getTitle());
+                if (favIt != favorites.end()) favorites.erase(favIt);
+            }
+        } else if (kind == 'H') {
+            string userName = value;
+            auto userIt = users.find(userName);
+            User* user = nullptr;
+            if (userIt == users.end()) {
+                user = new User(userName, 0, userName == "Guest");
+                users[userName] = user;
+            } else {
+                user = userIt->second;
+            }
+            user->readingHistory.push_back(target->getTitle());
         }
     }
 }
 
 void Library::saveReviewRecord(const string& filename, char kind, const string& value) {
-    ofstream out("./TXT/reviews.txt", ios::app);
+    ofstream out("./Database/reviews.txt", ios::app);
     if (!out.is_open()) return;
     out << filename << '\t' << kind << '\t' << value << '\n';
+}
+
+void Library::loadUserStates() {
+    ifstream in("./UserData/users.txt");
+    if (!in.is_open()) return;
+
+    string line;
+    while (getline(in, line)) {
+        if (line.empty()) continue;
+        vector<string> fields;
+        size_t start = 0;
+        while (true) {
+            size_t tab = line.find('\t', start);
+            if (tab == string::npos) {
+                fields.push_back(line.substr(start));
+                break;
+            }
+            fields.push_back(line.substr(start, tab - start));
+            start = tab + 1;
+        }
+        if (fields.size() < 5) continue;
+
+        try {
+            string name = fields[0];
+            int age = stoi(fields[1]);
+            bool isGuest = fields[2] == "1";
+            int points = stoi(fields[3]);
+            time_t banUntil = static_cast<time_t>(stoll(fields[4]));
+
+            User* user = nullptr;
+            auto it = users.find(name);
+            if (it == users.end()) {
+                user = new User(name, age, isGuest);
+                users[name] = user;
+            } else {
+                user = it->second;
+                user->age = age;
+                user->isGuest = isGuest;
+            }
+            user->readingPoints = points;
+            user->banUntil = banUntil;
+        } catch (...) {
+        }
+    }
+}
+
+void Library::saveUserState(User* user) {
+    if (user == nullptr || user->isGuest) return;
+    users[user->name] = user;
+
+    ensureUserDataDirectory();
+    ofstream out("./UserData/users.txt");
+    if (!out.is_open()) return;
+    for (const auto& pair : users) {
+        User* savedUser = pair.second;
+        if (savedUser == nullptr || savedUser->isGuest) continue;
+        out << savedUser->name << '\t'
+            << savedUser->age << '\t'
+            << (savedUser->isGuest ? 1 : 0) << '\t'
+            << savedUser->readingPoints << '\t'
+            << static_cast<long long>(savedUser->banUntil) << '\n';
+    }
+}
+
+void Library::loadBorrowRecords() {
+    ifstream in("./Database/borrow.txt");
+    if (!in.is_open()) return;
+
+    string line;
+    while (getline(in, line)) {
+        if (line.empty()) continue;
+        vector<string> fields;
+        size_t start = 0;
+        while (true) {
+            size_t tab = line.find('\t', start);
+            if (tab == string::npos) {
+                fields.push_back(line.substr(start));
+                break;
+            }
+            fields.push_back(line.substr(start, tab - start));
+            start = tab + 1;
+        }
+        if (fields.size() < 4) continue;
+
+        string filename = fields[0];
+        string userName = fields[1];
+        int age = 0;
+        time_t dueDate = 0;
+        try {
+            age = stoi(fields[2]);
+            dueDate = static_cast<time_t>(stoll(fields[3]));
+        } catch (...) {
+            continue;
+        }
+
+        Book* target = nullptr;
+        for (Book* book : books) {
+            if (book->getFilename() == filename) {
+                target = book;
+                break;
+            }
+        }
+        if (target == nullptr || borrowedByUser.find(target->getTitle()) != borrowedByUser.end()) {
+            continue;
+        }
+
+        User* borrower = nullptr;
+        auto userIt = users.find(userName);
+        if (userIt == users.end()) {
+            borrower = new User(userName, age, userName == "Guest");
+            users[userName] = borrower;
+        } else {
+            borrower = userIt->second;
+            if (borrower->age == 0) borrower->age = age;
+        }
+
+        borrower->borrowedBooks.push_back(target->getTitle());
+        borrower->dueDates.push_back(dueDate);
+        globalBorrowedBooks.push_back(target->getTitle());
+        borrowedByUser[target->getTitle()] = userName;
+    }
+}
+
+void Library::saveBorrowRecords() {
+    ofstream out("./Database/borrow.txt");
+    if (!out.is_open()) return;
+
+    for (const auto& pair : users) {
+        User* user = pair.second;
+        if (user == nullptr || user->isGuest) continue;
+        for (int i = 0; i < (int)user->borrowedBooks.size(); i++) {
+            string title = user->borrowedBooks[i];
+            Book* target = nullptr;
+            for (Book* book : books) {
+                if (book->getTitle() == title) {
+                    target = book;
+                    break;
+                }
+            }
+            if (target == nullptr || i >= (int)user->dueDates.size()) continue;
+            out << target->getFilename() << '\t'
+                << user->name << '\t'
+                << user->age << '\t'
+                << static_cast<long long>(user->dueDates[i]) << '\n';
+        }
+    }
+}
+
+void Library::saveReturnRecord(const string& filename, const string& userName,
+                               time_t dueDate, int overdueMinutes, int banMinutes) {
+    ofstream out("./Database/alive.txt", ios::app);
+    if (!out.is_open()) return;
+    out << filename << '\t'
+        << userName << '\t'
+        << static_cast<long long>(dueDate) << '\t'
+        << static_cast<long long>(time(0)) << '\t'
+        << overdueMinutes << '\t'
+        << banMinutes << '\n';
 }
 
 int Library::calculateOverdueMinutes(time_t dueDate) const {
@@ -1231,6 +1623,13 @@ string Library::formatDate(time_t value) const {
     char buf[80];
     struct tm* timeinfo = localtime(&value);
     strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", timeinfo);
+    return string(buf);
+}
+
+string Library::formatClock(time_t value) const {
+    char buf[16];
+    struct tm* timeinfo = localtime(&value);
+    strftime(buf, sizeof(buf), "%H:%M", timeinfo);
     return string(buf);
 }
 
@@ -1253,13 +1652,21 @@ bool Library::isBorrowedByOtherUser(Book* b) const {
 }
 
 void Library::recordPreview(Book* b) {
+    if (currentUser->isGuest) return;
     vector<string>& history = currentUser->readingHistory;
     bool firstPreview = find(history.begin(), history.end(), b->getTitle()) == history.end();
     history.push_back(b->getTitle());
-    if (firstPreview) currentUser->readingPoints += 5;
+    saveReviewRecord(b->getFilename(), 'H', currentUser->name);
+    if (firstPreview) {
+        currentUser->readingPoints += 5;
+        saveUserState(currentUser);
+    }
 }
 
 string Library::getReaderTitle() const {
+    if (currentUser != nullptr && currentUser->isGuest) {
+        return chineseInterface ? "無" : "None";
+    }
     int points = currentUser->readingPoints;
     if (points >= 100) return chineseInterface ? "圖書館傳奇" : "Library Legend";
     if (points >= 60) return chineseInterface ? "書海探險家" : "Book Explorer";

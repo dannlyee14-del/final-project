@@ -1,0 +1,240 @@
+type: story
+Title: Kingdom of ASCII
+Author: NYCU Art Group
+
+.fig
+                         |>>>                    |>>>
+                         |                        |
+                     _  _|_  _                _  _|_  _
+                    |;|_|;|_|;|              |;|_|;|_|;|
+                    \\.    .  /              \\.    .  /
+                     \\:  .  /                \\:  .  /
+                      ||:   |                  ||:   |
+                      ||:.  |                  ||:.  |
+                      ||:  .|                  ||:  .|
+                      ||:   |                  ||:   |
+.figend
+
+Long ago, beyond the highest mountains and across the widest seas, there stood a kingdom unlike any other in the world. It was called the Kingdom of ASCII. Travelers from distant lands came not for gold or riches, but for its magnificent castle and legendary library.
+
+The kingdom was ruled by King Alaric, a wise ruler who believed that knowledge was more valuable than treasure. Under his leadership, every child learned to read, write, and explore the wonders of science, art, and history.
+
+.fig
+           /\                         /\
+          /  \                       /  \
+         /____\                     /____\
+         | [] |                     | [] |
+         |    |                     |    |
+         |____|                     |____|
+.figend
+
+The capital city was filled with schools, workshops, and libraries. Instead of spending all their time training for war, citizens spent their days creating inventions, writing stories, and discovering new ideas.
+
+One curious boy named Leo visited the Royal Library every afternoon after school. He loved books more than anything else.
+
+.fig
+ _______________________________________
+| [] [] [] [] [] [] [] [] [] [] [] [] |
+| [] [] [] [] [] [] [] [] [] [] [] [] |
+| [] [] [] [] [] [] [] [] [] [] [] [] |
+|______________________________________|
+.figend
+
+One rainy evening, Leo discovered an old black book hidden behind a dusty shelf. The book had no title and no author's name. When he opened it, every page appeared blank.
+
+Confused, Leo flipped through the pages until a folded note slipped onto the floor.
+
+The note contained only one sentence:
+
+"The greatest treasure lies beneath the castle."
+
+Leo's heart began to race.
+
+The next day he shared the discovery with his friends Emma, Noah, and Sophia. Together they decided to investigate the mystery.
+
+.fig
+      _____________
+     /            /|
+    /____________/ |
+    |            | |
+    |   MAP      | |
+    |            | /
+    |____________|/
+.figend
+
+Emma searched ancient records.
+
+Noah studied engineering blueprints.
+
+Sophia examined old paintings and symbols hidden throughout the castle.
+
+After several weeks, they discovered clues pointing toward the old clock tower located behind the castle gardens.
+
+.fig
+           _____
+          /     \
+         |  XII |
+         | IX O |
+         | VI   |
+          \_____/
+             |
+             |
+.figend
+
+Late one evening, the four friends climbed the tower.
+
+Behind one of the giant gears, Noah discovered a loose stone. He pressed it carefully.
+
+RUMBLE...
+
+A hidden doorway slowly opened.
+
+A narrow staircase descended into darkness.
+
+"Should we go?" asked Sophia.
+
+Leo smiled.
+
+"We've come this far."
+
+The group lit their lanterns and began the descent.
+
+.fig
+           ||
+           ||
+          /  \
+         /____\
+        /      \
+       /________\
+.figend
+
+The staircase seemed endless.
+
+The deeper they traveled, the colder the air became.
+
+Strange symbols covered the walls. Some looked like letters, while others resembled mathematical formulas.
+
+Eventually, they reached a giant underground chamber.
+
+What they saw left them speechless.
+
+.fig
+ _______________________________________
+| [] [] [] [] [] [] [] [] [] [] [] [] |
+| [] [] [] [] [] [] [] [] [] [] [] [] |
+| [] [] [] [] [] [] [] [] [] [] [] [] |
+| [] [] [] [] [] [] [] [] [] [] [] [] |
+|______________________________________|
+.figend
+
+Before them stood the largest library they had ever seen.
+
+Rows upon rows of books stretched into the darkness.
+
+Ancient scrolls, forgotten journals, scientific discoveries, and lost histories filled countless shelves.
+
+"This is incredible," whispered Emma.
+
+They spent hours exploring.
+
+Every section contained knowledge that had been lost for centuries.
+
+.fig
+          ___________
+         /          /|
+        /__________/ |
+        |          | |
+        | BOOK OF  | |
+        | WISDOM   | /
+        |__________|/
+.figend
+
+At the center of the chamber stood a stone pedestal.
+
+Upon it rested a single book.
+
+Unlike the others, it appeared untouched by time.
+
+Leo carefully opened it.
+
+On the first page was a message written by the kingdom's founder.
+
+"Gold may disappear."
+
+"Power may fade."
+
+"But knowledge grows stronger every time it is shared."
+
+The friends finally understood.
+
+The treasure was not gold.
+
+The treasure was knowledge itself.
+
+.fig
+             *
+            /|\
+           / | \
+          /  |  \
+         /___|___\
+             |
+             |
+.figend
+
+The next morning, they reported their discovery to King Alaric.
+
+The king personally visited the underground library.
+
+When he saw the vast collection of knowledge hidden beneath his castle, he was amazed.
+
+After careful consideration, he made an important decision.
+
+The underground library would be opened to everyone.
+
+.fig
+      _______________________
+     |  GRAND OPENING TODAY |
+     |  UNDERGROUND LIBRARY |
+     |______________________|
+.figend
+
+News spread quickly throughout the kingdom.
+
+Scholars, scientists, artists, and inventors traveled from all corners of the world.
+
+The Kingdom of ASCII soon became famous as the center of learning and creativity.
+
+Years passed.
+
+Leo became a historian.
+
+Emma became the chief librarian.
+
+Noah became a brilliant engineer.
+
+Sophia became a celebrated artist.
+
+Together they helped preserve the knowledge hidden beneath the castle.
+
+.fig
+                         |>>>                    |>>>
+                         |                        |
+                     _  _|_  _                _  _|_  _
+                    |;|_|;|_|;|              |;|_|;|_|;|
+                    \\.    .  /              \\.    .  /
+                     \\:  .  /                \\:  .  /
+                      ||:   |                  ||:   |
+                      ||:.  |                  ||:.  |
+                      ||:  .|                  ||:  .|
+                      ||:   |                  ||:   |
+.figend
+
+From that day forward, the Kingdom of ASCII became known throughout the world not for its armies or wealth, but for something far greater:
+
+Its curiosity.
+
+Its imagination.
+
+And its belief that knowledge should be shared with everyone.
+
+THE END

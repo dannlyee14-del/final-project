@@ -1,0 +1,155 @@
+type: story
+Title: Three Little Pigs
+Author: L. Leslie Brooke (Extended Edition)
+
+.fig
+        /\___/\
+       (  o o  )
+       /   ^   \
+      /|       |\
+.figend
+
+Long ago, in a peaceful valley surrounded by green hills and forests, there lived three little pigs with their mother.
+
+Their small cottage was warm and comfortable, but as the pigs grew older, their mother knew it was time for them to start their own lives.
+
+"My children," she said one morning, "the world is full of opportunities, but it is also full of dangers. You must learn to take care of yourselves."
+
+The three pigs listened carefully.
+
+The first pig was cheerful but lazy.
+
+The second pig was clever but impatient.
+
+The third pig was hardworking and thoughtful.
+
+.fig
+           /\      /\      /\
+          /  \    /  \    /  \
+         ( P1 )  ( P2 )  ( P3 )
+          \__/    \__/    \__/
+.figend
+
+The next day, the three pigs packed their belongings and left home.
+
+Each pig planned to build a house.
+
+The first pig walked only a short distance before meeting a farmer carrying a bundle of straw.
+
+"May I have some straw?" asked the pig.
+
+"Of course," replied the farmer.
+
+The first pig quickly built a straw house.
+
+It took less than one afternoon.
+
+"Perfect!" he said happily.
+
+Then he spent the rest of the day sleeping.
+
+.fig
+             ______
+            /     /
+           /_____/
+           |     |
+           |     |
+           |_____|
+.figend
+
+Meanwhile, the second pig met a woodcutter carrying sticks.
+
+"May I have some wood?" he asked.
+
+The woodcutter agreed.
+
+The second pig worked harder than his brother.
+
+Within two days, he completed a wooden house.
+
+"Strong enough," he said proudly.
+
+He then spent his time fishing and exploring the river.
+
+.fig
+             ||||||
+             ||||||
+            /______\
+            |      |
+            |      |
+            |______|
+.figend
+
+The third pig traveled much farther.
+
+Eventually, he reached a village where builders were constructing homes from brick.
+
+The pig carefully studied their work.
+
+He purchased bricks and began building.
+
+Day after day he worked.
+
+While his brothers relaxed, he continued laying bricks.
+
+The project took weeks.
+
+But when it was finished, the house looked magnificent.
+
+.fig
+          ___________
+         | []  []  |
+         |         |
+         |  BRICK  |
+         |  HOUSE  |
+         |_________|
+.figend
+
+One evening, a hungry wolf entered the valley.
+
+The wolf had sharp teeth.
+
+Bright yellow eyes.
+
+And an even sharper appetite.
+
+When he smelled pigs nearby, he grinned.
+
+"Dinner."
+
+The wolf soon discovered the straw house.
+
+He knocked loudly.
+
+BOOM! BOOM! BOOM!
+
+"Little pig, little pig, let me come in."
+
+"No!"
+
+replied the pig.
+
+.fig
+            /\_/\\
+          =( °w° )=
+            )   (
+           (__ __)
+.figend
+
+The wolf laughed.
+
+"Then I'll huff and I'll puff and I'll blow your house down!"
+
+The wolf inhaled deeply.
+
+HUUUUUFF!
+
+PUUUUUFF!
+
+The straw house exploded into pieces.
+
+The terrified pig ran away as fast as he could.
+
+Fortunately, he escaped and hurried to his brother's wooden house.
+
+To be continued...

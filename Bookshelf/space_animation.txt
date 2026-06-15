@@ -1,0 +1,208 @@
+type: story
+Title: Journey Through Space
+Author: Terminal Animation Studio
+
+.fig
+        *
+
+      .
+                .
+           /\
+          /  \\
+         /____\\
+           ||
+           ||
+          /||\\
+.figend
+
+.fig
+
+           *
+
+      .
+                .
+           /\
+          /  \\
+         /____\\
+           ||
+           ||
+          /||\\
+.figend
+
+.fig
+        *
+
+      .
+                .
+           /\
+          /  \\
+         /____\\
+           ||
+           ||
+          /||\\
+.figend
+
+Year 2150.
+
+Humanity had finally achieved what generations of scientists had dreamed of for centuries.
+
+The stars were no longer unreachable.
+
+The spacecraft Starlight One stood proudly on Launch Platform 7, preparing for the first interstellar mission in human history.
+
+Thousands of engineers, scientists, and reporters gathered to witness the event.
+
+Captain Elena Morris stood inside the command deck, reviewing the final systems check.
+
+"Navigation systems online."
+
+"Life support online."
+
+"Quantum drive ready."
+
+Everything was prepared.
+
+.fig
+        _____________
+       /             \
+      /   STARLIGHT   \
+     /      ONE        \
+    /___________________\
+           ||||
+           ||||
+.figend
+
+At exactly 08:00 UTC, mission control issued the final command.
+
+"Starlight One, you are cleared for launch."
+
+A deep rumble shook the ground.
+
+Flames erupted beneath the spacecraft.
+
+The rocket slowly rose into the sky.
+
+The crowd cheered.
+
+Humanity's greatest journey had begun.
+
+For the first few days, everything proceeded according to plan.
+
+The crew adjusted to life in deep space.
+
+They conducted experiments, monitored systems, and observed distant stars.
+
+Outside the observation window, countless points of light filled the darkness.
+
+Some were stars.
+
+Some were planets.
+
+Some were galaxies millions of light-years away.
+
+.fig
+            *
+      *            *
+                *
+           .       .
+      *                 *
+.figend
+
+One evening, while scanning nearby space, the ship's radar detected something unusual.
+
+"Captain," said Lieutenant Harris.
+
+"We have an unidentified object."
+
+The object was enormous.
+
+Far larger than any spacecraft ever built by humans.
+
+Even stranger, it appeared completely motionless.
+
+The crew changed course.
+
+As Starlight One approached, the object slowly emerged from the darkness.
+
+It was an ancient space station.
+
+.fig
+      ____________________
+     /___________________/|
+     |                   ||
+     |   SPACE STATION   ||
+     |                   ||
+     |___________________||
+.figend
+
+No known records mentioned such a structure.
+
+No signals were being transmitted.
+
+No lights were visible.
+
+Yet the station remained perfectly intact.
+
+After careful discussion, Captain Morris approved an exploration mission.
+
+A small team boarded a shuttle and traveled toward the station.
+
+The docking bay opened automatically.
+
+No one knew why.
+
+No one knew who built it.
+
+And no one knew what they were about to discover.
+
+.fig
+          __________
+         / ________ \
+        | |        | |
+        | | AIRLOCK| |
+        | |________| |
+         \__________/
+.figend
+
+Inside the station, the walls were covered with symbols unlike any language ever seen on Earth.
+
+Blue lights illuminated endless corridors.
+
+Strange machines hummed quietly.
+
+The station seemed alive.
+
+Yet there was nobody there.
+
+The deeper they explored, the more questions appeared.
+
+At the center of the station stood a giant spherical chamber.
+
+Floating above the floor was a glowing map of the galaxy.
+
+Thousands of star systems appeared as points of light.
+
+Then the map changed.
+
+A new route appeared.
+
+A route leading far beyond any known region of space.
+
+Captain Morris stared silently.
+
+Humanity had just discovered evidence of an advanced civilization.
+
+And perhaps...
+
+an invitation.
+
+.fig
+           .-.
+        .-(   )-.
+       (___.__)__)
+          /|\
+         / | \
+        /  |  \
+.figend
+
+To be continued...

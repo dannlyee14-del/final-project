@@ -1,0 +1,203 @@
+type: science
+Title: Math Magic
+Author: Danny
+
+.fig
+          *
+         /|\
+        / | \
+       /__|__\
+          |
+.figend
+
+Welcome to the Academy of Math Magic.
+
+Deep within the mountains stood a mysterious school where students learned to control magical energy through mathematics.
+
+Most people believed magic came from wands.
+
+They were wrong.
+
+The greatest wizards knew the truth.
+
+Numbers were the source of all power.
+
+.fig
+      __________________
+     | MATH MAGIC SCHOOL|
+     |__________________|
+.figend
+
+One day, a young student named Alex received a letter.
+
+"Congratulations. You have been accepted into the Academy of Math Magic."
+
+Excited and nervous, Alex began his journey.
+
+When he arrived, Professor Euler greeted him.
+
+"Before you may enter, you must solve the first challenge."
+
+A glowing number appeared.
+
+?5+3?
+
+Alex smiled.
+
+The answer appeared before him.
+
+A magical gate slowly opened.
+
+.fig
+        __________
+       |  GATE   |
+       | OPENED! |
+       |_________|
+.figend
+
+Inside the academy, students learned many forms of mathematical magic.
+
+Addition magic.
+
+Multiplication magic.
+
+Geometry magic.
+
+Even the legendary Calculus Arts.
+
+During his first lesson, Alex encountered another challenge.
+
+?4*6?
+
+The classroom suddenly lit up.
+
+"Excellent," said Professor Euler.
+
+"Multiplication strengthens magical energy."
+
+.fig
+          /\ /\ 
+         ( o.o )
+          > ^ <
+.figend
+
+Weeks later, Alex entered the Hall of Puzzles.
+
+Ancient wizards had left challenges behind.
+
+The first puzzle appeared on a stone wall.
+
+?sqrt(25)?
+
+The symbols glowed brightly.
+
+The hidden door opened.
+
+Beyond it was a chamber filled with treasure.
+
+.fig
+      ________________
+     | TREASURE ROOM |
+     |_______________|
+.figend
+
+Inside the chamber stood a crystal orb.
+
+The orb contained centuries of knowledge.
+
+But before Alex could claim it, a guardian appeared.
+
+The guardian spoke.
+
+"Only those who understand powers may continue."
+
+A new challenge appeared.
+
+?power(2,5)?
+
+The orb began to glow.
+
+The guardian stepped aside.
+
+.fig
+            ___
+          .'   '.
+         /  * *  \
+         |   O   |
+         \  ---  /
+          '.___.'
+.figend
+
+As the years passed, Alex became one of the academy's strongest students.
+
+However, his greatest challenge still awaited him.
+
+Deep beneath the academy was the Chamber of Infinity.
+
+Few students had ever entered.
+
+Even fewer returned.
+
+At the center of the chamber stood an ancient machine.
+
+Its surface was covered with numbers.
+
+A message appeared:
+
+"Knowledge is greater than power."
+
+Then the final challenge emerged.
+
+?50*2+100/5?
+
+Alex carefully followed the order of operations.
+
+The machine rumbled.
+
+The walls shook.
+
+A beam of light shot toward the ceiling.
+
+.fig
+            /\
+           /  \
+          /++++\
+         /______\
+            ||
+.figend
+
+Suddenly, thousands of magical books appeared.
+
+Each contained discoveries from the greatest mathematicians in history.
+
+Alex realized something important.
+
+Mathematics was not merely about finding answers.
+
+It was a way to understand the universe.
+
+Every formula told a story.
+
+Every equation revealed a secret.
+
+.fig
+      ____________________
+     | MASTER OF NUMBERS |
+     |___________________|
+.figend
+
+When Alex graduated, he became a teacher.
+
+He taught future generations the same lesson.
+
+Numbers are not just symbols.
+
+They are keys that unlock endless possibilities.
+
+Before leaving the academy, he wrote one final message above the entrance:
+
+"Magic begins with curiosity."
+
+And the Academy of Math Magic continued inspiring students for centuries to come.
+
+THE END
