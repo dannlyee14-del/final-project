@@ -11,6 +11,9 @@
 bool Book::chineseInterface = false;
 
 namespace {
+const string RED_TEXT = "\033[1;31m";
+const string RESET_TEXT = "\033[0m";
+
 string trimLine(string s) {
     while (!s.empty() && isspace(static_cast<unsigned char>(s.front()))) s.erase(s.begin());
     while (!s.empty() && isspace(static_cast<unsigned char>(s.back()))) s.pop_back();
@@ -69,6 +72,63 @@ string resolveInlineEquations(string s) {
         q1 = s.find('?', q1 + ans.length());
     }
     return s;
+}
+
+string lowerText(string text) {
+    transform(text.begin(), text.end(), text.begin(),
+              [](unsigned char ch) { return static_cast<char>(tolower(ch)); });
+    return text;
+}
+
+string compactSearchText(const string& text) {
+    string result;
+    for (unsigned char ch : text) {
+        if (isalnum(ch) || ch >= 128) {
+            result += static_cast<char>(tolower(ch));
+        }
+    }
+    return result;
+}
+
+bool isLooseSubsequence(const string& text, const string& query) {
+    if (query.size() < 3) return false;
+    size_t matched = 0;
+    for (char ch : text) {
+        if (matched < query.size() && ch == query[matched]) matched++;
+    }
+    return matched == query.size();
+}
+
+bool containsSearchText(const string& text, const string& query) {
+    string loweredText = lowerText(text);
+    string loweredQuery = lowerText(query);
+    if (loweredText.find(loweredQuery) != string::npos) return true;
+
+    string compactText = compactSearchText(text);
+    string compactQuery = compactSearchText(query);
+    if (!compactQuery.empty() && compactText.find(compactQuery) != string::npos) return true;
+    if (isLooseSubsequence(compactText, compactQuery)) return true;
+
+    stringstream words(loweredQuery);
+    string word;
+    bool hasWord = false;
+    while (words >> word) {
+        hasWord = true;
+        string compactWord = compactSearchText(word);
+        bool wordMatch = loweredText.find(word) != string::npos ||
+                         (!compactWord.empty() && compactText.find(compactWord) != string::npos) ||
+                         isLooseSubsequence(compactText, compactWord);
+        if (!wordMatch) return false;
+    }
+    return hasWord;
+}
+
+string firstPageMessage(bool chineseInterface) {
+    return chineseInterface ? "已是第一頁。" : "Already on the first page.";
+}
+
+string lastPageMessage(bool chineseInterface) {
+    return chineseInterface ? "已到最後一頁。" : "Already on the last page.";
 }
 
 void layoutContentWithFigures(const string& filename,
@@ -247,6 +307,7 @@ bool Book::readPageOrMenu(int& page) {
 
 void Book::preview() {
     int cur = 0; readContent();
+    string pageNotice;
     while (1) {
         system("clear");
         cout << title << "\n" << string(PAGE_W, '=') << "\n\n";
@@ -266,18 +327,37 @@ void Book::preview() {
         cout << string(PAGE_W, '-') << "\n\n";
         if (cur < (int)page_vec.size()) page_vec[cur]->showPageCont();
         cout << "\n" << string(PAGE_W/2-4, ' ')
-             << (chineseInterface ? "頁碼 " : "Page ") << cur
+             << (chineseInterface ? "頁碼 " : "Page ") << (cur + 1)
              << "\n" << string(PAGE_W, '=') << "\n";
+        if (!pageNotice.empty()) {
+            cout << RED_TEXT << pageNotice << RESET_TEXT << endl;
+        }
         if (chineseInterface) cout << " [→]:下一頁  [←]:上一頁  [J]:跳頁  [End]:返回\n";
         else cout << " [→]:Next  [←]:Prev  [J]:Jump  [End]:Menu\n";
         char op = getKey();
-        if (op == 'N' && cur < (int)page_vec.size()-1) cur++;
-        else if (op == 'P' && cur > 0) cur--;
+        pageNotice.clear();
+        if (op == 'N') {
+            if (cur < (int)page_vec.size() - 1) cur++;
+            else pageNotice = lastPageMessage(chineseInterface);
+        }
+        else if (op == 'P') {
+            if (cur > 0) cur--;
+            else pageNotice = firstPageMessage(chineseInterface);
+        }
         else if (op == 'J') {
             cout << (chineseInterface ? "跳至頁碼：" : "Jump to: ");
             int t;
             if (!readPageOrMenu(t)) break;
-            if (t >= 0 && t < (int)page_vec.size()) cur = t;
+            if (page_vec.empty()) continue;
+            if (t < 1) {
+                cur = 0;
+                pageNotice = firstPageMessage(chineseInterface);
+            } else if (t > (int)page_vec.size()) {
+                cur = page_vec.size() - 1;
+                pageNotice = lastPageMessage(chineseInterface);
+            } else {
+                cur = t - 1;
+            }
         } else if (op == 'M') break;
     }
 }
@@ -293,7 +373,9 @@ void Book::readContent() {
 bool Book::searchContent(string q) {
     if (page_vec.empty()) readContent();
     for (auto p : page_vec) {
-        for (int i=0; i<PAGE_H; i++) if (string(p->getPageCont()[i]).find(q) != string::npos) return true;
+        for (int i=0; i<PAGE_H; i++) {
+            if (containsSearchText(string(p->getPageCont()[i]), q)) return true;
+        }
     }
     return false;
 }
@@ -395,18 +477,18 @@ void MorseBook::readContent() {
 }
 
 char MorseBook::translateMorse(string code) {
-    if (code == ".-") return 'A'; if (code == "-...") return 'B'; if (code == "-.-.") return 'C';
-    if (code == "-..") return 'D'; if (code == ".") return 'E'; if (code == "..-.") return 'F';
-    if (code == "--.") return 'G'; if (code == "....") return 'H'; if (code == "..") return 'I';
-    if (code == ".---") return 'J'; if (code == "-.-") return 'K'; if (code == ".-..") return 'L';
-    if (code == "--") return 'M'; if (code == "-.") return 'N'; if (code == "---") return 'O';
-    if (code == ".--.") return 'P'; if (code == "--.-") return 'Q'; if (code == ".-.") return 'R';
-    if (code == "...") return 'S'; if (code == "-") return 'T'; if (code == "..-") return 'U';
-    if (code == "...-") return 'V'; if (code == ".--") return 'W'; if (code == "-..-") return 'X';
-    if (code == "-.--") return 'Y'; if (code == "--..") return 'Z';if (code == "-----") return '0';
-    if (code == ".----") return '1'; if (code == "..---") return '2'; if (code == "...--") return '3';
-    if (code == "....-") return '4'; if (code == ".....") return '5'; if (code == "-....") return '6';
-    if (code == "--...") return '7'; if (code == "---..") return '8'; if (code == "----.") return '9';
+    static const map<string, char> morse = {
+        {".-", 'A'}, {"-...", 'B'}, {"-.-.", 'C'}, {"-..", 'D'}, {".", 'E'},
+        {"..-.", 'F'}, {"--.", 'G'}, {"....", 'H'}, {"..", 'I'}, {".---", 'J'},
+        {"-.-", 'K'}, {".-..", 'L'}, {"--", 'M'}, {"-.", 'N'}, {"---", 'O'},
+        {".--.", 'P'}, {"--.-", 'Q'}, {".-.", 'R'}, {"...", 'S'}, {"-", 'T'},
+        {"..-", 'U'}, {"...-", 'V'}, {".--", 'W'}, {"-..-", 'X'}, {"-.--", 'Y'},
+        {"--..", 'Z'}, {"-----", '0'}, {".----", '1'}, {"..---", '2'},
+        {"...--", '3'}, {"....-", '4'}, {".....", '5'}, {"-....", '6'},
+        {"--...", '7'}, {"---..", '8'}, {"----.", '9'}
+    };
+    auto it = morse.find(code);
+    if (it != morse.end()) return it->second;
     return '?';
 }
 
@@ -434,6 +516,7 @@ char** FigBook::get_figure(fstream& fin, int* h) {
 void FigBook::preview() {
     readContent();
     int cur = 0;
+    string pageNotice;
     while (true) {
         system("clear");
         cout << title << "\n" << string(PAGE_W, '=') << "\n\n";
@@ -453,20 +536,39 @@ void FigBook::preview() {
         cout << string(PAGE_W, '-') << "\n\n";
         if (cur < (int)page_vec.size()) page_vec[cur]->showPageCont();
         cout << "\n" << string(PAGE_W / 2 - 4, ' ')
-             << (Book::isChinese() ? "頁碼 " : "Page ") << cur
+             << (Book::isChinese() ? "頁碼 " : "Page ") << (cur + 1)
              << "\n" << string(PAGE_W, '=') << "\n";
+        if (!pageNotice.empty()) {
+            cout << RED_TEXT << pageNotice << RESET_TEXT << endl;
+        }
         cout << (Book::isChinese()
             ? " [→]:下一頁  [←]:上一頁  [J]:跳頁  [End]:返回\n"
             : " [→]:Next  [←]:Prev  [J]:Jump  [End]:Menu\n");
 
         char op = getKey();
-        if (op == 'N' && cur < (int)page_vec.size() - 1) cur++;
-        else if (op == 'P' && cur > 0) cur--;
+        pageNotice.clear();
+        if (op == 'N') {
+            if (cur < (int)page_vec.size() - 1) cur++;
+            else pageNotice = lastPageMessage(Book::isChinese());
+        }
+        else if (op == 'P') {
+            if (cur > 0) cur--;
+            else pageNotice = firstPageMessage(Book::isChinese());
+        }
         else if (op == 'J') {
             cout << (Book::isChinese() ? "跳至頁碼：" : "Jump to: ");
             int t;
             if (!readPageOrMenu(t)) break;
-            if (t >= 0 && t < (int)page_vec.size()) cur = t;
+            if (page_vec.empty()) continue;
+            if (t < 1) {
+                cur = 0;
+                pageNotice = firstPageMessage(Book::isChinese());
+            } else if (t > (int)page_vec.size()) {
+                cur = page_vec.size() - 1;
+                pageNotice = lastPageMessage(Book::isChinese());
+            } else {
+                cur = t - 1;
+            }
         } else if (op == 'M') break;
     }
 }

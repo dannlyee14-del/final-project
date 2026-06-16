@@ -2,6 +2,10 @@
 #include <algorithm>
 #include <iostream>
 #include <iomanip>
+<<<<<<< HEAD
+=======
+#include <sstream>
+>>>>>>> 4951981 (Fix input)
 #include <cctype>
 #include <cstdlib>
 #include <unistd.h>
@@ -91,14 +95,36 @@ string fitCell(const string& text, int width) {
     return result;
 }
 
+int displayWidth(const string& text) {
+    int width = 0;
+    size_t pos = 0;
+    while (pos < text.size()) {
+        string bytes;
+        unsigned int cp = 0;
+        if (!readUtf8CodePoint(text, pos, bytes, cp)) break;
+        width += isCjkCodePoint(cp) ? 2 : 1;
+    }
+    return width;
+}
+
 string displayUserName(User* user, bool chineseInterface) {
     if (user == nullptr) return "";
     if (user->isGuest) return chineseInterface ? "訪客" : "Guest";
     return user->name;
 }
 
+string pointGainMessage(int gained, int total, bool chineseInterface) {
+    if (chineseInterface) {
+        return "積分 +" + to_string(gained) + "，目前 " + to_string(total) + " 分。";
+    }
+    return "Points +" + to_string(gained) + ", total " + to_string(total) + ".";
 }
 
+<<<<<<< HEAD
+=======
+}
+
+>>>>>>> 4951981 (Fix input)
 Library::Library() {
     idx = 0; 
     exit = false; 
@@ -221,6 +247,150 @@ string normalizeTxtFilename(string filename) {
         return filename;
     }
     return filename + extension;
+}
+
+string lowerText(string text) {
+    transform(text.begin(), text.end(), text.begin(),
+              [](unsigned char ch) { return static_cast<char>(tolower(ch)); });
+    return text;
+}
+
+string compactSearchText(const string& text) {
+    string result;
+    for (unsigned char ch : text) {
+        if (isalnum(ch) || ch >= 128) {
+            result += static_cast<char>(tolower(ch));
+        }
+    }
+    return result;
+}
+
+bool isLooseSubsequence(const string& text, const string& query) {
+    if (query.size() < 3) return false;
+    size_t matched = 0;
+    for (char ch : text) {
+        if (matched < query.size() && ch == query[matched]) matched++;
+    }
+    return matched == query.size();
+}
+
+bool containsText(const string& text, const string& query) {
+    string loweredText = lowerText(text);
+    string loweredQuery = lowerText(query);
+    if (loweredText.find(loweredQuery) != string::npos) return true;
+
+    string compactText = compactSearchText(text);
+    string compactQuery = compactSearchText(query);
+    if (!compactQuery.empty() && compactText.find(compactQuery) != string::npos) return true;
+    if (isLooseSubsequence(compactText, compactQuery)) return true;
+
+    stringstream words(loweredQuery);
+    string word;
+    bool hasWord = false;
+    while (words >> word) {
+        hasWord = true;
+        string compactWord = compactSearchText(word);
+        bool wordMatch = loweredText.find(word) != string::npos ||
+                         (!compactWord.empty() && compactText.find(compactWord) != string::npos) ||
+                         isLooseSubsequence(compactText, compactWord);
+        if (!wordMatch) return false;
+    }
+    return hasWord;
+}
+
+string removeTxtExtension(string filename) {
+    const string extension = ".txt";
+    string lowered = lowerText(filename);
+    if (lowered.size() >= extension.size() &&
+        lowered.substr(lowered.size() - extension.size()) == extension) {
+        return filename.substr(0, filename.size() - extension.size());
+    }
+    return filename;
+}
+
+bool filenameMatches(const string& filename, const string& query) {
+    string normalizedQuery = query;
+    if (lowerText(normalizedQuery).find(".txt") == string::npos) {
+        normalizedQuery += ".txt";
+    }
+    return containsText(filename, query) ||
+           containsText(removeTxtExtension(filename), query) ||
+           containsText(filename, normalizedQuery);
+}
+
+string displayCategoryName(const string& category, bool chineseInterface) {
+    string lowered = lowerText(category);
+    if (!chineseInterface) {
+        if (lowered == "story") return "Story";
+        if (lowered == "science") return "Math";
+        if (lowered == "animation") return "Animation";
+        if (lowered == "morse") return "Morse Code";
+        if (lowered == "picture") return "Picture Book";
+        if (lowered == "image_book") return "Image Book";
+        if (lowered == "mature fiction") return "Mature Books";
+        if (lowered == "mature mystery") return "Mature Books";
+        if (lowered == "mature psychology") return "Mature Books";
+        return category;
+    }
+
+    if (lowered == "story") return "故事";
+    if (lowered == "science") return "數學";
+    if (lowered == "animation") return "動畫";
+    if (lowered == "morse") return "摩斯密碼";
+    if (lowered == "picture") return "圖文書";
+    if (lowered == "image_book") return "圖片書";
+    if (lowered == "mature fiction") return "成人書籍";
+    if (lowered == "mature mystery") return "成人書籍";
+    if (lowered == "mature psychology") return "成人書籍";
+    return category;
+}
+
+string displayBookIconLabel(const string& category, bool chineseInterface) {
+    string lowered = lowerText(category);
+    if (chineseInterface) return displayCategoryName(category, true);
+
+    if (lowered == "story") return "Story";
+    if (lowered == "science") return "Math";
+    if (lowered == "animation") return "Anime";
+    if (lowered == "morse") return "Morse";
+    if (lowered == "picture") return "Picture";
+    if (lowered == "image_book") return "Image";
+    if (lowered == "mature fiction") return "Fiction";
+    if (lowered == "mature mystery") return "Mystery";
+    if (lowered == "mature psychology") return "Psychology";
+    return category;
+}
+
+string defaultCategoryForType(char typeCode) {
+    switch (toupper(static_cast<unsigned char>(typeCode))) {
+        case 'T': return "story";
+        case 'F': return "picture";
+        case 'M': return "science";
+        case 'A': return "animation";
+        case 'C': return "morse";
+        default: return "story";
+    }
+}
+
+string centerCell(const string& text, int width) {
+    string clipped = fitCell(text, width);
+    while (!clipped.empty() && clipped.back() == ' ') clipped.pop_back();
+    int textWidth = displayWidth(clipped);
+    int left = max(0, (width - textWidth) / 2);
+    int right = max(0, width - textWidth - left);
+    return string(left, ' ') + clipped + string(right, ' ');
+}
+
+void printSearchResultLine(int index, Book* book, bool borrowed, bool chineseInterface) {
+    cout << index << ". " << book->getTitle()
+         << " [" << displayCategoryName(book->getCategory(), chineseInterface) << "] "
+         << (chineseInterface ? "作者：" : "by ") << book->getAuthor()
+         << " (" << (chineseInterface ? "借閱：" : "Borrows: ")
+         << book->getBorrowCount() << ")";
+    if (borrowed) {
+        cout << RED << (chineseInterface ? " [已借出]" : " [Borrowed]") << NONE;
+    }
+    cout << endl;
 }
 
 void ensureUserDataDirectory() {
@@ -446,7 +616,11 @@ void Library::coutBookIconLegacy(int b) {
                 if (b + i == idx - 1) cout << WHITE_B;
                 if (j == 0 || j == 4) cout << "###############";
                 else if (j == 1 || j == 3) cout << "#             #";
+<<<<<<< HEAD
                 else if (j == 2) cout << "#      " << t[0] << "      #";
+=======
+                else if (j == 2) cout << "#" << centerCell(displayBookIconLabel(books[b+i]->getCategory(), chineseInterface), 13) << "#";
+>>>>>>> 4951981 (Fix input)
                 else if (j == 5) cout << setw(15) << left << t.substr(0, 15);
                 else if (j == 6) cout << setw(15) << left << (t.size() > 15 ? t.substr(15, 15) : "");
                 cout << NONE;
@@ -471,10 +645,17 @@ void Library::coutMainPage() {
     cout << "  " << GREEN << (chineseInterface ? "使用者" : "USER") << NONE << "  " << displayUserName(currentUser, chineseInterface)
          << "    " << CYAN << (chineseInterface ? "年齡" : "AGE") << NONE << "  " << currentUser->age
          << "    " << YELLOW << (chineseInterface ? "積分" : "POINTS") << NONE << "  " << currentUser->readingPoints
+<<<<<<< HEAD
          << "    " << RED << (chineseInterface ? "停權" : "BAN") << NONE << "  "
          << (isUserBanned() ? (chineseInterface ? "封禁到 " : "Until ") + formatClock(currentUser->banUntil)
                             : (chineseInterface ? "無" : "None"))
          << "    " << MAGENTA << (chineseInterface ? "稱號" : "LEVEL") << NONE << "  " << getReaderTitle() << endl;
+=======
+        << "    " << RED << (chineseInterface ? "停權" : "BAN") << NONE << "  "
+        << (isUserBanned() ? (chineseInterface ? "封禁到 " : "Until ") + formatClock(currentUser->banUntil)
+                           : (chineseInterface ? "無" : "None"))
+        << "    " << MAGENTA << (chineseInterface ? "稱號" : "LEVEL") << NONE << "  " << getReaderTitle() << endl;
+>>>>>>> 4951981 (Fix input)
     printThemeLine('-');
 
     cout << "  ";
@@ -536,8 +717,8 @@ void Library::coutBookIcon(int b) {
                 if (j == 0 || j == 4) cout << "###############";
                 else if (j == 1 || j == 3) cout << "#             #";
                 else if (j == 2) {
-                    char initial = t.empty() ? '?' : t[0];
-                    cout << "#      " << initial << "      #";
+                    string label = displayBookIconLabel(book->getCategory(), chineseInterface);
+                    cout << "#" << centerCell(label, cardWidth - 2) << "#";
                 } else if (j == 5) {
                     cout << fitCell(t, cardWidth);
                 } else if (j == 6) {
@@ -582,9 +763,22 @@ void Library::searchBook() {
              << (chineseInterface ? "借閱次數" : "Borrows") << endl;
         cout << string(45, '-') << endl;
         for (int i = 0; i < (int)rankList.size(); i++) {
+<<<<<<< HEAD
             cout << left << setw(5) << i + 1 
                  << setw(30) << rankList[i]->getTitle() 
                  << rankList[i]->getBorrowCount() << endl;
+=======
+            bool borrowed = borrowedByUser.find(rankList[i]->getTitle()) != borrowedByUser.end();
+            cout << left << setw(5) << i + 1 
+                 << setw(30) << rankList[i]->getTitle() 
+                 << rankList[i]->getBorrowCount();
+            if (borrowed) {
+                cout << RED << (chineseInterface ? " [已借出]" : " [Borrowed]") << NONE;
+            } else {
+                cout << GREEN << (chineseInterface ? " [可借閱]" : " [Available]") << NONE;
+            }
+            cout << endl;
+>>>>>>> 4951981 (Fix input)
         }
         cout << (chineseInterface ? "\n按 Enter 返回..." : "\nPress Enter to return...");
         waitForHome();
@@ -592,12 +786,41 @@ void Library::searchBook() {
     }
 
     string query;
+<<<<<<< HEAD
     cout << (chineseInterface ? "關鍵字：" : "Keyword: ");
     if (!readLineOrHome(query)) return;
+=======
+    int age = currentUser == nullptr ? 0 : currentUser->age;
+    if (choice == 4) {
+        vector<string> categories;
+        for (Book* b : books) {
+            if (b->isAdultOnly() && age < 18) continue;
+            string displayCategory = displayCategoryName(b->getCategory(), chineseInterface);
+            if (find(categories.begin(), categories.end(), displayCategory) == categories.end()) {
+                categories.push_back(displayCategory);
+            }
+        }
+        sort(categories.begin(), categories.end());
+        int categoryChoice = chooseMenu(chineseInterface ? "請選擇分類" : "Choose Category", categories);
+        if (categoryChoice == 0) return;
+        query = categories[categoryChoice - 1];
+    } else {
+        cout << (choice == 5 ?
+            (chineseInterface ? "請輸入內文：" : "Enter content keyword: ") :
+            (chineseInterface ? "關鍵字：" : "Keyword: "));
+        if (!readLineOrHome(query)) return;
+        if (choice == 5 && query.empty()) {
+            cout << (chineseInterface ? "請輸入內文。" : "Please enter content.") << endl;
+            waitForHome();
+            return;
+        }
+    }
+>>>>>>> 4951981 (Fix input)
 
     cout << (chineseInterface ? "\n--- 搜尋結果 ---\n" : "\n--- Search Results ---\n");
     int foundCount = 0;
 
+<<<<<<< HEAD
     for (auto b : getVisibleBooks()) {
         bool isMatch = false;
         
@@ -614,6 +837,23 @@ void Library::searchBook() {
                 << (chineseInterface ? "作者：" : "by ") << b->getAuthor()
                 << " (" << (chineseInterface ? "借閱：" : "Borrows: ")
                 << b->getBorrowCount() << ")" << endl;
+=======
+    for (auto b : books) {
+        if (b->isAdultOnly() && age < 18) continue;
+
+        bool isMatch = false;
+        
+        if (choice == 1 && filenameMatches(b->getFilename(), query)) isMatch = true;
+        else if (choice == 2 && containsText(b->getTitle(), query)) isMatch = true;
+        else if (choice == 3 && containsText(b->getAuthor(), query)) isMatch = true;
+        else if (choice == 4 && containsText(displayCategoryName(b->getCategory(), chineseInterface), query)) isMatch = true;
+        else if (choice == 5 && b->searchContent(query)) isMatch = true;
+
+        if (isMatch) {
+            bool borrowed = borrowedByUser.find(b->getTitle()) != borrowedByUser.end();
+            foundCount++;
+            printSearchResultLine(foundCount, b, borrowed, chineseInterface);
+>>>>>>> 4951981 (Fix input)
         }
     }
 
@@ -647,6 +887,19 @@ void Library::addBook() {
                                "Filename ([End] Home): ");
     if (!readLineOrHome(fn)) return;
     fn = normalizeTxtFilename(fn);
+    ifstream existingList("./Database/bookList.txt");
+    string existingFilename;
+    char existingType;
+    while (existingList >> existingFilename >> existingType) {
+        if (lowerText(existingFilename) == lowerText(fn)) {
+            cout << RED << (chineseInterface ? "此檔案已存在於書單中，沒有重複新增。" :
+                                               "This file is already in the book list; it was not added again.")
+                 << NONE << endl;
+            waitForHome();
+            return;
+        }
+    }
+
     vector<string> typeOptions = chineseInterface ?
         vector<string>{"一般文字書", "ASCII 圖像書", "數學互動書", "動畫書", "摩斯密碼書"} :
         vector<string>{"Text Book", "ASCII Art Book", "Math Interactive Book",
@@ -655,6 +908,7 @@ void Library::addBook() {
     if (typeChoice == 0) return;
     const string typeCodes = "TFMAC";
     ts = string(1, typeCodes[typeChoice - 1]);
+    string category = defaultCategoryForType(ts[0]);
     vector<string> ageOptions = chineseInterface ?
         vector<string>{"全年齡", "18 歲以上"} :
         vector<string>{"All Ages", "18 and Older"};
@@ -669,7 +923,7 @@ void Library::addBook() {
         cout << (chineseInterface ? "作者：" : "Author: ");
         if (!readLineOrHome(a)) return;
         ofstream o("./Bookshelf/" + fn); 
-        o << "type: new\nTitle: " << t << "\nAge: "
+        o << "type: " << category << "\nTitle: " << t << "\nAge: "
           << (adultOnly ? "18+" : "all") << "\nAuthor: " << a << "\nContent here.\n";
     }
     ofstream l("./Database/bookList.txt", ios::app); 
@@ -834,6 +1088,7 @@ void Library::borrowBook(Book* b) {
     borrowedByUser[b->getTitle()] = currentUser->name;
     currentUser->readingPoints += 10;
     saveUserState(currentUser);
+    statusMsg = pointGainMessage(10, currentUser->readingPoints, chineseInterface);
     
     time_t dueDate = time(0) + borrowMinutes * 60;
     currentUser->dueDates.push_back(dueDate);
@@ -942,6 +1197,13 @@ void Library::viewAccount() {
                                 accountOptions);
         if (choice != 0) {
             if (choice == 1) {
+                if (currentUser->isGuest) {
+                    cout << (chineseInterface ?
+                        "\e[1;31m提醒：訪客帳號無法歸還書籍！\e[0m" :
+                        "\e[1;31mWarning: Guest accounts cannot return books!\e[0m") << endl;
+                    if (!waitForHome()) return;
+                    continue;
+                }
                 if (currentUser->borrowedBooks.empty()) {
                     cout << (chineseInterface ? "目前沒有可歸還的書籍。" :
                                                "You have no books to return.") << endl;
@@ -972,6 +1234,7 @@ void Library::viewAccount() {
                             }
                         }
                         saveUserState(currentUser);
+                        statusMsg = pointGainMessage(15, currentUser->readingPoints, chineseInterface);
                         
                         auto it = find(globalBorrowedBooks.begin(), globalBorrowedBooks.end(), retTitle);
                         if (it != globalBorrowedBooks.end()) {
@@ -1157,7 +1420,11 @@ void Library::recommendBooks() {
     int count = min(3, static_cast<int>(results.size()));
     for (int i = 0; i < count; i++) {
         cout << i + 1 << ". " << results[i].book->getTitle()
+<<<<<<< HEAD
              << " [" << results[i].book->getCategory() << "]" << endl;
+=======
+             << " [" << displayCategoryName(results[i].book->getCategory(), chineseInterface) << "]" << endl;
+>>>>>>> 4951981 (Fix input)
         cout << (chineseInterface ? "   平均評分：" : "   Rating: ")
              << fixed << setprecision(1) << results[i].book->getAverageRating()
              << " / 5 (" << results[i].book->getRatingCount()
@@ -1198,6 +1465,7 @@ void Library::toggleFavorite(Book* b) {
         saveReviewRecord(b->getFilename(), 'F', currentUser->name);
         currentUser->readingPoints += 2;
         saveUserState(currentUser);
+        statusMsg = pointGainMessage(2, currentUser->readingPoints, chineseInterface);
         if (chineseInterface) cout << "已將《" << b->getTitle() << "》加入收藏。" << endl;
         else cout << "\"" << b->getTitle() << "\" was added to your favorites." << endl;
     } else {
@@ -1239,6 +1507,7 @@ void Library::rateBook(Book* b) {
         saveReviewRecord(b->getFilename(), 'R', currentUser->name + "|" + to_string(rating));
         currentUser->readingPoints += 3;
         saveUserState(currentUser);
+        statusMsg = pointGainMessage(3, currentUser->readingPoints, chineseInterface);
         cout << (chineseInterface ? "評分完成，謝謝你的回饋！" :
                                     "Rating saved. Thanks for your feedback!") << endl;
     }
@@ -1272,6 +1541,7 @@ void Library::commentBook(Book* b) {
         saveReviewRecord(b->getFilename(), 'C', currentUser->name + "|" + comment);
         currentUser->readingPoints += 4;
         saveUserState(currentUser);
+        statusMsg = pointGainMessage(4, currentUser->readingPoints, chineseInterface);
         cout << (chineseInterface ? "評論已新增。" : "Comment added.") << endl;
     }
     waitForHome();
@@ -1676,6 +1946,7 @@ void Library::recordPreview(Book* b) {
     if (firstPreview) {
         currentUser->readingPoints += 5;
         saveUserState(currentUser);
+        statusMsg = pointGainMessage(5, currentUser->readingPoints, chineseInterface);
     }
 }
 
