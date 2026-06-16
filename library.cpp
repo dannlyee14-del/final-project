@@ -2,10 +2,7 @@
 #include <algorithm>
 #include <iostream>
 #include <iomanip>
-<<<<<<< HEAD
-=======
 #include <sstream>
->>>>>>> 4951981 (Fix input)
 #include <cctype>
 #include <cstdlib>
 #include <unistd.h>
@@ -120,11 +117,8 @@ string pointGainMessage(int gained, int total, bool chineseInterface) {
     return "Points +" + to_string(gained) + ", total " + to_string(total) + ".";
 }
 
-<<<<<<< HEAD
-=======
 }
 
->>>>>>> 4951981 (Fix input)
 Library::Library() {
     idx = 0; 
     exit = false; 
@@ -616,11 +610,7 @@ void Library::coutBookIconLegacy(int b) {
                 if (b + i == idx - 1) cout << WHITE_B;
                 if (j == 0 || j == 4) cout << "###############";
                 else if (j == 1 || j == 3) cout << "#             #";
-<<<<<<< HEAD
-                else if (j == 2) cout << "#      " << t[0] << "      #";
-=======
                 else if (j == 2) cout << "#" << centerCell(displayBookIconLabel(books[b+i]->getCategory(), chineseInterface), 13) << "#";
->>>>>>> 4951981 (Fix input)
                 else if (j == 5) cout << setw(15) << left << t.substr(0, 15);
                 else if (j == 6) cout << setw(15) << left << (t.size() > 15 ? t.substr(15, 15) : "");
                 cout << NONE;
@@ -645,17 +635,10 @@ void Library::coutMainPage() {
     cout << "  " << GREEN << (chineseInterface ? "使用者" : "USER") << NONE << "  " << displayUserName(currentUser, chineseInterface)
          << "    " << CYAN << (chineseInterface ? "年齡" : "AGE") << NONE << "  " << currentUser->age
          << "    " << YELLOW << (chineseInterface ? "積分" : "POINTS") << NONE << "  " << currentUser->readingPoints
-<<<<<<< HEAD
-         << "    " << RED << (chineseInterface ? "停權" : "BAN") << NONE << "  "
-         << (isUserBanned() ? (chineseInterface ? "封禁到 " : "Until ") + formatClock(currentUser->banUntil)
-                            : (chineseInterface ? "無" : "None"))
-         << "    " << MAGENTA << (chineseInterface ? "稱號" : "LEVEL") << NONE << "  " << getReaderTitle() << endl;
-=======
         << "    " << RED << (chineseInterface ? "停權" : "BAN") << NONE << "  "
         << (isUserBanned() ? (chineseInterface ? "封禁到 " : "Until ") + formatClock(currentUser->banUntil)
                            : (chineseInterface ? "無" : "None"))
         << "    " << MAGENTA << (chineseInterface ? "稱號" : "LEVEL") << NONE << "  " << getReaderTitle() << endl;
->>>>>>> 4951981 (Fix input)
     printThemeLine('-');
 
     cout << "  ";
@@ -763,11 +746,6 @@ void Library::searchBook() {
              << (chineseInterface ? "借閱次數" : "Borrows") << endl;
         cout << string(45, '-') << endl;
         for (int i = 0; i < (int)rankList.size(); i++) {
-<<<<<<< HEAD
-            cout << left << setw(5) << i + 1 
-                 << setw(30) << rankList[i]->getTitle() 
-                 << rankList[i]->getBorrowCount() << endl;
-=======
             bool borrowed = borrowedByUser.find(rankList[i]->getTitle()) != borrowedByUser.end();
             cout << left << setw(5) << i + 1 
                  << setw(30) << rankList[i]->getTitle() 
@@ -778,7 +756,6 @@ void Library::searchBook() {
                 cout << GREEN << (chineseInterface ? " [可借閱]" : " [Available]") << NONE;
             }
             cout << endl;
->>>>>>> 4951981 (Fix input)
         }
         cout << (chineseInterface ? "\n按 Enter 返回..." : "\nPress Enter to return...");
         waitForHome();
@@ -786,10 +763,6 @@ void Library::searchBook() {
     }
 
     string query;
-<<<<<<< HEAD
-    cout << (chineseInterface ? "關鍵字：" : "Keyword: ");
-    if (!readLineOrHome(query)) return;
-=======
     int age = currentUser == nullptr ? 0 : currentUser->age;
     if (choice == 4) {
         vector<string> categories;
@@ -815,29 +788,10 @@ void Library::searchBook() {
             return;
         }
     }
->>>>>>> 4951981 (Fix input)
 
     cout << (chineseInterface ? "\n--- 搜尋結果 ---\n" : "\n--- Search Results ---\n");
     int foundCount = 0;
 
-<<<<<<< HEAD
-    for (auto b : getVisibleBooks()) {
-        bool isMatch = false;
-        
-        if (choice == 1 && b->getFilename().find(query) != string::npos) isMatch = true;
-        else if (choice == 2 && b->getTitle().find(query) != string::npos) isMatch = true;
-        else if (choice == 3 && b->getAuthor().find(query) != string::npos) isMatch = true;
-        else if (choice == 4 && b->getCategory().find(query) != string::npos) isMatch = true;
-        else if (choice == 5 && b->searchContent(query)) isMatch = true;
-
-        if (isMatch) {
-            foundCount++;
-            cout << foundCount << ". " << b->getTitle() 
-                << " [" << b->getCategory() << "] "
-                << (chineseInterface ? "作者：" : "by ") << b->getAuthor()
-                << " (" << (chineseInterface ? "借閱：" : "Borrows: ")
-                << b->getBorrowCount() << ")" << endl;
-=======
     for (auto b : books) {
         if (b->isAdultOnly() && age < 18) continue;
 
@@ -853,7 +807,6 @@ void Library::searchBook() {
             bool borrowed = borrowedByUser.find(b->getTitle()) != borrowedByUser.end();
             foundCount++;
             printSearchResultLine(foundCount, b, borrowed, chineseInterface);
->>>>>>> 4951981 (Fix input)
         }
     }
 
@@ -1420,11 +1373,7 @@ void Library::recommendBooks() {
     int count = min(3, static_cast<int>(results.size()));
     for (int i = 0; i < count; i++) {
         cout << i + 1 << ". " << results[i].book->getTitle()
-<<<<<<< HEAD
-             << " [" << results[i].book->getCategory() << "]" << endl;
-=======
              << " [" << displayCategoryName(results[i].book->getCategory(), chineseInterface) << "]" << endl;
->>>>>>> 4951981 (Fix input)
         cout << (chineseInterface ? "   平均評分：" : "   Rating: ")
              << fixed << setprecision(1) << results[i].book->getAverageRating()
              << " / 5 (" << results[i].book->getRatingCount()

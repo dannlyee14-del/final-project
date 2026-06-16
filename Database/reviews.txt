@@ -132,31 +132,6 @@ space_colony.txt	C	CosmicReader|Nova Colony 的世界觀十分完整，讓人彷
 space_colony.txt	C	SciFiFan|ASCII 圖片與劇情搭配得很好，是書庫中最有科幻感的作品之一。
 space_colony.txt	C	GalaxyExplorer|AI 核心與失落研究站的設定非常吸引人，希望能看到續集。
 book1.txt	H	aa
-<<<<<<< HEAD
-image_book.txt	H	aa
-alice.txt	H	aa
-math_magic.txt	H	aa
-math_magic2.txt	H	aa
-castle_art.txt	H	aa
-forest_story.txt	H	aa
-Anime.txt	H	aa
-loading_anime.txt	H	aa
-morse_history.txt	H	aa
-wrap_demo.txt	H	aa
-book1.txt	B	1
-morse_sample.txt	B	1
-Anime.txt	F	aa
-Anime.txt	R	aa|1
-morse_history.txt	V	aa
-space_colony.txt	F	aa
-book1.txt	H	aa
-book1.txt	F	aa
-book1.txt	B	1
-image_book.txt	B	1
-morse_sample.txt	H	aa
-adult_noir.txt	H	aa
-wrap_demo.txt	H	aa
-=======
 space_animation.txt	H	aa
 space_colony.txt	H	aa
 morse_history.txt	F	aa
@@ -199,4 +174,3 @@ adult_mystery.txt	B	36
 adult_psychology.txt	B	9
 wrap_demo.txt	B	5
 space_colony.txt	B	29
->>>>>>> 4951981 (Fix input)
