@@ -131,6 +131,20 @@ string lastPageMessage(bool chineseInterface) {
     return chineseInterface ? "已到最後一頁。" : "Already on the last page.";
 }
 
+bool isMorseCodeLine(const string& line) {
+    bool hasSignal = false;
+    for (unsigned char ch : line) {
+        if (ch == '.' || ch == '-') {
+            hasSignal = true;
+        } else if (ch == '/' || isspace(ch)) {
+            continue;
+        } else {
+            return false;
+        }
+    }
+    return hasSignal;
+}
+
 void layoutContentWithFigures(const string& filename,
                               vector<Page*>& pages,
                               int pageWidth,
@@ -460,19 +474,30 @@ void MorseBook::readContent() {
     layoutContentWithFigures(filename, page_vec, PAGE_W, PAGE_H,
                              [this](const string& line) {
         string s = resolveInlineEquations(line);
-        string trans = ""; stringstream ss(s); string tok;
-        while (ss >> tok) {
-            bool isMorse = true;
-            for (char c : tok) {
-                if (c != '.' && c != '-') { isMorse = false; break; }
+        if (!isMorseCodeLine(s)) return s;
+
+        string decoded;
+        string code;
+        auto flushCode = [&]() {
+            if (!code.empty()) {
+                decoded += translateMorse(code);
+                code.clear();
             }
-            if (isMorse) trans += translateMorse(tok);
-            else {
-                if (!trans.empty() && trans.back() != ' ') trans += " "; 
-                trans += resolveInlineEquations(tok) + " ";
+        };
+
+        for (char ch : s) {
+            if (ch == '.' || ch == '-') {
+                code += ch;
+            } else if (ch == '/') {
+                flushCode();
+                if (!decoded.empty() && decoded.back() != ' ') decoded += ' ';
+            } else if (isspace(static_cast<unsigned char>(ch))) {
+                flushCode();
             }
         }
-        return trans;
+        flushCode();
+        while (!decoded.empty() && decoded.back() == ' ') decoded.pop_back();
+        return decoded.empty() ? s : decoded;
     });
 }
 

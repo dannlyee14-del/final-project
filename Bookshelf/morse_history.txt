@@ -1,4 +1,4 @@
-type: story
+type: morse
 Title: Signals Across Time
 Author: Morse Communication Center
 

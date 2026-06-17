@@ -15,3 +15,4 @@ adult_mystery.txt T
 adult_psychology.txt T
 wrap_demo.txt F
 space_colony.txt T
+morse_test.txt C

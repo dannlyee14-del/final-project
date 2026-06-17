@@ -292,6 +292,28 @@ bool containsText(const string& text, const string& query) {
     return hasWord;
 }
 
+bool isBlankText(const string& text) {
+    for (unsigned char ch : text) {
+        if (!isspace(ch)) return false;
+    }
+    return true;
+}
+
+string emptySearchMessage(int choice, bool chineseInterface) {
+    if (chineseInterface) {
+        if (choice == 1) return "請輸入檔名。";
+        if (choice == 2) return "請輸入書名。";
+        if (choice == 3) return "請輸入作者。";
+        if (choice == 5) return "請輸入內文。";
+        return "請輸入關鍵字。";
+    }
+    if (choice == 1) return "Please enter a filename.";
+    if (choice == 2) return "Please enter a title.";
+    if (choice == 3) return "Please enter an author.";
+    if (choice == 5) return "Please enter content.";
+    return "Please enter a keyword.";
+}
+
 string removeTxtExtension(string filename) {
     const string extension = ".txt";
     string lowered = lowerText(filename);
@@ -321,6 +343,7 @@ string displayCategoryName(const string& category, bool chineseInterface) {
         if (lowered == "morse") return "Morse Code";
         if (lowered == "picture") return "Picture Book";
         if (lowered == "image_book") return "Image Book";
+        if (lowered == "mystery fiction") return "Mystery Fiction";
         if (lowered == "mature fiction") return "Mature Books";
         if (lowered == "mature mystery") return "Mature Books";
         if (lowered == "mature psychology") return "Mature Books";
@@ -333,6 +356,7 @@ string displayCategoryName(const string& category, bool chineseInterface) {
     if (lowered == "morse") return "摩斯密碼";
     if (lowered == "picture") return "圖文書";
     if (lowered == "image_book") return "圖片書";
+    if (lowered == "mystery fiction") return "推理小說";
     if (lowered == "mature fiction") return "成人書籍";
     if (lowered == "mature mystery") return "成人書籍";
     if (lowered == "mature psychology") return "成人書籍";
@@ -349,6 +373,7 @@ string displayBookIconLabel(const string& category, bool chineseInterface) {
     if (lowered == "morse") return "Morse";
     if (lowered == "picture") return "Picture";
     if (lowered == "image_book") return "Image";
+    if (lowered == "mystery fiction") return "Mystery";
     if (lowered == "mature fiction") return "Fiction";
     if (lowered == "mature mystery") return "Mystery";
     if (lowered == "mature psychology") return "Psychology";
@@ -782,8 +807,9 @@ void Library::searchBook() {
             (chineseInterface ? "請輸入內文：" : "Enter content keyword: ") :
             (chineseInterface ? "關鍵字：" : "Keyword: "));
         if (!readLineOrHome(query)) return;
-        if (choice == 5 && query.empty()) {
-            cout << (chineseInterface ? "請輸入內文。" : "Please enter content.") << endl;
+        if ((choice == 1 || choice == 2 || choice == 3 || choice == 5) &&
+            isBlankText(query)) {
+            cout << emptySearchMessage(choice, chineseInterface) << endl;
             waitForHome();
             return;
         }
