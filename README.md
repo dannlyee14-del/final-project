@@ -75,5 +75,5 @@
 ```
 # 作者
 - 張友銘（NYCU EE） - [GitHub Profile](https://github.com/dannlyee14-del)
-- 陳暘暄（NYCU EE）
+- 陳暘諠（NYCU EE）
 ---
